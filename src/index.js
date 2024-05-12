@@ -1,4 +1,5 @@
 import IngredientsPool from './classes/IngredientsPool';
+import BoardMonitor from './classes/BoardMonitor';
 
 try {
     class Example extends Phaser.Scene
