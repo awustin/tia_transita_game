@@ -25,7 +25,6 @@ export default class BoardMonitor
      * in top-left to bottom-right direction, starting at a given point
      * @param {Integer} row If not specified, 0
      * @param {Integer} col If not specified, 0
-     * @param {Integer} size The length of any row or column
      */
     searchMoves(row = 0, col = 0) {
         // To do: move function to a web worker to prevent from blocking main game
