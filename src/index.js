@@ -1,5 +1,6 @@
 import IngredientsPool from './classes/IngredientsPool';
 import BoardMonitor from './classes/BoardMonitor';
+import ResultsAccumulator from './classes/ResultsAccumulator';
 import Ingredient from './classes/Ingredient';
 
 try {

@@ -1,5 +1,5 @@
 /**
- * `IngredientsPool` controls the available ingredients in the game.
+ * Controls the available ingredients in the game.
  * It keeps track of a list of 4 ingredients with the probability
  * that each one has to come up next.
  */

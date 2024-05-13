@@ -3,9 +3,6 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     _typeId = null;
     _state = 'idle';
     _cell = [];
-    _labour = 0;
-    _necromancy = 0;
-    _astrology = 0;
 
     constructor(typeId = null, cell = [], config) {
         if (!typeId) {
