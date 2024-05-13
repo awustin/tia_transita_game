@@ -63,7 +63,6 @@ export default class IngredientsPool {
      * `{ ... <id>: <amount> }`
      */
     redistributeProbabilities(ingredientsAmount = {}) {
-
         if (Object.keys(ingredientsAmount).length) {
             const sortedIngredients = this._sortedIngredients;
             let max = 0;

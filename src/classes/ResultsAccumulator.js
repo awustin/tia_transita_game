@@ -61,6 +61,25 @@ export default class ResultsAccumulator
         this.#astrology = this.#astrology + astrology * weightedAmount;
     }
 
+    /**
+     * Retrieves accumulated results
+     */
+    getResults() {
+        return {
+            labour: this.#labour,
+            necromancy: this.#necromancy,
+            astrology: this.#astrology,
+        };
+    }
+
+    get config() {
+        return this.#config;
+    }
+
+    get amounts() {
+        return this.#amounts;
+    }
+
     // Private
 
     /**
@@ -69,13 +88,5 @@ export default class ResultsAccumulator
      */
     #weightedMove(amount) {
         return amount * amount;
-    }
-
-    get config() {
-        this.#config;
-    }
-
-    get amounts() {
-        this.#amounts;
     }
 }

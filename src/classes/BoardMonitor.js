@@ -7,7 +7,7 @@ const matrix = require('matrix-js');
  */
 export default class BoardMonitor
 {
-    _boardMatrix = null;
+    #boardMatrix = null;
 
     constructor(initMatrix) {
         if (!initMatrix) {
@@ -17,7 +17,7 @@ export default class BoardMonitor
             };
         }
 
-        this._boardMatrix = matrix(initMatrix);
+        this.#boardMatrix = matrix(initMatrix);
     }
 
     /**
@@ -28,7 +28,7 @@ export default class BoardMonitor
      */
     searchMoves(row = 0, col = 0) {
         // To do: move function to a web worker to prevent from blocking main game
-        const A = this._boardMatrix;
+        const A = this.#boardMatrix;
         const nextRow = row + 1;
         const nextCol = col + 1;
         const lastRow = row === A.size()[0] - 1;
@@ -79,7 +79,56 @@ export default class BoardMonitor
         updateMap.forEach(replace => {
             const { row, col, id } = replace;
 
-            this._boardMatrix = matrix(this._boardMatrix.set(row, col).to(id));
+            this.#boardMatrix = matrix(this.#boardMatrix.set(row, col).to(id));
         });
+    }
+
+    /**
+     * Generates a random set of cells to block. Used in effects.
+     * @returns The list of blocked cells `[...[<row>,<col>]]`
+     */
+    blockRandomCells() {
+        let A = this.#boardMatrix;
+        const size = A.size()[0];
+        const direction = Math.round(Math.random()) ? 'row' : 'col';
+        const i = Math.floor(Math.random() * size);
+        const j = Math.floor(Math.random() * size);
+        let rows = [];
+        let cols = [];
+        let blockedCells = [];
+
+        if (direction === 'row') {
+            A = A.set(i).to(0);
+            A = matrix(A).set(j).to(0);
+
+            rows.push(i);
+            if (i !== j) {
+                rows.push(j);
+            }
+
+            rows.forEach(nRow => {
+                for (let nCol = 0; nCol < size; nCol++) {
+                    blockedCells.push([nRow, nCol]);
+                }
+            });
+        } else {
+            A = A.set([], i).to(0);
+            A = matrix(A).set([], j).to(0);
+
+            cols.push(i);
+            if (i !== j) {
+                cols.push(j);
+            }
+
+            cols.forEach(nCol => {
+                for (let nRow = 0; nRow < size; nRow++) {
+                    blockedCells.push([nRow, nCol]);
+                }
+            });
+        }
+
+        this.#boardMatrix = matrix(A);
+
+        return blockedCells;
     }
 }
