@@ -6,10 +6,8 @@ import IngredientsGameGrid from './classes/IngredientsGameGrid';
 import Ingredient from './classes/Ingredient';
 
 try {
-    class IngredientsOrchardGame extends Phaser.Scene
-    {
-        preload ()
-        {
+    class IngredientsOrchardGame extends Phaser.Scene {
+        preload () {
             this.load.on('progress', value => console.log(value));
             this.load.on('complete', () => console.log('Loaded!'));
             this.load.spritesheet({
@@ -34,8 +32,7 @@ try {
             }
         }
     
-        create ()
-        {
+        create () {
             // TEST DATA
             this.add.ingredientsPool = new IngredientsPool([
                 {id: 1, probability: 1/4},
@@ -45,8 +42,8 @@ try {
             ]);
             let grid = new IngredientsGameGrid({
                 scene: this,
-                x: 230,
-                y: 40
+                offsetX: this.game.config.width / 2,
+                offsetY: this.game.config.height / 2
             })
 
             // let board = new BoardMonitor([
@@ -67,15 +64,20 @@ try {
     
     const config = {
         type: Phaser.AUTO,
-        width: 800,
-        height: 600,
         scene: IngredientsOrchardGame,
+        pixelArt: true,
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: { y: 200 }
+                gravity: { y: 0 }
             }
-        }
+        },
+        scale: {
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            width: 1920,
+            height: 910
+        },
     };
     
     const game = new Phaser.Game(config);
