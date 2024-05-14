@@ -4,9 +4,9 @@
  * that each one has to come up next.
  */
 export default class IngredientsPool {
-    _sortedIngredients = [];
-    _sortedProbabilitySegments = [];
-    
+    #sortedIngredientsWithProbability = [];
+    #sortedProbabilitySegments = [];
+ 
     constructor(initArray = null) {
         if (!initArray) {
             throw {
@@ -20,7 +20,7 @@ export default class IngredientsPool {
             };
         }
 
-        this._updatePool(initArray);
+        this.#updatePool(initArray);
     }
 
     /**
@@ -31,7 +31,7 @@ export default class IngredientsPool {
     getNextIngredients(amount = 1) {
         return new Array(amount)
             .fill(null)
-            .map(() => this._pickIngredientWithProbability());
+            .map(() => this.#pickIngredientWithProbability());
     }
 
     /**
@@ -42,7 +42,7 @@ export default class IngredientsPool {
      * @returns Discarded ingredient
      */
     addIngredient(newIngredient = {}) {
-        const ingredients = this._sortedIngredients;
+        const ingredients = this.#sortedIngredientsWithProbability;
         const mostLikelyIngredient = ingredients.reduce((acc, curr, index) => {
             if (!index || (curr.probability >= acc?.probability))
                 return curr;
@@ -51,7 +51,7 @@ export default class IngredientsPool {
         
         restockedIngredients.push(newIngredient);
         
-        this._updatePool(restockedIngredients.map(ingredient => ({ ...ingredient, probability: 1/4 })));
+        this.#updatePool(restockedIngredients.map(ingredient => ({ ...ingredient, probability: 1/4 })));
 
         return mostLikelyIngredient;
     }
@@ -64,7 +64,7 @@ export default class IngredientsPool {
      */
     redistributeProbabilities(ingredientsAmount = {}) {
         if (Object.keys(ingredientsAmount).length) {
-            const sortedIngredients = this._sortedIngredients;
+            const sortedIngredients = this.#sortedIngredientsWithProbability;
             let max = 0;
             let totalInversed = 0;
             const inversedAmounts = {};
@@ -87,7 +87,7 @@ export default class IngredientsPool {
                 totalInversed += inverse;
             });
 
-            this._updatePool(sortedIngredients.map(ingredient => ({
+            this.#updatePool(sortedIngredients.map(ingredient => ({
                 ...ingredient,
                 probability: inversedAmounts[ingredient.id] / totalInversed,
             })));
@@ -96,17 +96,17 @@ export default class IngredientsPool {
 
     // Private functions
 
-    _updatePool(list) {
-        this._sortedIngredients = this._setSortedIngredients(list);
-        this._sortedProbabilitySegments = this._updateProbabilitySegments();
+    #updatePool(list) {
+        this.#sortedIngredientsWithProbability = this.#setSortedIngredients(list);
+        this.#sortedProbabilitySegments = this.#updateProbabilitySegments();
     }
 
-    _setSortedIngredients(list) {
+    #setSortedIngredients(list) {
         return list.sort((a, b) => Number(a.probability) - Number(b.probability));
     }
 
-    _updateProbabilitySegments() {
-        const sortedIngredients = this._sortedIngredients;
+    #updateProbabilitySegments() {
+        const sortedIngredients = this.#sortedIngredientsWithProbability;
 
         // Accumulated probabilities: [0.34, 0.33, 0.33] => [0.34, 0.67, 1]
         return sortedIngredients.reduce((acc, curr, index) => {
@@ -124,9 +124,9 @@ export default class IngredientsPool {
         }, []);
     }
 
-    _pickIngredientWithProbability() {
-        const ingredients = this._sortedIngredients;
-        const sortedProbabilitySegments = this._sortedProbabilitySegments;
+    #pickIngredientWithProbability() {
+        const ingredients = this.#sortedIngredientsWithProbability;
+        const sortedProbabilitySegments = this.#sortedProbabilitySegments;
         const target = Math.random();
         const picked = sortedProbabilitySegments.find(upperBound => target <= upperBound.probability);
 

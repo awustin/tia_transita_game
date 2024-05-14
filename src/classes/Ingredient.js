@@ -1,8 +1,8 @@
 export default class Ingredient extends Phaser.GameObjects.Sprite
 {
-    _typeId = null;
-    _state = 'idle';
-    _cell = [];
+    #typeId = null;
+    #state = 'start';
+    #cell = [];
 
     constructor(typeId = null, cell = [], config) {
         if (!typeId) {
@@ -11,7 +11,6 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
                 code: 'C05'
             }
         }
-
         if (!cell.length || cell.length !== 2) {
             throw {
                 message: 'Ingredient cell positioning missing or invalid',
@@ -21,15 +20,15 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
 
         // To do: get proper textures for each type of ingredients
         super(config.scene, config.x, config.y, 'ingredient', (typeId - 1) * 6);
-        this._typeId = typeId;
-        this._cell = cell;
+        this.#typeId = typeId;
+        this.#cell = cell;
         config.scene.add.existing(this);
         this.setInteractive();
 
         this.on('pointerdown', () => {
-            if (this._state === 'idle') {
+            if (this.#state === 'idle' || this.#state === 'start') {
                 this.setActive();
-            } else if (this._state === 'active') {
+            } else if (this.#state === 'active') {
                 this.setIdle();
             }
         }, this);
@@ -40,34 +39,34 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     }
 
     get typeId() {
-        return this._typeId;
+        return this.#typeId;
     }
 
     get state() {
-        return this._state;
+        return this.#state;
     }
 
     get cell() {
-        return this._cell;
+        return this.#cell;
     }
 
     setStart() {
         console.log('start');
-        this._state = 'start';
+        this.#state = 'start';
     }
 
     setIdle() {
         console.log('idle');
-        this._state = 'idle';
+        this.#state = 'idle';
     }
 
     setActive() {
         console.log('active');
-        this._state = 'active';
+        this.#state = 'active';
     }
 
     setCollected() {
         console.log('collected');
-        this._state = 'collected';
+        this.#state = 'collected';
     }
 }
