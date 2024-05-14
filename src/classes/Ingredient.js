@@ -19,7 +19,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             }
         }
 
-        super(config.scene, config.x, config.y, `ingredient_${typeId}`);
+        // To do: get proper textures for each type of ingredients
+        super(config.scene, config.x, config.y, 'ingredient', (typeId - 1) * 6);
         this._typeId = typeId;
         this._cell = cell;
         config.scene.add.existing(this);

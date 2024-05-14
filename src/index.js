@@ -2,17 +2,26 @@ import IngredientsPool from './classes/IngredientsPool';
 import BoardMonitor from './classes/BoardMonitor';
 import ResultsAccumulator from './classes/ResultsAccumulator';
 import ResultsEffects from './classes/ResultsEffects';
+import IngredientsGameGrid from './classes/IngredientsGameGrid';
 import Ingredient from './classes/Ingredient';
 
 try {
-    class Example extends Phaser.Scene
+    class IngredientsOrchardGame extends Phaser.Scene
     {
         preload ()
         {
-            this.load.setBaseURL('https://labs.phaser.io');
-    
-            this.load.image('sky', 'assets/skies/space3.png');
-            this.load.image('ingredient_1', require('../assets/sprites/ingredient_1.png'));
+            this.load.on('progress', value => console.log(value));
+            this.load.on('complete', () => console.log('Loaded!'));
+            this.load.spritesheet({
+                key: 'ingredient',
+                url: 'assets/sprites/fantasy_tileset.png',
+                frameConfig: {
+                    frameWidth: 32,
+                    frameHeight: 32,
+                    startFrame: 32,
+                    endFrame: 56
+                }
+            });
 
             this.registry.effectsConfig = {
                 runningEffect: 'none',
@@ -27,28 +36,18 @@ try {
     
         create ()
         {
-            this.add.image(400, 300, 'sky');
-            let ingredientsGroup = this.add.group();
-
-            for (let i = 0; i < 5; i++) {
-                for (let j = 0; j < 5; j++) {
-                    ingredientsGroup.add(new Ingredient(
-                        1,
-                        [i,j],
-                        { scene:this }
-                    ));
-                }
-            }
-
-            Phaser.Actions.GridAlign(ingredientsGroup.getChildren(), {
-                width: 5,
-                cellWidth: game.config.width / 10,
-                cellHeight: game.config.height / 10,
+            // TEST DATA
+            this.add.ingredientsPool = new IngredientsPool([
+                {id: 1, probability: 1/4},
+                {id: 2, probability: 1/4},
+                {id: 3, probability: 1/4},
+                {id: 4, probability: 1/4},
+            ]);
+            let grid = new IngredientsGameGrid({
+                scene: this,
                 x: 230,
                 y: 40
-            });
-
-            // TEST DATA
+            })
 
             // let board = new BoardMonitor([
             //     [1,2,1,2],
@@ -70,7 +69,7 @@ try {
         type: Phaser.AUTO,
         width: 800,
         height: 600,
-        scene: Example,
+        scene: IngredientsOrchardGame,
         physics: {
             default: 'arcade',
             arcade: {

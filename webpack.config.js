@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/index.js',
   devServer: {
-    static: './dist',
+    static: path.resolve(__dirname, './'),
     port: 9000,
     historyApiFallback: true,
   },
@@ -17,17 +17,22 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true
+    publicPath: '/',
+    clean: true,
+  },
+  optimization: {
+    runtimeChunk: 'single',
   },
   module: {
     rules: [
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        exclude: /[\\/]node_modules[\\/]/,
         type: 'asset/resource',
+        generator: {
+          filename: `[path][name].[ext]`,
+        }
       },
-    ],
-  },
-  optimization: {
-    runtimeChunk: 'single',
+    ]
   },
 };
