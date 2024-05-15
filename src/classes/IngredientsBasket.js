@@ -33,7 +33,7 @@ export default class IngredientsBasket
      * @param {Ingredient} ingredient
      * @returns Boolean with the result of operation
      */
-    addSelectedIngredient(ingredient = null) {
+    trackIngredient(ingredient = null) {
         const selected = this.#selected;
 
         if (!selected.length) {
@@ -57,7 +57,7 @@ export default class IngredientsBasket
      * @param {Object} ingredient
      * @returns {Array} Array of removed items
      */
-    removeSelectedIngredients(index = -1) {
+    untrackSelectedIngredients(index = -1) {
         if (index < 0 || this.#selected.length - 1 < index) {
             return false;
         }
@@ -70,7 +70,7 @@ export default class IngredientsBasket
      * if the length of selected is greater or equal than 2
      * @param {Boolean} value 
      */
-    setCollectAvailable() {
+    toggleCollectAvailable() {
         const selected = this.#selected;
 
         if (selected.length < 2) {

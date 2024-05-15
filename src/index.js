@@ -17,6 +17,7 @@ try {
         create () {
             this.#createIngredientsAnimations();
             this.#createManagers();
+            this.#debugInfoOnScreen();
            
             this.input.on('pointerup', (value, gameObject) => {
                 const basket = this.add.ingredientsBasket;
@@ -27,27 +28,54 @@ try {
                     const index = basket.selectedIndex(ingredient);
 
                     if (index >= 0) {
-                        basket.removeSelectedIngredients(index)
+                        basket.untrackSelectedIngredients(index)
                             .forEach(ingredient => ingredient.setIdle());
                     } else {
-                        if (basket.addSelectedIngredient(ingredient)) {
+                        if (basket.trackIngredient(ingredient)) {
                             ingredient.setActive();
                         };
                     }
 
-                    basket.setCollectAvailable();
+                    basket.toggleCollectAvailable();
                 }
             })
 
             this.input.keyboard.on('keyup', ({ code }) => {
                 const basket = this.add.ingredientsBasket;
                 const isCollectAvailable = this.registry.collectAvailable;
+                const accumulator = this.add.resultsAccumulator;
+                const resultsEffects = this.add.resultsEffects;
+                const ingredientsPool = this.add.ingredientsPool;
 
                 if (isCollectAvailable && code === 'Space') {
-                    basket.selected.forEach(ingredient => ingredient.setCollected());
-                    basket.removeSelectedIngredients(0);
+                    const removed = basket.untrackSelectedIngredients(0);
+
+                    removed.forEach(ingredient => ingredient.setCollected());
+                    accumulator.add(removed[0].typeId, removed.length);
+                    resultsEffects.updateProbabilities(accumulator.getResults());
+                    ingredientsPool.redistributeProbabilities(accumulator.amounts);
+
+                    basket.toggleCollectAvailable();
+
+                    // To do: analyze results. If it's winner emit WIN, else start a new move
+                    this.events.emit('newmove');
                 }
             })
+
+            this.events.on('newmove', () => {
+                const resultsEffects = this.add.resultsEffects;
+
+                resultsEffects.clearEffect();
+                resultsEffects.pickEffect();
+
+                //To do: apply effect
+                //To do: fill in new ingredients
+                //To do: monitor available moves
+            })
+        }
+
+        update () {
+            this.#debugInfoOnScreen();
         }
 
         #settings () {
@@ -64,6 +92,12 @@ try {
                 });
             }
 
+            this.registry.resultsConfig = {
+                1: {labour: 1, astrology: 0, necromancy: 0},
+                2: {labour: 0, astrology: 1, necromancy: 0},
+                3: {labour: 0, astrology: 0, necromancy: 1},
+                4: {labour: 2, astrology: 0, necromancy: 0},
+            }
             this.registry.effectsConfig = {
                 runningEffect: 'none',
                 effects: {
@@ -73,7 +107,13 @@ try {
                     'resetBoard': {id: 4, params: null},
                 }
             };
-            this.registry.collectAvailable = true;
+            this.registry.collectAvailable = false;
+            this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
+            this.registry.results = {
+                labour: 0,
+                necromancy: 0,
+                astrology: 0
+            };
         }
 
         #createIngredientsAnimations () {
@@ -122,6 +162,9 @@ try {
                 offsetY: this.game.config.height / 2
             });
             this.add.ingredientsBasket = new IngredientsBasket(this);
+            this.add.resultsAccumulator = new ResultsAccumulator(this);
+            this.add.resultsEffects = new ResultsEffects(this);
+
             // TEST DATA
 
             // let board = new BoardMonitor([
@@ -130,18 +173,22 @@ try {
             //     [1,1,4,4],
             //     [4,2,1,3],
             // ])
-            // let results = new ResultsAccumulator({
-            //     1: {labour: 1, astrology: 0, necromancy: 0},
-            //     2: {labour: 0, astrology: 1, necromancy: 0},
-            //     3: {labour: 0, astrology: 0, necromancy: 1},
-            //     4: {labour: 2, astrology: 0, necromancy: 0},
-            // });
-            // let effects = new ResultsEffects(this);
+        }
+
+        #debugInfoOnScreen() {
+            this.registry.debugText.setText([
+                'Selected: ' + this.add.ingredientsBasket.selected.map(ingredients => ingredients.cell.join(':')),
+                'Collect available: ' + this.registry.collectAvailable,
+                'Labour: ' + this.registry.results.labour,
+                'Necromancy: ' + this.registry.results.necromancy,
+                'Astrology: ' + this.registry.results.astrology,
+                'Running effect: ' + this.registry.effectsConfig.runningEffect
+            ].join('\n'));
         }
     }
     
     const config = {
-        type: Phaser.AUTO,
+        type: Phaser.WEBGL,
         scene: IngredientsOrchardGame,
         pixelArt: true,
         physics: {
@@ -155,7 +202,7 @@ try {
             autoCenter: Phaser.Scale.CENTER_BOTH,
             width: 1920,
             height: 910
-        },
+        }
     };
     
     const game = new Phaser.Game(config);

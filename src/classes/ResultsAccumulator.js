@@ -11,16 +11,22 @@ export default class ResultsAccumulator
     #necromancy = 0;
     #astrology = 0;
     #config = null;
+    #results = {
+        labour: 0,
+        astrology: 0,
+        necromancy: 0
+    };
 
-    constructor(config = null) {
-        if(!config) {
+    constructor(scene = null) {
+        if(!scene) {
             throw {
-                message: 'Results accumulator missing config',
+                message: 'Results accumulator missing scene',
                 code: 'C07'
             }
         }
 
-        this.#config = config;
+        this.#config = scene.registry.resultsConfig;
+        this.#results = scene.registry.results;
     }
 
     /**
@@ -59,6 +65,8 @@ export default class ResultsAccumulator
         this.#labour = this.#labour + labour * weightedAmount;
         this.#necromancy = this.#necromancy + necromancy * weightedAmount;
         this.#astrology = this.#astrology + astrology * weightedAmount;
+
+        this.#setRegistryResults();
     }
 
     /**
@@ -88,5 +96,11 @@ export default class ResultsAccumulator
      */
     #weightedMove(amount) {
         return amount * amount;
+    }
+
+    #setRegistryResults() {
+        this.#results.labour = this.#labour;
+        this.#results.necromancy = this.#necromancy;
+        this.#results.astrology = this.#astrology;
     }
 }
