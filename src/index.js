@@ -4,6 +4,7 @@ import ResultsAccumulator from './classes/ResultsAccumulator';
 import ResultsEffects from './classes/ResultsEffects';
 import IngredientsGameGrid from './classes/IngredientsGameGrid';
 import Ingredient from './classes/Ingredient';
+import IngredientsBasket from './classes/IngredientsBasket';
 
 try {
     class IngredientsOrchardGame extends Phaser.Scene {
@@ -59,6 +60,23 @@ try {
             //     4: {labour: 2, astrology: 0, necromancy: 0},
             // });
             // let effects = new ResultsEffects(this);
+
+            const i = new IngredientsBasket(this);
+           
+            this.input.on('pointerup', (value, gameObject) => {
+                const objectClass = gameObject[0]?.constructor.name || '';
+
+                if (objectClass === 'Ingredient') {
+                    const ingredient = gameObject[0];
+                    const index = i.selectedIndex(ingredient);
+
+                    if (index >= 0) {
+                        i.removeSelectedIngredients(index).forEach(ingredient => ingredient.setIdle());
+                    } else {
+                        i.addSelectedIngredient(ingredient);
+                    }
+                }
+            })
         }
     }
     
