@@ -1,5 +1,6 @@
 export default class Ingredient extends Phaser.GameObjects.Sprite
 {
+    #scene = null;
     #typeId = null;
     #state = 'start';
     #cell = [];
@@ -19,22 +20,23 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         }
 
         // To do: get proper textures for each type of ingredients
-        super(config.scene, config.x, config.y, 'ingredient', (typeId - 1) * 6);
+        super(
+            config.scene,
+            config.x,
+            config.y,
+            `ingredient${typeId}`,
+            0
+        );
         this.#typeId = typeId;
         this.#cell = cell;
-        config.scene.add.existing(this);
-        this.setInteractive();
+        this.#scene = config.scene;
 
-        this.on('pointerdown', () => {
-            if (this.#state === 'idle' || this.#state === 'start') {
-                this.setActive();
-            } else if (this.#state === 'active') {
-                this.setIdle();
-            }
-        }, this);
+        this.#scene.add.existing(this);
+        this.setInteractive();
+        this.setStart();
 
         this.on('pointerover', () => {
-            console.log(`ingredient at `, cell);
+            // console.log(`ingredient at `, cell);
         }, this);
     }
 
@@ -51,22 +53,56 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     }
 
     setStart() {
-        console.log('start');
+        this.setScale(0,0);
+        this.setAlpha(0.5);
+        this.play(`ingredient${this.#typeId}_start`);
+
+        this.#scene.tweens.chain({
+            targets: this,
+            tweens: [
+                {
+                    alpha: 1,
+                    scale: 1,
+                    duration: 600,
+                    ease: 'quad.out'
+                },
+            ],
+            loop: 0,
+            // loopDelay: 300,
+            onComplete: () => this.setIdle()
+        });
+
         this.#state = 'start';
     }
 
     setIdle() {
-        console.log('idle');
+        this.play(`ingredient${this.#typeId}_idle`);
         this.#state = 'idle';
     }
 
     setActive() {
-        console.log('active');
+        this.play(`ingredient${this.#typeId}_active`);
         this.#state = 'active';
     }
 
     setCollected() {
-        console.log('collected');
+        this.play(`ingredient${this.#typeId}_destroy`);
         this.#state = 'collected';
+
+        this.#scene.tweens.chain({
+            targets: this,
+            tweens: [
+                {
+                    alpha: 0.5,
+                    y: this.y - 50,
+                    duration: 400,
+                    ease: 'quad.out'
+                },
+            ],
+            loop: 0,
+            onComplete: () => this.destroy()
+        });
+
+        // this.once('animationcomplete', () => this.destroy());
     }
 }

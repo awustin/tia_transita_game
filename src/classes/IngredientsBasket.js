@@ -3,6 +3,7 @@
  */
 export default class IngredientsBasket
 {
+    #scene = null
     #selected = [];
     #combinationTypeId = null;
 
@@ -13,6 +14,8 @@ export default class IngredientsBasket
                 code: 'C12'
             }
         }
+
+        this.#scene = scene;
     }
 
     /**
@@ -28,6 +31,7 @@ export default class IngredientsBasket
     /**
      * Adds an ingredient to the selected array
      * @param {Ingredient} ingredient
+     * @returns Boolean with the result of operation
      */
     addSelectedIngredient(ingredient = null) {
         const selected = this.#selected;
@@ -45,10 +49,6 @@ export default class IngredientsBasket
 
         selected.push(ingredient);
 
-        if (selected.length >= 2) {
-            // Emit collect available
-        }
-
         return true;        
     }
 
@@ -62,7 +62,22 @@ export default class IngredientsBasket
             return false;
         }
 
-        return this.#selected.splice(index + 1);
+        return this.#selected.splice(index);
+    }
+
+    /**
+     * Sets the flag for collecting ingredients at scene.registry.collectAvailable
+     * if the length of selected is greater or equal than 2
+     * @param {Boolean} value 
+     */
+    setCollectAvailable() {
+        const selected = this.#selected;
+
+        if (selected.length < 2) {
+            this.#scene.registry.collectAvailable = false;
+        } else {
+            this.#scene.registry.collectAvailable = true;
+        }
     }
 
     get selected() {

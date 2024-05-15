@@ -11,16 +11,58 @@ try {
         preload () {
             this.load.on('progress', value => console.log(value));
             this.load.on('complete', () => console.log('Loaded!'));
-            this.load.spritesheet({
-                key: 'ingredient',
-                url: 'assets/sprites/fantasy_tileset.png',
-                frameConfig: {
-                    frameWidth: 32,
-                    frameHeight: 32,
-                    startFrame: 32,
-                    endFrame: 56
+            this.#settings();
+        }
+    
+        create () {
+            this.#createIngredientsAnimations();
+            this.#createManagers();
+           
+            this.input.on('pointerup', (value, gameObject) => {
+                const basket = this.add.ingredientsBasket;
+                const objectClass = gameObject[0]?.constructor.name || '';
+
+                if (objectClass === 'Ingredient') {
+                    const ingredient = gameObject[0];
+                    const index = basket.selectedIndex(ingredient);
+
+                    if (index >= 0) {
+                        basket.removeSelectedIngredients(index)
+                            .forEach(ingredient => ingredient.setIdle());
+                    } else {
+                        if (basket.addSelectedIngredient(ingredient)) {
+                            ingredient.setActive();
+                        };
+                    }
+
+                    basket.setCollectAvailable();
                 }
-            });
+            })
+
+            this.input.keyboard.on('keyup', ({ code }) => {
+                const basket = this.add.ingredientsBasket;
+                const isCollectAvailable = this.registry.collectAvailable;
+
+                if (isCollectAvailable && code === 'Space') {
+                    basket.selected.forEach(ingredient => ingredient.setCollected());
+                    basket.removeSelectedIngredients(0);
+                }
+            })
+        }
+
+        #settings () {
+            for (let i = 1; i <= 4; i++) {
+                this.load.spritesheet({
+                    key: `ingredient${i}`,
+                    url: `assets/sprites/ingredient_${i}.png`,
+                    frameConfig: {
+                        frameWidth: 64,
+                        frameHeight: 64,
+                        startFrame: 0,
+                        endFrame: 12
+                    }
+                });
+            }
 
             this.registry.effectsConfig = {
                 runningEffect: 'none',
@@ -30,22 +72,57 @@ try {
                     'changeBoard': {id: 3, params: null},
                     'resetBoard': {id: 4, params: null},
                 }
+            };
+            this.registry.collectAvailable = true;
+        }
+
+        #createIngredientsAnimations () {
+            for (let i = 1; i <= 4; i++) {
+                this.anims.create({
+                    key: `ingredient${i}_start`,
+                    frameRate: 4,
+                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 3 }),
+                    repeat: 0,
+                });
+
+                this.anims.create({
+                    key: `ingredient${i}_idle`,
+                    frameRate: 5,
+                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 4, end: 6 }),
+                    repeat: -1,
+                    yoyo: true,
+                });
+
+                this.anims.create({
+                    key: `ingredient${i}_active`,
+                    frameRate: 4,
+                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 7, end: 10 }),
+                    repeat: -1,
+                });
+
+                this.anims.create({
+                    key: `ingredient${i}_destroy`,
+                    frameRate: 8,
+                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 11, end: 12 }),
+                    repeat: 0
+                });
             }
         }
-    
-        create () {
-            // TEST DATA
+
+        #createManagers () {
             this.add.ingredientsPool = new IngredientsPool([
                 {id: 1, probability: 1/4},
                 {id: 2, probability: 1/4},
                 {id: 3, probability: 1/4},
                 {id: 4, probability: 1/4},
             ]);
-            let grid = new IngredientsGameGrid({
+            this.add.ingredientsGrid = new IngredientsGameGrid({
                 scene: this,
                 offsetX: this.game.config.width / 2,
                 offsetY: this.game.config.height / 2
-            })
+            });
+            this.add.ingredientsBasket = new IngredientsBasket(this);
+            // TEST DATA
 
             // let board = new BoardMonitor([
             //     [1,2,1,2],
@@ -60,23 +137,6 @@ try {
             //     4: {labour: 2, astrology: 0, necromancy: 0},
             // });
             // let effects = new ResultsEffects(this);
-
-            const i = new IngredientsBasket(this);
-           
-            this.input.on('pointerup', (value, gameObject) => {
-                const objectClass = gameObject[0]?.constructor.name || '';
-
-                if (objectClass === 'Ingredient') {
-                    const ingredient = gameObject[0];
-                    const index = i.selectedIndex(ingredient);
-
-                    if (index >= 0) {
-                        i.removeSelectedIngredients(index).forEach(ingredient => ingredient.setIdle());
-                    } else {
-                        i.addSelectedIngredient(ingredient);
-                    }
-                }
-            })
         }
     }
     
