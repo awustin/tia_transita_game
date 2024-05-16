@@ -27,6 +27,10 @@ export default class ResultsAccumulator
 
         this.#config = scene.registry.resultsConfig;
         this.#results = scene.registry.results;
+
+        Object.keys(this.#config).forEach(typeId => {
+            this.#amounts[Number(typeId)] = 0;
+        });
     }
 
     /**

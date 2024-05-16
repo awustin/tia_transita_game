@@ -7,7 +7,7 @@ export default class IngredientsPool {
     #sortedIngredientsWithProbability = [];
     #sortedProbabilitySegments = [];
  
-    constructor(initArray = null) {
+    constructor(scene = null, initArray = null) {
         if (!initArray) {
             throw {
                 message: 'Empty ingredients list',
@@ -21,6 +21,7 @@ export default class IngredientsPool {
         }
 
         this.#updatePool(initArray);
+        scene.add.ingredientsPool = this;
     }
 
     /**

@@ -9,15 +9,23 @@ export default class BoardMonitor
 {
     #boardMatrix = null;
 
-    constructor(initMatrix) {
+    constructor(scene = null, initMatrix) {
         if (!initMatrix) {
             throw {
-                message: 'Empty ingredients matrix',
+                message: 'BoardMonitor: empty ingredients matrix',
                 code: 'C03'
             };
         }
 
+        if (!scene) {
+            throw {
+                message: 'BoardMonitor: empty scene passed',
+                code: 'C13'
+            };
+        }
+
         this.#boardMatrix = matrix(initMatrix);
+        scene.add.boardMonitor = this;
     }
 
     /**

@@ -7,6 +7,9 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
 {
     #group = null;
     #ingredientsPool = null;
+    #grid = [];
+    #emptyPositions = [];
+    #config = null;
 
     /**
      * Create a square grid of ingredients 
@@ -22,29 +25,83 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
         }
         if (typeof config.scene?.add?.ingredientsPool === 'undefined') {
             throw {
-                message: 'Add ingredientsPool to scene.add',
+                message: 'IngredientsGameGrid: add ingredientsPool to scene.add',
                 code: 'C11'
             }
         }
         super(config.scene, config);
 
+        this.#config = config;
         this.#group = config.scene.add.group();
         this.#group.setName('ingredientsOrchard');
         this.#ingredientsPool = config.scene.add.ingredientsPool;
 
         for (let row = 0; row < size; row++) {
+            let columnArray = [];
+
             for (let col = 0; col < size; col++) {
-                const ingredient = new Ingredient(
-                    this.#ingredientsPool.getNextIngredients()[0].id,
-                    [row, col],
-                    {
-                        scene: config.scene,
-                        x: config.offsetX / 1.4 + 70 * row,
-                        y: config.offsetY / 2.8 + 70 * col,
-                    }
-                ); 
-                this.#group.add(ingredient);
+                const ingredient = this.#newIngredientAtPosition(row, col);
+                columnArray.push(ingredient);
             }
+
+            this.#grid.push(columnArray);
         }
+    }
+
+    /**
+     * Replaces the cell with a temporary empty value for the ingredient sent,
+     * and tracks the replaced index
+     * @param {Object} ingredient
+     * @returns Array of index `[row, col]`
+     */
+    replaceWithEmpty(ingredient = null) {
+        let position = null;
+
+        if (ingredient) {
+            const [ row, col ] = ingredient.cell;
+            position = [row, col];
+
+            this.#grid[row][col] = 'empty';
+            this.#emptyPositions.push(position);
+        }
+
+        return position;
+    }
+
+    /**
+     * Places a new ingredient in the empty positions, and untracks the empty cell
+     * @param {Number} typeId The type if of the ingredient
+     * @param {Number} row index
+     * @param {Number} col index
+     */
+    fillInWithNewIngredients() {
+        if (this.#emptyPositions.length) {
+            this.#emptyPositions.forEach(([row, col]) => {
+                this.#grid[row][col] = this.#newIngredientAtPosition(row, col);
+            });
+        }
+
+        this.#emptyPositions.splice(0);
+    }
+
+    get emptyPositions() {
+        return this.#emptyPositions;
+    }
+
+    // Private
+
+    #newIngredientAtPosition(row, col) {
+        const ingredient = new Ingredient(
+            this.#ingredientsPool.getNextIngredients()[0].id,
+            [row, col],
+            {
+                scene: this.#config.scene,
+                x: this.#config.offsetX / 1.4 + 70 * col,
+                y: this.#config.offsetY / 2.8 + 70 * row,
+            }
+        );
+        this.#group.add(ingredient);
+
+        return ingredient;
     }
 }

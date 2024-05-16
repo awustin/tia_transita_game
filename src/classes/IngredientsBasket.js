@@ -16,6 +16,7 @@ export default class IngredientsBasket
         }
 
         this.#scene = scene;
+        this.#scene.add.ingredientsBasket = this;
     }
 
     /**

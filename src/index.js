@@ -3,7 +3,6 @@ import BoardMonitor from './classes/BoardMonitor';
 import ResultsAccumulator from './classes/ResultsAccumulator';
 import ResultsEffects from './classes/ResultsEffects';
 import IngredientsGameGrid from './classes/IngredientsGameGrid';
-import Ingredient from './classes/Ingredient';
 import IngredientsBasket from './classes/IngredientsBasket';
 
 try {
@@ -16,11 +15,25 @@ try {
     
         create () {
             this.#createIngredientsAnimations();
-            this.#createManagers();
+
+            const ingredientsPool = new IngredientsPool(this, [
+                {id: 1, probability: 1/4},
+                {id: 2, probability: 1/4},
+                {id: 3, probability: 1/4},
+                {id: 4, probability: 1/4},
+            ]);
+            const ingredientsGrid = new IngredientsGameGrid({
+                scene: this,
+                offsetX: this.game.config.width / 2,
+                offsetY: this.game.config.height / 2
+            });
+            const basket = new IngredientsBasket(this);
+            const accumulator = new ResultsAccumulator(this);
+            const resultsEffects = new ResultsEffects(this);
+
             this.#debugInfoOnScreen();
            
             this.input.on('pointerup', (value, gameObject) => {
-                const basket = this.add.ingredientsBasket;
                 const objectClass = gameObject[0]?.constructor.name || '';
 
                 if (objectClass === 'Ingredient') {
@@ -41,20 +54,19 @@ try {
             })
 
             this.input.keyboard.on('keyup', ({ code }) => {
-                const basket = this.add.ingredientsBasket;
                 const isCollectAvailable = this.registry.collectAvailable;
-                const accumulator = this.add.resultsAccumulator;
-                const resultsEffects = this.add.resultsEffects;
-                const ingredientsPool = this.add.ingredientsPool;
 
                 if (isCollectAvailable && code === 'Space') {
                     const removed = basket.untrackSelectedIngredients(0);
 
-                    removed.forEach(ingredient => ingredient.setCollected());
+                    removed.forEach(ingredient => {
+                        ingredient.setCollected();
+                        ingredientsGrid.replaceWithEmpty(ingredient);
+                    });
+
                     accumulator.add(removed[0].typeId, removed.length);
                     resultsEffects.updateProbabilities(accumulator.getResults());
                     ingredientsPool.redistributeProbabilities(accumulator.amounts);
-
                     basket.toggleCollectAvailable();
 
                     // To do: analyze results. If it's winner emit WIN, else start a new move
@@ -63,13 +75,11 @@ try {
             })
 
             this.events.on('newmove', () => {
-                const resultsEffects = this.add.resultsEffects;
-
                 resultsEffects.clearEffect();
                 resultsEffects.pickEffect();
 
                 //To do: apply effect
-                //To do: fill in new ingredients
+                ingredientsGrid.fillInWithNewIngredients();
                 //To do: monitor available moves
             })
         }
@@ -147,32 +157,6 @@ try {
                     repeat: 0
                 });
             }
-        }
-
-        #createManagers () {
-            this.add.ingredientsPool = new IngredientsPool([
-                {id: 1, probability: 1/4},
-                {id: 2, probability: 1/4},
-                {id: 3, probability: 1/4},
-                {id: 4, probability: 1/4},
-            ]);
-            this.add.ingredientsGrid = new IngredientsGameGrid({
-                scene: this,
-                offsetX: this.game.config.width / 2,
-                offsetY: this.game.config.height / 2
-            });
-            this.add.ingredientsBasket = new IngredientsBasket(this);
-            this.add.resultsAccumulator = new ResultsAccumulator(this);
-            this.add.resultsEffects = new ResultsEffects(this);
-
-            // TEST DATA
-
-            // let board = new BoardMonitor([
-            //     [1,2,1,2],
-            //     [2,3,1,3],
-            //     [1,1,4,4],
-            //     [4,2,1,3],
-            // ])
         }
 
         #debugInfoOnScreen() {
