@@ -68,7 +68,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
                 },
             ],
             loop: 0,
-            // loopDelay: 300,
+            delay: 200,
             onComplete: () => this.setIdle()
         });
 
@@ -94,8 +94,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             tweens: [
                 {
                     alpha: 0.5,
-                    y: this.y - 50,
-                    duration: 400,
+                    y: this.y - 40,
+                    duration: 500,
                     ease: 'quad.out'
                 },
             ],

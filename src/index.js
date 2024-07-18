@@ -14,6 +14,7 @@ try {
         }
     
         create () {
+            this.add.image(544, 462, 'bg');
             this.#createIngredientsAnimations();
 
             const ingredientsPool = new IngredientsPool(this, [
@@ -31,6 +32,7 @@ try {
             const accumulator = new ResultsAccumulator(this);
             const resultsEffects = new ResultsEffects(this);
 
+            this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
             this.#debugInfoOnScreen();
            
             this.input.on('pointerup', (value, gameObject) => {
@@ -38,6 +40,11 @@ try {
 
                 if (objectClass === 'Ingredient') {
                     const ingredient = gameObject[0];
+
+                    if (ingredient.state !== 'idle' && ingredient.state !== 'active') {
+                        return;
+                    }
+
                     const index = basket.selectedIndex(ingredient);
 
                     if (index >= 0) {
@@ -89,17 +96,54 @@ try {
         }
 
         #settings () {
+            this.load.image('bg', '../assets/bg.png');
+
             for (let i = 1; i <= 4; i++) {
-                this.load.spritesheet({
-                    key: `ingredient${i}`,
-                    url: `assets/sprites/ingredient_${i}.png`,
-                    frameConfig: {
-                        frameWidth: 64,
-                        frameHeight: 64,
-                        startFrame: 0,
-                        endFrame: 12
-                    }
-                });
+                if (i === 1) {
+                    this.load.spritesheet({
+                        key: `ingredient${i}`,
+                        url: 'assets/sprites/ingredient_1_spritesheet.png',
+                        frameConfig: {
+                            frameWidth: 64,
+                            frameHeight: 80,
+                            startFrame: 2,
+                            endFrame: 15,
+                        }
+                    });
+                } else if (i === 2) {
+                    this.load.spritesheet({
+                        key: `ingredient${i}`,
+                        url: `assets/sprites/ingredient_2_spritesheet.png`,
+                        frameConfig: {
+                            frameWidth: 64,
+                            frameHeight: 80,
+                            startFrame: 2,
+                            endFrame: 17
+                        }
+                    });
+                } else if (i === 3) {
+                    this.load.spritesheet({
+                        key: `ingredient${i}`,
+                        url: 'assets/sprites/ingredient_3_spritesheet.png',
+                        frameConfig: {
+                            frameWidth: 64,
+                            frameHeight: 80,
+                            startFrame: 2,
+                            endFrame: 11,
+                        }
+                    });
+                } else if (i === 4) {
+                    this.load.spritesheet({
+                        key: `ingredient${i}`,
+                        url: 'assets/sprites/ingredient_4_spritesheet.png',
+                        frameConfig: {
+                            frameWidth: 64,
+                            frameHeight: 80,
+                            startFrame: 2,
+                            endFrame: 10,
+                        }
+                    });
+                }
             }
 
             this.registry.resultsConfig = {
@@ -118,44 +162,133 @@ try {
                 }
             };
             this.registry.collectAvailable = false;
-            this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
             this.registry.results = {
                 labour: 0,
                 necromancy: 0,
                 astrology: 0
             };
+            this.input.keyboard.addCapture('SPACE');
         }
 
         #createIngredientsAnimations () {
             for (let i = 1; i <= 4; i++) {
-                this.anims.create({
-                    key: `ingredient${i}_start`,
-                    frameRate: 4,
-                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 3 }),
-                    repeat: 0,
-                });
+                if ( i === 1 ) {
+                    this.anims.create({
+                        key: `ingredient${i}_start`,
+                        frameRate: 4,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
+                        repeat: 0,
+                    });
 
-                this.anims.create({
-                    key: `ingredient${i}_idle`,
-                    frameRate: 5,
-                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 4, end: 6 }),
-                    repeat: -1,
-                    yoyo: true,
-                });
+                    this.anims.create({
+                        key: `ingredient${i}_idle`,
+                        frameRate: 9,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 1, end: 4 }),
+                        repeat: -1,
+                        yoyo: false,
+                    });
 
-                this.anims.create({
-                    key: `ingredient${i}_active`,
-                    frameRate: 4,
-                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 7, end: 10 }),
-                    repeat: -1,
-                });
+                    this.anims.create({
+                        key: `ingredient${i}_active`,
+                        frameRate: 10,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 5, end: 11 }),
+                        repeat: -1,
+                        yoyo: false,
+                    });
 
-                this.anims.create({
-                    key: `ingredient${i}_destroy`,
-                    frameRate: 8,
-                    frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 11, end: 12 }),
-                    repeat: 0
-                });
+                    this.anims.create({
+                        key: `ingredient${i}_destroy`,
+                        frameRate: 9,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 12, end: 13 }),
+                    });
+                }  else if (i === 2) {
+                    this.anims.create({
+                        key: `ingredient${i}_start`,
+                        frameRate: 4,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
+                        repeat: 0,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_idle`,
+                        frameRate: 7,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 7 }),
+                        repeat: -1,
+                        // yoyo: true,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_active`,
+                        frameRate: 8,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 8, end: 14 }),
+                        repeat: -1,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_destroy`,
+                        frameRate: 10,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 15, end: 15 }),
+                        repeat: 0
+                    });
+                } else if (i === 3) {
+                    this.anims.create({
+                        key: `ingredient${i}_start`,
+                        frameRate: 4,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
+                        repeat: 0,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_idle`,
+                        frameRate: 9,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 1, end: 3 }),
+                        repeat: -1,
+                        yoyo: true,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_active`,
+                        frameRate: 15,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 4, end: 6 }),
+                        repeat: -1,
+                        yoyo: true,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_destroy`,
+                        frameRate: 6,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 7, end: 9 }),
+                    });
+                } else if (i === 4) {
+                    this.anims.create({
+                        key: `ingredient${i}_start`,
+                        frameRate: 4,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
+                        repeat: 0,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_idle`,
+                        frameRate: 9,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 1, end: 3 }),
+                        repeat: -1,
+                        yoyo: true,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_active`,
+                        frameRate: 5,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 4, end: 6 }),
+                        repeat: -1,
+                        yoyo: true,
+                    });
+
+                    this.anims.create({
+                        key: `ingredient${i}_destroy`,
+                        frameRate: 6,
+                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 7, end: 8 }),
+                    });
+                }
             }
         }
 
@@ -182,10 +315,10 @@ try {
             }
         },
         scale: {
-            mode: Phaser.Scale.FIT,
+            mode: Phaser.Scale.NONE,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: 1920,
-            height: 910
+            width: 1024,
+            height: 860
         }
     };
     

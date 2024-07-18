@@ -96,8 +96,8 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
             [row, col],
             {
                 scene: this.#config.scene,
-                x: this.#config.offsetX / 1.4 + 70 * col,
-                y: this.#config.offsetY / 2.8 + 70 * row,
+                x: this.#config.offsetX / 1.79 + 64 * col + Math.floor(Math.random() * 2),
+                y: this.#config.offsetY / 2.65 + 64 * row + Math.floor(Math.random() * 2),
             }
         );
         this.#group.add(ingredient);
