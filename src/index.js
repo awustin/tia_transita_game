@@ -14,7 +14,7 @@ try {
         }
     
         create () {
-            this.add.image(544, 462, 'bg');
+            this.add.image(1500/2, 924/2, 'bg');
             this.#createIngredientsAnimations();
 
             const ingredientsPool = new IngredientsPool(this, [
@@ -25,8 +25,9 @@ try {
             ]);
             const ingredientsGrid = new IngredientsGameGrid({
                 scene: this,
-                offsetX: this.game.config.width / 2,
-                offsetY: this.game.config.height / 2
+                // Manually set :_(
+                offsetX: 526,
+                offsetY: 238
             });
             const basket = new IngredientsBasket(this);
             const accumulator = new ResultsAccumulator(this);
@@ -317,8 +318,8 @@ try {
         scale: {
             mode: Phaser.Scale.NONE,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: 1024,
-            height: 860
+            width: 1500,
+            height: 924
         }
     };
     
