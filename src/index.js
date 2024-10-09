@@ -8,14 +8,11 @@ import IngredientsBasket from './classes/IngredientsBasket';
 try {
     class IngredientsOrchardGame extends Phaser.Scene {
         preload () {
-            this.load.on('progress', value => console.log(value));
-            this.load.on('complete', () => console.log('Loaded!'));
             this.#settings();
         }
     
         create () {
-            this.add.image(1500/2, 924/2, 'bg');
-            this.#createIngredientsAnimations();
+            this.#createEnvironment();
 
             const ingredientsPool = new IngredientsPool(this, [
                 {id: 1, probability: 1/4},
@@ -26,15 +23,12 @@ try {
             const ingredientsGrid = new IngredientsGameGrid({
                 scene: this,
                 // Manually set :_(
-                offsetX: 526,
-                offsetY: 238
+                offsetX: 432,
+                offsetY: 208,
             });
             const basket = new IngredientsBasket(this);
             const accumulator = new ResultsAccumulator(this);
             const resultsEffects = new ResultsEffects(this);
-
-            this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
-            this.#debugInfoOnScreen();
            
             this.input.on('pointerup', (value, gameObject) => {
                 const objectClass = gameObject[0]?.constructor.name || '';
@@ -97,55 +91,7 @@ try {
         }
 
         #settings () {
-            this.load.image('bg', '../assets/bg.png');
-
-            for (let i = 1; i <= 4; i++) {
-                if (i === 1) {
-                    this.load.spritesheet({
-                        key: `ingredient${i}`,
-                        url: 'assets/sprites/ingredient_1_spritesheet.png',
-                        frameConfig: {
-                            frameWidth: 64,
-                            frameHeight: 80,
-                            startFrame: 2,
-                            endFrame: 15,
-                        }
-                    });
-                } else if (i === 2) {
-                    this.load.spritesheet({
-                        key: `ingredient${i}`,
-                        url: `assets/sprites/ingredient_2_spritesheet.png`,
-                        frameConfig: {
-                            frameWidth: 64,
-                            frameHeight: 80,
-                            startFrame: 2,
-                            endFrame: 17
-                        }
-                    });
-                } else if (i === 3) {
-                    this.load.spritesheet({
-                        key: `ingredient${i}`,
-                        url: 'assets/sprites/ingredient_3_spritesheet.png',
-                        frameConfig: {
-                            frameWidth: 64,
-                            frameHeight: 80,
-                            startFrame: 2,
-                            endFrame: 11,
-                        }
-                    });
-                } else if (i === 4) {
-                    this.load.spritesheet({
-                        key: `ingredient${i}`,
-                        url: 'assets/sprites/ingredient_4_spritesheet.png',
-                        frameConfig: {
-                            frameWidth: 64,
-                            frameHeight: 80,
-                            startFrame: 2,
-                            endFrame: 10,
-                        }
-                    });
-                }
-            }
+            this.load.atlas('atlas', '../assets/atlas/atlas.png', '../assets/atlas/atlas.json');
 
             this.registry.resultsConfig = {
                 1: {labour: 1, astrology: 0, necromancy: 0},
@@ -171,129 +117,18 @@ try {
             this.input.keyboard.addCapture('SPACE');
         }
 
-        #createIngredientsAnimations () {
-            for (let i = 1; i <= 4; i++) {
-                if ( i === 1 ) {
-                    this.anims.create({
-                        key: `ingredient${i}_start`,
-                        frameRate: 4,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
-                        repeat: 0,
-                    });
+        #createEnvironment () {
+            const basement = this.add.image(276, 0, 'atlas', 'basement');
+            const staircase = this.add.image(224, 0, 'atlas', 'staircase');
 
-                    this.anims.create({
-                        key: `ingredient${i}_idle`,
-                        frameRate: 9,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 1, end: 4 }),
-                        repeat: -1,
-                        yoyo: false,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_active`,
-                        frameRate: 10,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 5, end: 11 }),
-                        repeat: -1,
-                        yoyo: false,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_destroy`,
-                        frameRate: 9,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 12, end: 13 }),
-                    });
-                }  else if (i === 2) {
-                    this.anims.create({
-                        key: `ingredient${i}_start`,
-                        frameRate: 4,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
-                        repeat: 0,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_idle`,
-                        frameRate: 7,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 7 }),
-                        repeat: -1,
-                        // yoyo: true,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_active`,
-                        frameRate: 8,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 8, end: 14 }),
-                        repeat: -1,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_destroy`,
-                        frameRate: 10,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 15, end: 15 }),
-                        repeat: 0
-                    });
-                } else if (i === 3) {
-                    this.anims.create({
-                        key: `ingredient${i}_start`,
-                        frameRate: 4,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
-                        repeat: 0,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_idle`,
-                        frameRate: 9,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 1, end: 3 }),
-                        repeat: -1,
-                        yoyo: true,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_active`,
-                        frameRate: 15,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 4, end: 6 }),
-                        repeat: -1,
-                        yoyo: true,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_destroy`,
-                        frameRate: 6,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 7, end: 9 }),
-                    });
-                } else if (i === 4) {
-                    this.anims.create({
-                        key: `ingredient${i}_start`,
-                        frameRate: 4,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 0, end: 0 }),
-                        repeat: 0,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_idle`,
-                        frameRate: 9,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 1, end: 3 }),
-                        repeat: -1,
-                        yoyo: true,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_active`,
-                        frameRate: 5,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 4, end: 6 }),
-                        repeat: -1,
-                        yoyo: true,
-                    });
-
-                    this.anims.create({
-                        key: `ingredient${i}_destroy`,
-                        frameRate: 6,
-                        frames: this.anims.generateFrameNumbers(`ingredient${i}`, { start: 7, end: 8 }),
-                    });
-                }
-            }
+            basement.setOrigin(0, 0);
+            staircase.setOrigin(0, 0);
+            
+            this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
         }
 
         #debugInfoOnScreen() {
+
             this.registry.debugText.setText([
                 'Selected: ' + this.add.ingredientsBasket.selected.map(ingredients => ingredients.cell.join(':')),
                 'Collect available: ' + this.registry.collectAvailable,
@@ -318,8 +153,8 @@ try {
         scale: {
             mode: Phaser.Scale.NONE,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: 1500,
-            height: 924
+            width: 1280,
+            height: 832
         }
     };
     

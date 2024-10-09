@@ -14,9 +14,9 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
     /**
      * Create a square grid of ingredients 
      * @param {*} config config needed for Phaser.GameObjects.Group
-     * @param {*} size Size of the grid. If not set it defaults to 8
+     * @param {*} size Size of the grid. If not set it defaults to 9
      */
-    constructor(config = null, size = 8) {
+    constructor(config = null, size = 9) {
         if (!config || !config.scene) {
             throw {
                 message: 'IngredientsGameGrid missing config or config.scene',
@@ -96,8 +96,8 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
             [row, col],
             {
                 scene: this.#config.scene,
-                x: this.#config.offsetX + 64 * col,
-                y: this.#config.offsetY + 64 * row,
+                x: this.#config.offsetX + 52 * col,
+                y: this.#config.offsetY + 52 * row,
             }
         );
         this.#group.add(ingredient);

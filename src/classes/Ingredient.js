@@ -2,7 +2,6 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
 {
     #scene = null;
     #typeId = null;
-    #state = 'start';
     #cell = [];
 
     constructor(typeId = null, cell = [], config) {
@@ -19,13 +18,12 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             }
         }
 
-        // To do: get proper textures for each type of ingredients
         super(
             config.scene,
             config.x,
             config.y,
+            'atlas',
             `ingredient${typeId}`,
-            0
         );
         this.#typeId = typeId;
         this.#cell = cell;
@@ -44,10 +42,6 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         return this.#typeId;
     }
 
-    get state() {
-        return this.#state;
-    }
-
     get cell() {
         return this.#cell;
     }
@@ -55,7 +49,6 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     setStart() {
         this.setScale(0,0);
         this.setAlpha(0.5);
-        this.play(`ingredient${this.#typeId}_start`);
 
         this.#scene.tweens.chain({
             targets: this,
@@ -72,22 +65,19 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             onComplete: () => this.setIdle()
         });
 
-        this.#state = 'start';
+        this.setState('start');
     }
 
     setIdle() {
-        this.play(`ingredient${this.#typeId}_idle`);
-        this.#state = 'idle';
+        this.setState('idle');
     }
 
     setActive() {
-        this.play(`ingredient${this.#typeId}_active`);
-        this.#state = 'active';
+        this.setState('active');
     }
 
     setCollected() {
-        this.play(`ingredient${this.#typeId}_destroy`);
-        this.#state = 'collected';
+        this.setState('collected');
 
         this.#scene.tweens.chain({
             targets: this,
@@ -102,7 +92,5 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             loop: 0,
             onComplete: () => this.destroy()
         });
-
-        // this.once('animationcomplete', () => this.destroy());
     }
 }
