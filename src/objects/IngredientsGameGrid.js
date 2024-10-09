@@ -1,7 +1,16 @@
-import Ingredient from './Ingredient';
+import Ingredient from '@sprites/Ingredient';
+import {
+    GRID_COUNT,
+    GRID_X,
+    GRID_Y,
+    CELL_SIZE_PX
+} from "@constants";
 
 /**
- * Extends Phaser GameObjects.Group to create a set of ingredients
+ * Create a square grid of ingredients
+ * @extends Phaser.GameObjects.Group
+ * @param {*} scene This scene
+ * @param {*} size Size of the grid. If not set it defaults to 9
  */
 export default class IngredientsGameGrid extends Phaser.GameObjects.Group
 {
@@ -9,32 +18,25 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
     #ingredientsPool = null;
     #grid = [];
     #emptyPositions = [];
-    #config = null;
 
-    /**
-     * Create a square grid of ingredients 
-     * @param {*} config config needed for Phaser.GameObjects.Group
-     * @param {*} size Size of the grid. If not set it defaults to 9
-     */
-    constructor(config = null, size = 9) {
-        if (!config || !config.scene) {
+    constructor(scene = null, size = GRID_COUNT) {
+        if (!scene) {
             throw {
-                message: 'IngredientsGameGrid missing config or config.scene',
+                message: 'IngredientsGameGrid missing scene',
                 code: 'C10'
             }
         }
-        if (typeof config.scene?.add?.ingredientsPool === 'undefined') {
+        if (typeof scene?.add?.ingredientsPool === 'undefined') {
             throw {
                 message: 'IngredientsGameGrid: add ingredientsPool to scene.add',
                 code: 'C11'
             }
         }
-        super(config.scene, config);
+        super(scene);
 
-        this.#config = config;
-        this.#group = config.scene.add.group();
+        this.#group = scene.add.group();
         this.#group.setName('ingredientsOrchard');
-        this.#ingredientsPool = config.scene.add.ingredientsPool;
+        this.#ingredientsPool = scene.add.ingredientsPool;
 
         for (let row = 0; row < size; row++) {
             let columnArray = [];
@@ -95,9 +97,9 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
             this.#ingredientsPool.getNextIngredients()[0].id,
             [row, col],
             {
-                scene: this.#config.scene,
-                x: this.#config.offsetX + 52 * col,
-                y: this.#config.offsetY + 52 * row,
+                scene,
+                x: GRID_X + CELL_SIZE_PX * col,
+                y: GRID_Y + CELL_SIZE_PX * row,
             }
         );
         this.#group.add(ingredient);
