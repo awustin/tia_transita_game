@@ -4,6 +4,7 @@ import ResultsAccumulator from '@plugins/ResultsAccumulator';
 import ResultsEffects from '@plugins/ResultsEffects';
 import IngredientsBasket from '@plugins/IngredientsBasket';
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
+import MercuriaNPC from '@sprites/MercuriaNPC';
 import {
     BASEMENT_X,
     STAIRCASE_X,
@@ -18,7 +19,7 @@ const {
     probabilities,
 } = initialState;
 
-export default class IngredientsOrchardGame extends Phaser.Scene
+export default class TiaTransitaGame extends Phaser.Scene
 {
     preload () {
         this.#settings();
@@ -110,9 +111,11 @@ export default class IngredientsOrchardGame extends Phaser.Scene
     #createEnvironment () {
         const basement = this.add.image(BASEMENT_X, 0, 'atlas', 'basement');
         const staircase = this.add.image(STAIRCASE_X, 0, 'atlas', 'staircase');
+        const mercuriaNpc = new MercuriaNPC(this);
 
         basement.setOrigin(0, 0);
         staircase.setOrigin(0, 0);
+        mercuriaNpc.setIdle();
         
         this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
     }

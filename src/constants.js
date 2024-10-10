@@ -4,6 +4,8 @@ export const GRID_COUNT = 9; // 9 x 9 items
 export const GRID_X = 432;
 export const GRID_Y = 208;
 export const HEIGHT = 832;
+export const MERCURIA_X = 900;
+export const MERCURIA_Y = 104;
 export const STAIRCASE_X = 224;
 export const WIDTH = 1280;
 

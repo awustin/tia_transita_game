@@ -1,6 +1,5 @@
 export default class Ingredient extends Phaser.GameObjects.Sprite
 {
-    #scene = null;
     #typeId = null;
     #cell = [];
 
@@ -27,9 +26,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         );
         this.#typeId = typeId;
         this.#cell = cell;
-        this.#scene = config.scene;
 
-        this.#scene.add.existing(this);
+        this.scene.add.existing(this);
         this.setInteractive();
         this.setStart();
 
@@ -50,7 +48,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         this.setScale(0,0);
         this.setAlpha(0.5);
 
-        this.#scene.tweens.chain({
+        this.scene.tweens.chain({
             targets: this,
             tweens: [
                 {
@@ -79,7 +77,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     setCollected() {
         this.setState('collected');
 
-        this.#scene.tweens.chain({
+        this.scene.tweens.chain({
             targets: this,
             tweens: [
                 {

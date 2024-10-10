@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import IngredientsOrchardGame from "@scenes/IngredientsOrchardGame";
+import TiaTransitaGame from "@scenes/TiaTransitaGame";
 import {
     WIDTH,
     HEIGHT,
@@ -7,7 +7,7 @@ import {
 
 new Phaser.Game({
     type: Phaser.WEBGL,
-    scene: IngredientsOrchardGame,
+    scene: TiaTransitaGame,
     pixelArt: true,
     physics: {
         default: 'arcade',
