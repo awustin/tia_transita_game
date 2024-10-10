@@ -97,7 +97,7 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
             this.#ingredientsPool.getNextIngredients()[0].id,
             [row, col],
             {
-                scene,
+                scene: this.scene,
                 x: GRID_X + CELL_SIZE_PX * col,
                 y: GRID_Y + CELL_SIZE_PX * row,
             }

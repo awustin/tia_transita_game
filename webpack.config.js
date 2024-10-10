@@ -8,6 +8,7 @@ module.exports = {
 		port: 9000,
 		historyApiFallback: true,
 	},
+	devtool: 'eval-source-map',
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: 'Tia Transita',
@@ -25,6 +26,21 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{
+			  test: /\.(?:js|mjs|cjs)$/,
+			  exclude: /node_modules/,
+			  use: {
+				loader: 'babel-loader',
+				options: {
+				  presets: [
+					[
+						'@babel/preset-env',
+					]
+				  ],
+				  cacheDirectory: true,
+				}
+			  }
+			},
 			{
 				test: /\.(png|jpg|jpeg|gif|svg)$/,
 				exclude: /[\\/]node_modules[\\/]/,

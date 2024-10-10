@@ -1,10 +1,11 @@
+import Phaser from "phaser";
 import IngredientsOrchardGame from "@scenes/IngredientsOrchardGame";
 import {
     WIDTH,
     HEIGHT,
 } from "@constants";
 
-const game = new Phaser({
+new Phaser.Game({
     type: Phaser.WEBGL,
     scene: IngredientsOrchardGame,
     pixelArt: true,
