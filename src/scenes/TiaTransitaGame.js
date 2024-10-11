@@ -34,12 +34,8 @@ export default class TiaTransitaGame extends Phaser.Scene
         const accumulator = new ResultsAccumulator(this);
         const resultsEffects = new ResultsEffects(this);
         
-        this.input.on('pointerup', (value, gameObject) => {
-            const objectClass = gameObject[0]?.constructor.name || '';
-
-            if (objectClass === 'Ingredient') {
-                const ingredient = gameObject[0];
-
+        this.input.on('pointerup', (value, [ ingredient ]) => {
+            if (ingredient?.collectable) {
                 if (ingredient.state !== 'idle' && ingredient.state !== 'active') {
                     return;
                 }

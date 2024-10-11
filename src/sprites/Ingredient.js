@@ -1,8 +1,11 @@
+import Sparkles from "@sprites/Sparkles";
 export default class Ingredient extends Phaser.GameObjects.Sprite
 {
     #typeId = null;
     #cell = [];
-    #square = null;
+    #cellBorder = null;
+    #sparkles = null;
+    #collectable = true;
 
     constructor(typeId = null, cell = [], config) {
         if (!typeId) {
@@ -29,16 +32,17 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         this.#cell = cell;
 
         this.scene.add.existing(this);
-        this.setInteractive();
         this.setStart();
         this.setName(`ingredient${typeId}`);
 
         this.on('pointerover', () => {
-            this.#addCellBox();
+            this.#addCellBorder();
         }, this);
 
         this.on('pointerout', () => {
-            this.#destroyCellBox();
+            if (this.#cellBorder) {
+                this.#cellBorder.destroy();
+            }
         }, this);
     }
 
@@ -50,9 +54,14 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         return this.#cell;
     }
 
+    get collectable() {
+        return this.#collectable;
+    }
+
     setStart() {
         this.setScale(0,0);
         this.setAlpha(0.5);
+        this.disableInteractive();
 
         this.scene.tweens.chain({
             targets: this,
@@ -74,34 +83,49 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
 
     setIdle() {
         this.setState('idle');
+
+        this.setInteractive();
+
+        if (this.#sparkles) {
+            this.#sparkles.destroy();
+        }
     }
 
     setActive() {
+        const { x, y } = this.getBounds();
+
+        this.#sparkles = new Sparkles({
+            scene: this.scene,
+            x,
+            y,
+        });
+
         this.setState('active');
+        this.setInteractive();
     }
 
     setCollected() {
         this.setState('collected');
 
+        this.disableInteractive();
         this.scene.tweens.chain({
             targets: this,
             tweens: [
                 {
-                    alpha: 0.5,
+                    alpha: 0.1,
                     y: this.y - 40,
                     duration: 500,
                     ease: 'quad.out'
                 },
             ],
             loop: 0,
-            onComplete: () => {
-                this.#destroyCellBox();
-                this.destroy();
-            }
+            onComplete: () => this.destroy(),
         });
+        this.#cellBorder.destroy();
+        this.#sparkles.destroy();
     }
 
-    #addCellBox() {
+    #addCellBorder() {
         const {
             x,
             y,
@@ -109,14 +133,10 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             width,
         } = this.getBounds();
 
-        const square = this.scene.add.rectangle(x, y, width, height);
+        const box = this.scene.add.rectangle(x, y, width, height);
 
-        square.setStrokeStyle(1, 0xFFFFFF);
-        square.setOrigin(0, 0);
-        this.#square = square;
-    }
-
-    #destroyCellBox() {
-        this.#square.destroy();
+        box.setStrokeStyle(1, 0xFFFFFF);
+        box.setOrigin(0, 0);
+        this.#cellBorder = box;
     }
 }
