@@ -2,6 +2,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
 {
     #typeId = null;
     #cell = [];
+    #square = null;
 
     constructor(typeId = null, cell = [], config) {
         if (!typeId) {
@@ -30,9 +31,14 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         this.scene.add.existing(this);
         this.setInteractive();
         this.setStart();
+        this.setName(`ingredient${typeId}`);
 
         this.on('pointerover', () => {
-            // console.log(`ingredient at `, cell);
+            this.#addCellBox();
+        }, this);
+
+        this.on('pointerout', () => {
+            this.#destroyCellBox();
         }, this);
     }
 
@@ -88,7 +94,29 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
                 },
             ],
             loop: 0,
-            onComplete: () => this.destroy()
+            onComplete: () => {
+                this.#destroyCellBox();
+                this.destroy();
+            }
         });
+    }
+
+    #addCellBox() {
+        const {
+            x,
+            y,
+            height,
+            width,
+        } = this.getBounds();
+
+        const square = this.scene.add.rectangle(x, y, width, height);
+
+        square.setStrokeStyle(1, 0xFFFFFF);
+        square.setOrigin(0, 0);
+        this.#square = square;
+    }
+
+    #destroyCellBox() {
+        this.#square.destroy();
     }
 }
