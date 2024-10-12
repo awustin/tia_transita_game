@@ -4,6 +4,7 @@ import ResultsAccumulator from '@plugins/ResultsAccumulator';
 import ResultsEffects from '@plugins/ResultsEffects';
 import IngredientsBasket from '@plugins/IngredientsBasket';
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
+import Controls from '@objects/Controls';
 import MercuriaNPC from '@sprites/MercuriaNPC';
 import {
     BASEMENT_X,
@@ -28,11 +29,30 @@ export default class TiaTransitaGame extends Phaser.Scene
     create () {
         this.#createEnvironment();
 
+        // Todo: move these classes to plugins
         const ingredientsPool = new IngredientsPool(this, probabilities);
         const ingredientsGrid = new IngredientsGameGrid(this);
         const basket = new IngredientsBasket(this);
         const accumulator = new ResultsAccumulator(this);
         const resultsEffects = new ResultsEffects(this);
+        const collect = () => {
+            const removed = basket.untrackSelectedIngredients(0);
+
+            removed.forEach(ingredient => {
+                ingredient.setCollected();
+                ingredientsGrid.replaceWithEmpty(ingredient);
+            });
+
+            accumulator.add(removed[0].typeId, removed.length);
+            resultsEffects.updateProbabilities(accumulator.getResults());
+            ingredientsPool.redistributeProbabilities(accumulator.amounts);
+            basket.toggleCollectAvailable();
+
+            // To do: analyze results. If it's winner emit WIN, else start a new move
+            this.events.emit('newmove');
+        }
+        // Todo: don't pass collect callback to controls. Instead use plugins.
+        const controls = new Controls(this, collect);
         
         this.input.on('pointerup', (value, [ ingredient ]) => {
             if (ingredient?.collectable) {
@@ -53,28 +73,23 @@ export default class TiaTransitaGame extends Phaser.Scene
 
                 basket.toggleCollectAvailable();
             }
-        })
+        });
 
         this.input.keyboard.on('keyup', ({ code }) => {
             const isCollectAvailable = this.registry.collectAvailable;
 
             if (isCollectAvailable && code === 'Space') {
-                const removed = basket.untrackSelectedIngredients(0);
-
-                removed.forEach(ingredient => {
-                    ingredient.setCollected();
-                    ingredientsGrid.replaceWithEmpty(ingredient);
-                });
-
-                accumulator.add(removed[0].typeId, removed.length);
-                resultsEffects.updateProbabilities(accumulator.getResults());
-                ingredientsPool.redistributeProbabilities(accumulator.amounts);
-                basket.toggleCollectAvailable();
-
-                // To do: analyze results. If it's winner emit WIN, else start a new move
-                this.events.emit('newmove');
+                collect();
             }
-        })
+        });
+
+        this.events.on('collect', isAvailable => {
+            if (isAvailable) {
+                controls.showCollectButton();
+            } else {
+                controls.hideCollectButton();
+            }
+        });
 
         this.events.on('newmove', () => {
             resultsEffects.clearEffect();
@@ -83,7 +98,7 @@ export default class TiaTransitaGame extends Phaser.Scene
             //To do: apply effect
             ingredientsGrid.fillInWithNewIngredients();
             //To do: monitor available moves
-        })
+        });
     }
 
     update () {

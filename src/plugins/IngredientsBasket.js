@@ -74,10 +74,14 @@ export default class IngredientsBasket
     toggleCollectAvailable() {
         const selected = this.#selected;
 
-        if (selected.length < 2) {
-            this.#scene.registry.collectAvailable = false;
-        } else {
+        if (selected.length >= 2 && !this.#scene.registry.collectAvailable) {
             this.#scene.registry.collectAvailable = true;
+            this.#scene.events.emit('collect', true);
+        }
+
+        if (selected.length < 2 && this.#scene.registry.collectAvailable) {
+            this.#scene.registry.collectAvailable = false;
+            this.#scene.events.emit('collect', false);
         }
     }
 

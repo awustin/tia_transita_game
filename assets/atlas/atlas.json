@@ -359,6 +359,26 @@
                 "w": 52,
                 "h": 52
             }
+        },
+        "keyboard_space": {
+            "frame": {
+                "x": 884,
+                "y": 156,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 52,
+                "h": 52
+            },
+            "sourceSize": {
+                "w": 52,
+                "h": 52
+            }
         }
     },
     "meta": {
