@@ -83,7 +83,12 @@ export default class MainScene extends Phaser.Scene
             const isCollectAvailable = this.registry.collectAvailable;
 
             if (isCollectAvailable && code === 'Space') {
-                collect();
+                return collect();
+            }
+
+            if (code === 'KeyQ') {
+                this.scene.stop();
+                this.scene.start('end', accumulator.getResults());
             }
         });
 

@@ -33,6 +33,8 @@ export const TEXT_SOUND = 'sound';
 export const TEXT_X = 'x';
 export const TITLE_X = 640;
 export const TITLE_Y = 416;
+export const TRANSITA_X = 614;
+export const TRANSITA_Y = 364;
 export const WIDTH = 1280;
 
 // Should read from config file

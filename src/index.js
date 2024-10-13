@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import MainScene from "@scenes/MainScene";
 import IntroScene from "@scenes/IntroScene";
+import EndScene from "@scenes/EndScene";
 import {
     WIDTH,
     HEIGHT,
@@ -10,7 +11,8 @@ new Phaser.Game({
     type: Phaser.WEBGL,
     scene: [
         IntroScene,
-        MainScene
+        MainScene,
+        EndScene,
     ],
     pixelArt: true,
     physics: {

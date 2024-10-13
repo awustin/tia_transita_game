@@ -1,0 +1,114 @@
+{
+    "frames": {
+        "basementLight": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 728,
+                "h": 780
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "staircaseLight": {
+            "frame": {
+                "x": 1456,
+                "y": 260,
+                "w": 104,
+                "h": 260
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "mercuriaLight": {
+            "frame": {
+                "x": 1508,
+                "y": 520,
+                "w": 52,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "transita1": {
+            "frame": {
+                "x": 1508,
+                "y": 624,
+                "w": 52,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "transita2": {
+            "frame": {
+                "x": 1508,
+                "y": 728,
+                "w": 52,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "basementDark": {
+            "frame": {
+                "x": 728,
+                "y": 0,
+                "w": 728,
+                "h": 780
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "staircaseDark": {
+            "frame": {
+                "x": 1456,
+                "y": 0,
+                "w": 104,
+                "h": 260
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "demon1": {
+            "frame": {
+                "x": 1456,
+                "y": 520,
+                "w": 52,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "demon2": {
+            "frame": {
+                "x": 1456,
+                "y": 624,
+                "w": 52,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "blood": {
+            "frame": {
+                "x": 0,
+                "y": 780,
+                "w": 416,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        }
+    },
+    "meta": {
+        "app": "TiaTransitaGame",
+        "version": "v1.0",
+        "image": "end.png",
+        "size": {
+            "w": 1560,
+            "h": 936
+        },
+        "scale": 1
+    }
+}
