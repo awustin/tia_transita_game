@@ -1,0 +1,41 @@
+import {
+    STYLE_WHITE,
+    TEXT_PRESS_SPACE_TO_START,
+    TITLE_X,
+    TITLE_Y
+} from "@constants";
+
+export default class MainScene extends Phaser.Scene
+{
+    constructor() {
+        super('intro');
+    }
+
+    perload() {
+
+    }
+
+    create() {
+        const text = this.add.text(
+            TITLE_X,
+            TITLE_Y,
+            TEXT_PRESS_SPACE_TO_START,
+            STYLE_WHITE
+        );
+
+        text.setOrigin(0.5, 0.5);
+
+        this.input.keyboard.on('keyup', ({ code }) => {
+            if (code === 'Space') {
+                const main = this.scene.get('main');
+    
+                this.scene.stop();
+                main.scene.start();
+            }
+        })
+    }
+
+    update() {
+
+    }
+}

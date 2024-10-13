@@ -15,11 +15,24 @@ export const KEYBOARD_SPACE_Y = 772;
 export const MERCURIA_X = 900;
 export const MERCURIA_Y = 104;
 export const STAIRCASE_X = 224;
+export const STYLE_GREEN = {
+    color: '#dfff68',
+    fontFamily: 'munro',
+    fontSize: 20
+};
+export const STYLE_WHITE = {
+    color: '#e6e6e6',
+    fontFamily: 'munro',
+    fontSize: 20
+};
 export const TEXT_COLLECT = 'collect';
 export const TEXT_OFF = 'off';
 export const TEXT_ON = 'on';
+export const TEXT_PRESS_SPACE_TO_START = 'Press SPACE to start...';
 export const TEXT_SOUND = 'sound';
 export const TEXT_X = 'x';
+export const TITLE_X = 640;
+export const TITLE_Y = 416;
 export const WIDTH = 1280;
 
 // Should read from config file

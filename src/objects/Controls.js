@@ -11,19 +11,9 @@ import {
     TEXT_COLLECT,
     KEYBOARD_SPACE_Y,
     KEYBOARD_SPACE_X,
+    STYLE_WHITE,
+    STYLE_GREEN,
 } from '@constants';
-
-const style = {
-    color: '#c6c6c6',
-    fontFamily: 'munro',
-    fontSize: 20
-};
-
-const styleGreen = {
-    color: '#dfff68',
-    fontFamily: 'munro',
-    fontSize: 20
-};
 
 export default class Controls extends Phaser.GameObjects.GameObject
 {
@@ -60,7 +50,7 @@ export default class Controls extends Phaser.GameObjects.GameObject
             BUTTON_COLLECT_X,
             BUTTON_COLLECT_Y,
             TEXT_COLLECT,
-            style
+            STYLE_WHITE
         );
         const keySprite = this.scene.add.sprite(KEYBOARD_SPACE_X, KEYBOARD_SPACE_Y, 'atlas', 'keyboard_space');
 
@@ -78,7 +68,7 @@ export default class Controls extends Phaser.GameObjects.GameObject
             BUTTON_CLOSE_X,
             BUTTON_CONTROLS_Y,
             TEXT_X,
-            style
+            STYLE_WHITE
         );
 
         this.#buttonClose.setInteractive({ cursor: 'pointer' });
@@ -91,13 +81,13 @@ export default class Controls extends Phaser.GameObjects.GameObject
                 BUTTON_SOUND_X,
                 BUTTON_CONTROLS_Y,
                 TEXT_SOUND,
-                style
+                STYLE_WHITE
             ),
             this.scene.add.text(
                 BUTTON_ON_OFF_X,
                 BUTTON_CONTROLS_Y,
                 TEXT_ON,
-                styleGreen
+                STYLE_GREEN
             ),
         ]);
     }

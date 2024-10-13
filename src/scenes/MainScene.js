@@ -20,8 +20,12 @@ const {
     probabilities,
 } = initialState;
 
-export default class TiaTransitaGame extends Phaser.Scene
+export default class MainScene extends Phaser.Scene
 {
+    constructor() {
+        super('main');
+    }
+
     preload () {
         this.#settings();
     }
