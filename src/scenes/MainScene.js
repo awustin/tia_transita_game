@@ -1,5 +1,4 @@
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
-import Controls from '@objects/Controls';
 import MercuriaNPC from '@sprites/MercuriaNPC';
 import {
     BASEMENT_X,
@@ -12,7 +11,8 @@ export default class MainScene extends Phaser.Scene
     score = null;
     spell = null;
     board = null;
-    ingredientsGrid = null
+    ingredientsGrid = null;
+    controls = null;
 
     constructor() {
         super('main');
@@ -24,18 +24,26 @@ export default class MainScene extends Phaser.Scene
         this.score = this.plugins.get('score');
         this.spell = this.plugins.get('spell');
         this.board = this.plugins.get('board');
+        this.controls = this.plugins.get('controls');
     }
 
     preload () {
-        this.#settings();
+        this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
+        this.input.keyboard.addCapture('SPACE');
     }
 
     create () {
         this.#createEnvironment();
+
+        const {
+            basket,
+            board,
+            spell,
+            score,
+        } = this;
+
         this.ingredientsGrid = new IngredientsGameGrid(this);
-        this.board.matrix = this.ingredientsGrid.grid;
-        // Todo: don't pass collect callback to controls. Instead use plugins.
-        const controls = new Controls(this, this.collect);
+        board.matrix = this.ingredientsGrid.grid;
         
         this.input.on('pointerup', (value, [ ingredient ]) => {
             if (ingredient?.collectable) {
@@ -43,45 +51,34 @@ export default class MainScene extends Phaser.Scene
                     return;
                 }
 
-                const index = this.basket.selectedIndex(ingredient);
+                const index = basket.selectedIndex(ingredient);
 
                 if (index >= 0) {
-                    this.basket.untrackSelectedIngredients(index)
+                    basket.untrackSelectedIngredients(index)
                         .forEach(ingredient => ingredient.setIdle());
                 } else {
-                    if (this.basket.trackIngredient(ingredient)) {
+                    if (basket.trackIngredient(ingredient)) {
                         ingredient.setActive();
                     };
                 }
 
-                this.basket.toggleCollectAvailable();
+                basket.toggleCollectAvailable();
             }
         });
 
         this.input.keyboard.on('keyup', ({ code }) => {
-            const isCollectAvailable = this.basket.collectAvailable;
-
-            if (isCollectAvailable && code === 'Space') {
-                return this.collect();
+            if (basket.collectAvailable && code === 'Space') {
+                return this.collectSelected();
             }
 
             if (code === 'KeyQ') {
-                this.scene.stop();
-                this.scene.start('end', this.score.results);
-            }
-        });
-
-        this.events.on('collect', isAvailable => {
-            if (isAvailable) {
-                controls.showCollectButton();
-            } else {
-                controls.hideCollectButton();
+                this.scene.restart();
             }
         });
 
         this.events.on('newmove', () => {
-            this.spell.clearEffect();
-            this.spell.pickEffect();
+            spell.clearEffect();
+            spell.pickEffect();
 
             //To do: apply effect
             this.ingredientsGrid.fillInWithNewIngredients();
@@ -91,28 +88,26 @@ export default class MainScene extends Phaser.Scene
 
     update () {
         this.#debugInfoOnScreen();
+        this.controls.showCollectButton(this.basket.collectAvailable);
     }
 
-    collect () {
-        const removed = this.basket.untrackSelectedIngredients(0);
+    collectSelected () {
+        const removed = this.basket.untrackSelectedIngredients(0) || [];
 
-        removed.forEach(ingredient => {
-            ingredient.setCollected();
-            this.ingredientsGrid.replaceWithEmpty(ingredient);
-        });
-
-        this.score.add(removed[0].typeId, removed.length);
-        this.spell.updateProbabilities(this.score.results);
-        this.supply.redistributeProbabilities(this.score.amounts);
-        this.basket.toggleCollectAvailable();
-
-        // To do: analyze results. If it's winner emit WIN, else start a new move
-        this.events.emit('newmove');
-    }
-
-    #settings () {
-        this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
-        this.input.keyboard.addCapture('SPACE');
+        if (removed.length) {
+            removed.forEach(ingredient => {
+                ingredient.setCollected();
+                this.ingredientsGrid.replaceWithEmpty(ingredient);
+            });
+    
+            this.score.add(removed[0].typeId, removed.length);
+            this.spell.updateProbabilities(this.score.results);
+            this.supply.redistributeProbabilities(this.score.amounts);
+            this.basket.toggleCollectAvailable();
+    
+            // To do: analyze results. If it's winner emit WIN, else start a new move
+            this.events.emit('newmove');
+        }
     }
 
     #createEnvironment () {
@@ -123,6 +118,10 @@ export default class MainScene extends Phaser.Scene
         basement.setOrigin(0, 0);
         staircase.setOrigin(0, 0);
         mercuriaNpc.setIdle();
+
+        this.controls.addCollectButton(this.collectSelected.bind(this));
+        this.controls.addCloseButton();
+        this.controls.addSoundToggle();
         
         this.registry.debugText = this.add.text(0, 0, 'Debug Info...');
     }

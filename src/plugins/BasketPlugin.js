@@ -73,17 +73,11 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
         const selected = this.#selected;
 
         if (selected.length >= 2 && !this.#collectAvailable) {
-            const mainScene = this.#game.scene.getScene('main');
-
             this.#collectAvailable = true;
-            mainScene.events.emit('collect', true);
         }
 
         if (selected.length < 2 && this.#collectAvailable) {
-            const mainScene = this.#game.scene.getScene('main');
-
             this.#collectAvailable = false;
-            mainScene.events.emit('collect', false);
         }
     }
 
