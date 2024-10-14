@@ -1,4 +1,3 @@
-import BoardMonitor from '@plugins/BoardMonitor';
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
 import Controls from '@objects/Controls';
 import MercuriaNPC from '@sprites/MercuriaNPC';
@@ -12,6 +11,8 @@ export default class MainScene extends Phaser.Scene
     supply = null;
     score = null;
     spell = null;
+    board = null;
+    ingredientsGrid = null
 
     constructor() {
         super('main');
@@ -22,6 +23,7 @@ export default class MainScene extends Phaser.Scene
         this.supply = this.plugins.get('supply');
         this.score = this.plugins.get('score');
         this.spell = this.plugins.get('spell');
+        this.board = this.plugins.get('board');
     }
 
     preload () {
@@ -30,31 +32,10 @@ export default class MainScene extends Phaser.Scene
 
     create () {
         this.#createEnvironment();
-
-        // Todo: move these classes to plugins
-        const ingredientsGrid = new IngredientsGameGrid(this);
-        const basket = this.basket;
-        const supply = this.supply;
-        const score = this.score;
-        const spell = this.spell;
-        const collect = () => {
-            const removed = basket.untrackSelectedIngredients(0);
-
-            removed.forEach(ingredient => {
-                ingredient.setCollected();
-                ingredientsGrid.replaceWithEmpty(ingredient);
-            });
-
-            score.add(removed[0].typeId, removed.length);
-            spell.updateProbabilities(score.results);
-            supply.redistributeProbabilities(score.amounts);
-            basket.toggleCollectAvailable();
-
-            // To do: analyze results. If it's winner emit WIN, else start a new move
-            this.events.emit('newmove');
-        }
+        this.ingredientsGrid = new IngredientsGameGrid(this);
+        this.board.matrix = this.ingredientsGrid.grid;
         // Todo: don't pass collect callback to controls. Instead use plugins.
-        const controls = new Controls(this, collect);
+        const controls = new Controls(this, this.collect);
         
         this.input.on('pointerup', (value, [ ingredient ]) => {
             if (ingredient?.collectable) {
@@ -62,31 +43,31 @@ export default class MainScene extends Phaser.Scene
                     return;
                 }
 
-                const index = basket.selectedIndex(ingredient);
+                const index = this.basket.selectedIndex(ingredient);
 
                 if (index >= 0) {
-                    basket.untrackSelectedIngredients(index)
+                    this.basket.untrackSelectedIngredients(index)
                         .forEach(ingredient => ingredient.setIdle());
                 } else {
-                    if (basket.trackIngredient(ingredient)) {
+                    if (this.basket.trackIngredient(ingredient)) {
                         ingredient.setActive();
                     };
                 }
 
-                basket.toggleCollectAvailable();
+                this.basket.toggleCollectAvailable();
             }
         });
 
         this.input.keyboard.on('keyup', ({ code }) => {
-            const isCollectAvailable = basket.collectAvailable;
+            const isCollectAvailable = this.basket.collectAvailable;
 
             if (isCollectAvailable && code === 'Space') {
-                return collect();
+                return this.collect();
             }
 
             if (code === 'KeyQ') {
                 this.scene.stop();
-                this.scene.start('end', score.results);
+                this.scene.start('end', this.score.results);
             }
         });
 
@@ -99,17 +80,34 @@ export default class MainScene extends Phaser.Scene
         });
 
         this.events.on('newmove', () => {
-            spell.clearEffect();
-            spell.pickEffect();
+            this.spell.clearEffect();
+            this.spell.pickEffect();
 
             //To do: apply effect
-            ingredientsGrid.fillInWithNewIngredients();
+            this.ingredientsGrid.fillInWithNewIngredients();
             //To do: monitor available moves
         });
     }
 
     update () {
         this.#debugInfoOnScreen();
+    }
+
+    collect () {
+        const removed = this.basket.untrackSelectedIngredients(0);
+
+        removed.forEach(ingredient => {
+            ingredient.setCollected();
+            this.ingredientsGrid.replaceWithEmpty(ingredient);
+        });
+
+        this.score.add(removed[0].typeId, removed.length);
+        this.spell.updateProbabilities(this.score.results);
+        this.supply.redistributeProbabilities(this.score.amounts);
+        this.basket.toggleCollectAvailable();
+
+        // To do: analyze results. If it's winner emit WIN, else start a new move
+        this.events.emit('newmove');
     }
 
     #settings () {

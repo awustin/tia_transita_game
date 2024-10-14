@@ -5,27 +5,30 @@ const matrix = require('matrix-js');
  * Scans the whole board on map initialization or map update.
  * Scans possible moves on chips modification
  */
-export default class BoardMonitor
+export default class BoardPlugin extends Phaser.Plugins.BasePlugin
 {
-    #boardMatrix = null;
+    #matrix = null;
 
-    constructor(scene = null, initMatrix) {
-        if (!initMatrix) {
+    constructor(pluginManager) {
+        if (!pluginManager) {
+            throw {
+                message: 'BoardPlugin missing argument',
+                code: 'C13'
+            };
+        }
+
+        super(pluginManager);
+    }
+
+    set matrix(array2d = null) {
+        if (!array2d) {
             throw {
                 message: 'BoardMonitor: empty ingredients matrix',
                 code: 'C03'
             };
         }
 
-        if (!scene) {
-            throw {
-                message: 'BoardMonitor: empty scene passed',
-                code: 'C13'
-            };
-        }
-
-        this.#boardMatrix = matrix(initMatrix);
-        scene.add.boardMonitor = this;
+        this.#matrix = matrix(array2d);
     }
 
     /**
@@ -36,7 +39,7 @@ export default class BoardMonitor
      */
     searchMoves(row = 0, col = 0) {
         // To do: move function to a web worker to prevent from blocking main game
-        const A = this.#boardMatrix;
+        const A = this.#matrix;
         const nextRow = row + 1;
         const nextCol = col + 1;
         const lastRow = row === A.size()[0] - 1;
@@ -81,13 +84,13 @@ export default class BoardMonitor
 
     /**
      * Replaces ids for specified rows and columns.
-     * @param {Object} updateMap `[...{row, col, id}]` where id = `0` represent blocked cells.
+     * @param {Object} updateMap `[...{row, col, id}]` where id = `0` represents blocked cells.
      */
     updateBoard(updateMap = []) {
         updateMap.forEach(replace => {
             const { row, col, id } = replace;
 
-            this.#boardMatrix = matrix(this.#boardMatrix.set(row, col).to(id));
+            this.#matrix = matrix(this.#matrix.set(row, col).to(id));
         });
     }
 
@@ -96,7 +99,7 @@ export default class BoardMonitor
      * @returns The list of blocked cells `[...[<row>,<col>]]`
      */
     blockRandomCells() {
-        let A = this.#boardMatrix;
+        let A = this.#matrix;
         const size = A.size()[0];
         const direction = Math.round(Math.random()) ? 'row' : 'col';
         const i = Math.floor(Math.random() * size);
@@ -135,7 +138,7 @@ export default class BoardMonitor
             });
         }
 
-        this.#boardMatrix = matrix(A);
+        this.#matrix = matrix(A);
 
         return blockedCells;
     }

@@ -92,6 +92,10 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
         return this.#emptyPositions;
     }
 
+    get grid() {
+        return this.#grid;
+    }
+
     // Private
 
     #newIngredientAtPosition(row, col) {

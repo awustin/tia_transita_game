@@ -6,6 +6,7 @@ import BasketPlugin from "@plugins/BasketPlugin";
 import SupplyPlugin from "@plugins/SupplyPlugin";
 import ScorePlugin from "@plugins/ScorePlugin";
 import SpellPlugin from "@plugins/SpellPlugin";
+import BoardPlugin from "@plugins/BoardPlugin";
 import {
     WIDTH,
     HEIGHT,
@@ -49,6 +50,11 @@ new Phaser.Game({
                 plugin: SpellPlugin,
                 start: true,
                 data: spells,
+            },
+            {
+                key: 'board',
+                plugin: BoardPlugin,
+                start: true,
             }
         ]
     },
