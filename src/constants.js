@@ -1,4 +1,6 @@
 export const BASEMENT_X = 276;
+export const BLOOD_X = 588;
+export const BLOOD_Y = 364;
 export const BUTTON_CLOSE_X = 1212;
 export const BUTTON_COLLECT_X = 614;
 export const BUTTON_COLLECT_Y = 745;
@@ -34,7 +36,7 @@ export const TEXT_X = 'x';
 export const TITLE_X = 640;
 export const TITLE_Y = 416;
 export const TRANSITA_X = 614;
-export const TRANSITA_Y = 364;
+export const TRANSITA_Y = 312;
 export const WIDTH = 1280;
 
 // Should read from config file
