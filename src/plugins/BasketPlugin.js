@@ -1,22 +1,20 @@
-/**
- * Contains information of the selected Ingredients
- */
-export default class IngredientsBasket
+export default class BasketPlugin extends Phaser.Plugins.BasePlugin
 {
-    #scene = null
+    #game = null;
     #selected = [];
     #combinationTypeId = null;
+    #collectAvailable = false;
 
-    constructor(scene = null) {
-        if(!scene) {
+    constructor(pluginManager) {
+        if(!pluginManager) {
             throw {
-                message: 'IngredientsBasket missing scene',
+                message: 'BasketPlugin missing argument',
                 code: 'C12'
             }
         }
+        super(pluginManager);
 
-        this.#scene = scene;
-        this.#scene.add.ingredientsBasket = this;
+        this.#game = pluginManager.game;
     }
 
     /**
@@ -74,19 +72,27 @@ export default class IngredientsBasket
     toggleCollectAvailable() {
         const selected = this.#selected;
 
-        if (selected.length >= 2 && !this.#scene.registry.collectAvailable) {
-            this.#scene.registry.collectAvailable = true;
-            this.#scene.events.emit('collect', true);
+        if (selected.length >= 2 && !this.#collectAvailable) {
+            const mainScene = this.#game.scene.getScene('main');
+
+            this.#collectAvailable = true;
+            mainScene.events.emit('collect', true);
         }
 
-        if (selected.length < 2 && this.#scene.registry.collectAvailable) {
-            this.#scene.registry.collectAvailable = false;
-            this.#scene.events.emit('collect', false);
+        if (selected.length < 2 && this.#collectAvailable) {
+            const mainScene = this.#game.scene.getScene('main');
+
+            this.#collectAvailable = false;
+            mainScene.events.emit('collect', false);
         }
     }
 
     get selected() {
         return this.#selected;
+    }
+
+    get collectAvailable() {
+        return this.#collectAvailable;
     }
 
     // Private

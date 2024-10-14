@@ -2,7 +2,6 @@ import IngredientsPool from '@plugins/IngredientsPool';
 import BoardMonitor from '@plugins/BoardMonitor';
 import ResultsAccumulator from '@plugins/ResultsAccumulator';
 import ResultsEffects from '@plugins/ResultsEffects';
-import IngredientsBasket from '@plugins/IngredientsBasket';
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
 import Controls from '@objects/Controls';
 import MercuriaNPC from '@sprites/MercuriaNPC';
@@ -22,8 +21,14 @@ const {
 
 export default class MainScene extends Phaser.Scene
 {
+    basket = null;
+
     constructor() {
         super('main');
+    }
+
+    init () {
+        this.basket = this.plugins.get('basket');
     }
 
     preload () {
@@ -36,7 +41,7 @@ export default class MainScene extends Phaser.Scene
         // Todo: move these classes to plugins
         const ingredientsPool = new IngredientsPool(this, probabilities);
         const ingredientsGrid = new IngredientsGameGrid(this);
-        const basket = new IngredientsBasket(this);
+        const basket = this.basket;
         const accumulator = new ResultsAccumulator(this);
         const resultsEffects = new ResultsEffects(this);
         const collect = () => {
@@ -80,7 +85,7 @@ export default class MainScene extends Phaser.Scene
         });
 
         this.input.keyboard.on('keyup', ({ code }) => {
-            const isCollectAvailable = this.registry.collectAvailable;
+            const isCollectAvailable = basket.collectAvailable;
 
             if (isCollectAvailable && code === 'Space') {
                 return collect();
@@ -122,7 +127,6 @@ export default class MainScene extends Phaser.Scene
             runningEffect,
             effects
         };
-        this.registry.collectAvailable = false;
         this.registry.results = results;
 
         this.input.keyboard.addCapture('SPACE');
@@ -141,10 +145,11 @@ export default class MainScene extends Phaser.Scene
     }
 
     #debugInfoOnScreen() {
+        const basket = this.basket;
 
         this.registry.debugText.setText([
-            'Selected: ' + this.add.ingredientsBasket.selected.map(ingredients => ingredients.cell.join(':')),
-            'Collect available: ' + this.registry.collectAvailable,
+            'Selected: ' + basket.selected.map(ingredients => ingredients.cell.join(':')),
+            'Collect available: ' + basket.collectAvailable,
             'Labour: ' + this.registry.results.labour,
             'Necromancy: ' + this.registry.results.necromancy,
             'Astrology: ' + this.registry.results.astrology,

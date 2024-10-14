@@ -11,10 +11,6 @@ export default class MainScene extends Phaser.Scene
         super('intro');
     }
 
-    perload() {
-
-    }
-
     create() {
         const text = this.add.text(
             TITLE_X,
@@ -32,10 +28,6 @@ export default class MainScene extends Phaser.Scene
                 this.scene.stop();
                 main.scene.start();
             }
-        })
-    }
-
-    update() {
-
+        });
     }
 }
