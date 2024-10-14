@@ -1,4 +1,3 @@
-import IngredientsPool from '@plugins/IngredientsPool';
 import BoardMonitor from '@plugins/BoardMonitor';
 import ResultsAccumulator from '@plugins/ResultsAccumulator';
 import ResultsEffects from '@plugins/ResultsEffects';
@@ -16,12 +15,12 @@ const {
     results,
     runningEffect,
     effects,
-    probabilities,
 } = initialState;
 
 export default class MainScene extends Phaser.Scene
 {
     basket = null;
+    supply = null;
 
     constructor() {
         super('main');
@@ -29,6 +28,7 @@ export default class MainScene extends Phaser.Scene
 
     init () {
         this.basket = this.plugins.get('basket');
+        this.supply = this.plugins.get('supply');
     }
 
     preload () {
@@ -39,9 +39,9 @@ export default class MainScene extends Phaser.Scene
         this.#createEnvironment();
 
         // Todo: move these classes to plugins
-        const ingredientsPool = new IngredientsPool(this, probabilities);
         const ingredientsGrid = new IngredientsGameGrid(this);
         const basket = this.basket;
+        const supply = this.supply;
         const accumulator = new ResultsAccumulator(this);
         const resultsEffects = new ResultsEffects(this);
         const collect = () => {
@@ -54,7 +54,7 @@ export default class MainScene extends Phaser.Scene
 
             accumulator.add(removed[0].typeId, removed.length);
             resultsEffects.updateProbabilities(accumulator.getResults());
-            ingredientsPool.redistributeProbabilities(accumulator.amounts);
+            supply.redistributeProbabilities(accumulator.amounts);
             basket.toggleCollectAvailable();
 
             // To do: analyze results. If it's winner emit WIN, else start a new move

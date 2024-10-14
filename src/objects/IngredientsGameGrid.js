@@ -15,9 +15,9 @@ import {
 export default class IngredientsGameGrid extends Phaser.GameObjects.Group
 {
     #group = null;
-    #ingredientsPool = null;
     #grid = [];
     #emptyPositions = [];
+    supply = null;
 
     constructor(scene = null, size = GRID_COUNT) {
         if (!scene) {
@@ -26,17 +26,19 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
                 code: 'C10'
             }
         }
-        if (typeof scene?.add?.ingredientsPool === 'undefined') {
+
+        super(scene);
+        this.supply = scene.plugins.get('supply');
+
+        if (!this.supply) {
             throw {
-                message: 'IngredientsGameGrid: add ingredientsPool to scene.add',
+                message: 'IngredientsGameGrid: add SupplyPlugin to game',
                 code: 'C11'
             }
         }
-        super(scene);
 
         this.#group = scene.add.group();
-        this.#group.setName('ingredientsOrchard');
-        this.#ingredientsPool = scene.add.ingredientsPool;
+        this.#group.setName('ingredientsGrid');
 
         for (let row = 0; row < size; row++) {
             let columnArray = [];
@@ -94,7 +96,7 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
 
     #newIngredientAtPosition(row, col) {
         const ingredient = new Ingredient(
-            this.#ingredientsPool.getNextIngredients()[0].id,
+            this.supply.getNextIngredients()[0].id,
             [row, col],
             {
                 scene: this.scene,

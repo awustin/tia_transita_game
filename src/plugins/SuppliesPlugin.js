@@ -1,27 +1,29 @@
-/**
- * Controls the available ingredients in the game.
- * It keeps track of a list of 4 ingredients with the probability
- * that each one has to come up next.
- */
-export default class IngredientsPool {
+export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
+{
+    #game = null;
     #sortedIngredientsWithProbability = [];
     #sortedProbabilitySegments = [];
  
-    constructor(scene = null, initArray = null) {
-        if (!initArray) {
+    constructor(pluginManager) {
+        super(pluginManager);
+
+        this.#game = pluginManager.game;
+    }
+
+    init(probabilities) {
+        if (!probabilities) {
             throw {
-                message: 'Empty ingredients list',
+                message: 'SuplliesPlugin: empty probabilities list',
                 code: 'C01'
             };
-        } else if (!initArray.length == 4) {
+        } else if (!probabilities.length == 4) {
             throw {
-                message: 'Ingredients list should be 4',
+                message: 'SuppliesPlugin: probabilities list should be 4',
                 code: 'C02'
             };
         }
 
-        this.#updatePool(initArray);
-        scene.add.ingredientsPool = this;
+        this.#updatePool(probabilities);
     }
 
     /**

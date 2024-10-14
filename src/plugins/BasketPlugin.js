@@ -65,8 +65,8 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
     }
 
     /**
-     * Sets the flag for collecting ingredients at scene.registry.collectAvailable
-     * if the length of selected is greater or equal than 2
+     * Toggles the flag for collecting ingredients.
+     * If the length of selected is greater or equal than 2, it's true.
      * @param {Boolean} value 
      */
     toggleCollectAvailable() {
