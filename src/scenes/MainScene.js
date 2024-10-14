@@ -1,26 +1,17 @@
 import BoardMonitor from '@plugins/BoardMonitor';
-import ResultsAccumulator from '@plugins/ResultsAccumulator';
-import ResultsEffects from '@plugins/ResultsEffects';
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
 import Controls from '@objects/Controls';
 import MercuriaNPC from '@sprites/MercuriaNPC';
 import {
     BASEMENT_X,
     STAIRCASE_X,
-    initialState,
 } from "@constants";
-
-const {
-    resultsConfig,
-    results,
-    runningEffect,
-    effects,
-} = initialState;
-
 export default class MainScene extends Phaser.Scene
 {
     basket = null;
     supply = null;
+    score = null;
+    spell = null;
 
     constructor() {
         super('main');
@@ -29,6 +20,8 @@ export default class MainScene extends Phaser.Scene
     init () {
         this.basket = this.plugins.get('basket');
         this.supply = this.plugins.get('supply');
+        this.score = this.plugins.get('score');
+        this.spell = this.plugins.get('spell');
     }
 
     preload () {
@@ -42,8 +35,8 @@ export default class MainScene extends Phaser.Scene
         const ingredientsGrid = new IngredientsGameGrid(this);
         const basket = this.basket;
         const supply = this.supply;
-        const accumulator = new ResultsAccumulator(this);
-        const resultsEffects = new ResultsEffects(this);
+        const score = this.score;
+        const spell = this.spell;
         const collect = () => {
             const removed = basket.untrackSelectedIngredients(0);
 
@@ -52,9 +45,9 @@ export default class MainScene extends Phaser.Scene
                 ingredientsGrid.replaceWithEmpty(ingredient);
             });
 
-            accumulator.add(removed[0].typeId, removed.length);
-            resultsEffects.updateProbabilities(accumulator.getResults());
-            supply.redistributeProbabilities(accumulator.amounts);
+            score.add(removed[0].typeId, removed.length);
+            spell.updateProbabilities(score.results);
+            supply.redistributeProbabilities(score.amounts);
             basket.toggleCollectAvailable();
 
             // To do: analyze results. If it's winner emit WIN, else start a new move
@@ -93,7 +86,7 @@ export default class MainScene extends Phaser.Scene
 
             if (code === 'KeyQ') {
                 this.scene.stop();
-                this.scene.start('end', accumulator.getResults());
+                this.scene.start('end', score.results);
             }
         });
 
@@ -106,8 +99,8 @@ export default class MainScene extends Phaser.Scene
         });
 
         this.events.on('newmove', () => {
-            resultsEffects.clearEffect();
-            resultsEffects.pickEffect();
+            spell.clearEffect();
+            spell.pickEffect();
 
             //To do: apply effect
             ingredientsGrid.fillInWithNewIngredients();
@@ -121,14 +114,6 @@ export default class MainScene extends Phaser.Scene
 
     #settings () {
         this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
-
-        this.registry.resultsConfig = resultsConfig
-        this.registry.effectsConfig = {
-            runningEffect,
-            effects
-        };
-        this.registry.results = results;
-
         this.input.keyboard.addCapture('SPACE');
     }
 
@@ -141,19 +126,25 @@ export default class MainScene extends Phaser.Scene
         staircase.setOrigin(0, 0);
         mercuriaNpc.setIdle();
         
-        this.registry.debugText = this.add.text(0, 0, 'Debug Info...', { color: '#fff' });
+        this.registry.debugText = this.add.text(0, 0, 'Debug Info...');
     }
 
     #debugInfoOnScreen() {
         const basket = this.basket;
+        const {
+            labour,
+            necromancy,
+            astrology,
+        } = this.score.results;
+        const spell = this.spell;
 
         this.registry.debugText.setText([
             'Selected: ' + basket.selected.map(ingredients => ingredients.cell.join(':')),
             'Collect available: ' + basket.collectAvailable,
-            'Labour: ' + this.registry.results.labour,
-            'Necromancy: ' + this.registry.results.necromancy,
-            'Astrology: ' + this.registry.results.astrology,
-            'Running effect: ' + this.registry.effectsConfig.runningEffect
+            'Labour: ' + labour,
+            'Necromancy: ' + necromancy,
+            'Astrology: ' + astrology,
+            'Spell: ' + spell.current,
         ].join('\n'));
     }
 }

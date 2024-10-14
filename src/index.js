@@ -3,7 +3,9 @@ import MainScene from "@scenes/MainScene";
 import IntroScene from "@scenes/IntroScene";
 import EndScene from "@scenes/EndScene";
 import BasketPlugin from "@plugins/BasketPlugin";
-import SupplyPlugin from "@plugins/SuppliesPlugin";
+import SupplyPlugin from "@plugins/SupplyPlugin";
+import ScorePlugin from "@plugins/ScorePlugin";
+import SpellPlugin from "@plugins/SpellPlugin";
 import {
     WIDTH,
     HEIGHT,
@@ -11,7 +13,9 @@ import {
 } from "@constants";
 
 const {
-    probabilities,
+    ingredientsProbabilities,
+    ingredientsProperties,
+    spells,
 } = initialState;
 
 new Phaser.Game({
@@ -32,7 +36,19 @@ new Phaser.Game({
                 key: 'supply',
                 plugin: SupplyPlugin,
                 start: true,
-                data: probabilities,
+                data: ingredientsProbabilities,
+            },
+            {
+                key: 'score',
+                plugin: ScorePlugin,
+                start: true,
+                data: ingredientsProperties,
+            },
+            {
+                key: 'spell',
+                plugin: SpellPlugin,
+                start: true,
+                data: spells,
             }
         ]
     },

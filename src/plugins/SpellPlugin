@@ -1,37 +1,31 @@
 /**
  * Enable / disable the effects in the game
  */
-export default class ResultsEffects
+export default class SpellPlugin extends Phaser.Plugins.BasePlugin
 {
-    #scene = {};
     #effects = {};
+    #current = 'none';
 
-    // Properties for probability computing. Need calibration
+    // To do - Need calibration: properties for probability computing
     #probabilityScaleFactor = 1/50;
     #sortedEffectsProbabilities = [{ name: 'none', probability: 1 }];
     #sortedProbabilitySegments = [];
 
-    constructor(
-        scene = null,
-        defaultEffectsConfig = {
-            'blockCells': {id: 1, params: null},
-            'maxMoves': {id: 2, params: null},
-            'changeBoard': {id: 3, params: null},
-            'resetBoard': {id: 4, params: null},
-        }
-    ) {
-        if (!scene) {
+    constructor(pluginManager) {
+        if (!pluginManager) {
             throw {
-                message: 'EffectPicker needs the current scene to modify the registry',
+                message: 'SpellPlugin missing argument',
                 code: 'C09'
             };
         }
 
-        this.#scene = scene;
-        this.#effects = this.#getRegistryConfig('effects') ?? defaultEffectsConfig;
-        this.#sortedProbabilitySegments = this.#updateProbabilitySegments();
+        super(pluginManager);
     }
 
+    init(config = {}) {
+        this.#effects = config;
+        this.#sortedProbabilitySegments = this.#updateProbabilitySegments();
+    }
     
     /**
      * Updates or initialize the probability of each effect based on the accumulated results.
@@ -68,8 +62,9 @@ export default class ResultsEffects
     pickEffect() {
         let e = this.#pickEffectWithProbability();
 
-        if (e.name !== 'none')
-            this.#setRegistryConfig('runningEffect', e.name);
+        if (e.name !== 'none') {
+            this.#current = e.name;
+        }
 
         return e;
     }
@@ -80,26 +75,18 @@ export default class ResultsEffects
      * @returns 
      */
     clearEffect() {
-        this.#setRegistryConfig('runningEffect', 'none');
+        this.#current = 'none';
+    }
+
+    get current() {
+        return this.#current;
+    }
+
+    get sortedEffectsProbabilities() {
+        return this.#sortedEffectsProbabilities;
     }
 
     // Private
-
-    #getRegistryConfig(key) {
-        if (!this.#scene.registry?.effectsConfig) {
-            return null;
-        }
-
-        return this.#scene.registry.effectsConfig[key];
-    }
-
-    #setRegistryConfig(key, value) {
-        if (!this.#scene.registry?.effectsConfig) {
-            return null;
-        }
-
-        this.#scene.registry.effectsConfig[key] = value;
-    }
 
     #computeEffectProbability(name, { labour, necromancy, astrology }) {
         // On the limit to infinite, the sum of of probabilities should not be over 1
@@ -147,9 +134,5 @@ export default class ResultsEffects
         const picked = sortedProbabilitySegments.find(upperBound => target <= upperBound.probability);
 
         return sortedEffectsProbabilities.find(({ name }) => String(picked.name) === String(name));
-    }
-
-    get sortedEffectsProbabilities() {
-        return this.#sortedEffectsProbabilities;
     }
 }

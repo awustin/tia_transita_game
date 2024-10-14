@@ -4,7 +4,7 @@
  * @param {*} config Indicates the labour, astrology and necromancy attributes for each ingredient type, in
  * the format `{ <id>: { labour: <labour>, astrology: <astrology>, necromancy: <necromancy>} }`
  */
-export default class ResultsAccumulator
+export default class ScorePlugin extends Phaser.Plugins.BasePlugin
 {
     #amounts = {};
     #labour = 0;
@@ -17,20 +17,21 @@ export default class ResultsAccumulator
         necromancy: 0
     };
 
-    constructor(scene = null) {
-        if(!scene) {
+    constructor(pluginManager) {
+        if(!pluginManager) {
             throw {
-                message: 'Results accumulator missing scene',
+                message: 'ScorePlugin missing argument',
                 code: 'C07'
             }
         }
 
-        this.#config = scene.registry.resultsConfig;
-        this.#results = scene.registry.results;
+        super(pluginManager);
+    }
 
-        Object.keys(this.#config).forEach(typeId => {
-            this.#amounts[Number(typeId)] = 0;
-        });
+    init(config = []) {
+        this.#config = config;
+
+        Object.keys(this.#config).forEach(typeId => this.#amounts[Number(typeId)] = 0);
     }
 
     /**
@@ -76,12 +77,8 @@ export default class ResultsAccumulator
     /**
      * Retrieves accumulated results
      */
-    getResults() {
-        return {
-            labour: this.#labour,
-            necromancy: this.#necromancy,
-            astrology: this.#astrology,
-        };
+    get results() {
+        return this.#results;
     }
 
     get config() {
