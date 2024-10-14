@@ -5,14 +5,14 @@ export default class Sparkles extends Phaser.GameObjects.Sprite
             config.scene,
             config.x,
             config.y,
-            'atlas',
+            'main',
             'sparks1',
         );
 
         if (!this.scene.anims.exists('selected')) {
             this.scene.anims.create({
                 key: 'selected',
-                frames: this.anims.generateFrameNames('atlas', {
+                frames: this.anims.generateFrameNames('main', {
                     prefix: 'sparks',
                     start: 1,
                     end: 7,

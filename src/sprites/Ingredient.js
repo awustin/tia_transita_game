@@ -25,7 +25,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             config.scene,
             config.x,
             config.y,
-            'atlas',
+            'main',
             `ingredient${typeId}`,
         );
         this.#typeId = typeId;

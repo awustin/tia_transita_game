@@ -115,7 +115,7 @@ export default class MainScene extends Phaser.Scene
     }
 
     #settings () {
-        this.load.atlas('atlas', '../assets/atlas/atlas.png', '../assets/atlas/atlas.json');
+        this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
 
         this.registry.resultsConfig = resultsConfig
         this.registry.effectsConfig = {
@@ -129,8 +129,8 @@ export default class MainScene extends Phaser.Scene
     }
 
     #createEnvironment () {
-        const basement = this.add.image(BASEMENT_X, 0, 'atlas', 'basement');
-        const staircase = this.add.image(STAIRCASE_X, 0, 'atlas', 'staircase');
+        const basement = this.add.image(BASEMENT_X, 0, 'main', 'basement');
+        const staircase = this.add.image(STAIRCASE_X, 0, 'main', 'staircase');
         const mercuriaNpc = new MercuriaNPC(this);
 
         basement.setOrigin(0, 0);

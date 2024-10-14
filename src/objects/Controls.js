@@ -52,7 +52,7 @@ export default class Controls extends Phaser.GameObjects.GameObject
             TEXT_COLLECT,
             STYLE_WHITE
         );
-        const keySprite = this.scene.add.sprite(KEYBOARD_SPACE_X, KEYBOARD_SPACE_Y, 'atlas', 'keyboard_space');
+        const keySprite = this.scene.add.sprite(KEYBOARD_SPACE_X, KEYBOARD_SPACE_Y, 'main', 'keyboard_space');
 
         text.setInteractive({ cursor: 'pointer' });
         text.setOrigin(0,0);

@@ -10,13 +10,13 @@ export default class MercuriaNPC extends Phaser.GameObjects.Sprite
             scene,
             MERCURIA_X,
             MERCURIA_Y,
-            'atlas',
+            'main',
             'mercuria_idle1',
         );
 
         this.anims.create({
             key: 'mercuria_idle',
-            frames: this.anims.generateFrameNames('atlas', {
+            frames: this.anims.generateFrameNames('main', {
                 prefix: 'mercuria_idle',
                 start: 1,
                 end: 2,

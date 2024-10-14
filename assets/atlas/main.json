@@ -384,7 +384,7 @@
     "meta": {
         "app": "TiaTransitaGame",
         "version": "v1.0",
-        "image": "atlas.png",
+        "image": "main.png",
         "size": {
             "w": 1040,
             "h": 1040
