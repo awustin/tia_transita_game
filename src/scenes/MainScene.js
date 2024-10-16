@@ -25,6 +25,7 @@ export default class MainScene extends Phaser.Scene
         this.spell = this.plugins.get('spell');
         this.board = this.plugins.get('board');
         this.controls = this.plugins.get('controls');
+        this.scene.launch('dialogs');
     }
 
     preload () {

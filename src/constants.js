@@ -17,6 +17,11 @@ export const KEYBOARD_SPACE_Y = 772;
 export const MERCURIA_X = 900;
 export const MERCURIA_Y = 104;
 export const STAIRCASE_X = 224;
+export const STYLE_DIALOG = {
+    color: '#fff',
+    fontFamily: 'munro',
+    fontSize: 16
+}
 export const STYLE_GREEN = {
     color: '#dfff68',
     fontFamily: 'munro',

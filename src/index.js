@@ -2,12 +2,14 @@ import Phaser from "phaser";
 import MainScene from "@scenes/MainScene";
 import IntroScene from "@scenes/IntroScene";
 import EndScene from "@scenes/EndScene";
+import DialogsScene from "@scenes/DialogsScene";
 import BasketPlugin from "@plugins/BasketPlugin";
 import SupplyPlugin from "@plugins/SupplyPlugin";
 import ScorePlugin from "@plugins/ScorePlugin";
 import SpellPlugin from "@plugins/SpellPlugin";
 import BoardPlugin from "@plugins/BoardPlugin";
 import ControlsPlugin from "@plugins/ControlsPlugin";
+import SpeechBubblesPlugin from "@plugins/SpeechBubblesPlugin";
 import {
     WIDTH,
     HEIGHT,
@@ -25,6 +27,7 @@ new Phaser.Game({
     scene: [
         IntroScene,
         MainScene,
+        DialogsScene,
         EndScene,
     ],
     plugins: {
@@ -62,6 +65,11 @@ new Phaser.Game({
                 plugin: ControlsPlugin,
                 start: true,
                 sceneKey: 'main',
+            },
+            {
+                key: 'speech',
+                plugin: SpeechBubblesPlugin,
+                start: true,
             }
         ],
     },

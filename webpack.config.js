@@ -53,7 +53,7 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			"@config": path.resolve(__dirname, "src/config"),
+			"@data": path.resolve(__dirname, "src/data"),
 			"@objects": path.resolve(__dirname, "src/objects"),
 			"@scenes": path.resolve(__dirname, "src/scenes"),
 			"@sprites": path.resolve(__dirname, "src/sprites"),
