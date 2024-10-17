@@ -1,10 +1,18 @@
 {
     "1": {
         "id": 1,
-        "text": "This is a small text to check the max num a "
+        "text": "ಠ╭╮ಠ  I need to find all my ingredients!"
     },
     "2": {
         "id": 2,
-        "text": "This is a big text that checks the number of maximum characters in a string apparently this is a big text with"
+        "text": "Help me get all I need for my ritu-... stew!"
+    },
+    "3": {
+        "id": 3,
+        "text": "She is coming..."
+    },
+    "4": {
+        "id": 4,
+        "text": "Thanks for helping this old lady  (˶˃ᆺ˂˶)"
     }
 }
