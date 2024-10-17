@@ -14,23 +14,28 @@ export const GRID_Y = 208;
 export const HEIGHT = 832;
 export const KEYBOARD_SPACE_X = 613;
 export const KEYBOARD_SPACE_Y = 772;
+export const LARGE_DIALOG_H = 52;
+export const LARGE_DIALOG_W = 364;
+export const LARGE_DIALOG_Y = 104;
+export const LARGE_DIALOG_X = 484;
 export const MERCURIA_X = 900;
 export const MERCURIA_Y = 104;
+export const SMALL_DIALOG_H = 52;
+export const SMALL_DIALOG_W = 156;
+export const SMALL_DIALOG_Y = 104;
+export const SMALL_DIALOG_X = 692;
 export const STAIRCASE_X = 224;
 export const STYLE_DIALOG = {
     color: '#fff',
-    fontFamily: 'munro',
-    fontSize: 16
+    font: '15px munro',
 }
 export const STYLE_GREEN = {
     color: '#dfff68',
-    fontFamily: 'munro',
-    fontSize: 20
+    font: '20px munro',
 };
 export const STYLE_WHITE = {
     color: '#e6e6e6',
-    fontFamily: 'munro',
-    fontSize: 20
+    font: '20px munro',
 };
 export const TEXT_COLLECT = 'collect';
 export const TEXT_OFF = 'off';

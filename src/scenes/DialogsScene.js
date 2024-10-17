@@ -14,9 +14,19 @@ export default class DialogsScene extends Phaser.Scene
     }
 
     create() {
-        this.speech.addSpeechBubble(1);
-        this.speech.addSpeechBubble(1);
-        this.speech.addSpeechBubble(2);
+        setTimeout(() => {
+            this.speech.add(1);
+        }, 1000);
+        setTimeout(() => {
+            this.speech.add(2);
+        }, 3000);
+        setTimeout(() => {
+            this.speech.removeCurrent();
+        }, 10000);
+        setTimeout(() => {
+            this.speech.add(1);
+            console.log(this.children);
+        }, 12000);
     }
 
     update() {
