@@ -1,4 +1,5 @@
 import Mercuria from "@sprites/Mercuria";
+import DialogSequencer from "@objects/DialogSequencer";
 
 export default class DialogsScene extends Phaser.Scene
 {
@@ -19,9 +20,14 @@ export default class DialogsScene extends Phaser.Scene
 
     create() {
         const mercuria = new Mercuria(this);
-
+        const sequencer = new DialogSequencer(this);
         mercuria.setIdle();
-        mercuria.speak('this will be destroyed in 2 seconds...', 2);
+        const onSpeak = message => mercuria.speak(message, 2);
+
+        sequencer.setRegularDialogs({
+            onSpeak: onSpeak.bind(this),
+            seconds: 30,
+        });
     }
 
     update() {

@@ -1,11 +1,10 @@
 import dialogsData from "@data/dialogs.json";
 
 const selectGeneralComments = () => dialogsData?.general || {};
-const selectLinkedComments = (ids = []) => ids.reduce((acc, ingredientId) => {
-        const found = Object.values(dialogsData?.linked || {})
-            .filter(dialog => Number(dialog.id) === Number(ingredientId));
-    },
-    {}
+const selectLinkedComments = () => dialogsData?.linked || {};
+const selectCommentsByIngredientId = ingredientId => (
+    Object.values(dialogsData?.ingredientsDialogs || {})
+        .filter(comment => Number(comment.ingredientId) === Number(ingredientId))
 );
 
 export default class DialogSequencer extends Phaser.GameObjects.GameObject
@@ -18,7 +17,9 @@ export default class DialogSequencer extends Phaser.GameObjects.GameObject
     // Comments that are only made based on the ingredient ID asociated to it
     #linked = {};
 
-    constructor(scene, config = {}) {
+    #timeline = null;
+
+    constructor(scene) {
         if (!scene) {
             throw {
                 message: 'DialogSequencer missing scene',
@@ -26,7 +27,33 @@ export default class DialogSequencer extends Phaser.GameObjects.GameObject
             };
         }
 
-        super(scene, 'timeline');
-        this.#config = config;
+        super(scene, 'dialogSequencer');
+
+        this.#config = dialogsData;
+        this.#general = selectGeneralComments();
+    }
+
+    setRegularDialogs({
+        onSpeak = Function.prototype,
+        seconds = 1,
+    }) {
+        if (this.#timeline) {
+            this.#timeline.destroy();
+            this.#timeline = null;
+        }
+
+        this.#timeline = this.scene.add.timeline({
+            at: seconds * 1000,
+            run: () => onSpeak(this.#selectRandomGeneralMessage()),
+        })
+        .repeat()
+        .play();
+    }
+
+    #selectRandomGeneralMessage() {
+        const ids = Object.keys(this.#general);
+        const id = Math.floor(Math.random() * ids.length);
+
+        return this.#general[id]?.text || '';
     }
 }

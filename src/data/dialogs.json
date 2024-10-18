@@ -6,7 +6,7 @@
         },
         "2": {
             "id": 2,
-            "text": "Help me get all I need for my ritu-... stew!"
+            "text": "Help me to get all I need for my ritu-... stew!"
         },
         "3": {
             "id": 3,
@@ -20,8 +20,13 @@
     "linked": {
         "5": {
             "id": 5,
-            "text": "Oh! You found my homemade...uhm... spicy chudney! It has a metallic smell...",
-            "ingedientId": 3
+            "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves..."
+        }
+    },
+    "ingredientsDialogs": {
+        "3-5": {
+            "ingredientId": 3,
+            "dialogId": 5
         }
     }
 }
