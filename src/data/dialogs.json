@@ -1,18 +1,27 @@
 {
-    "1": {
-        "id": 1,
-        "text": "ಠ╭╮ಠ  I need to find all my ingredients!"
+    "general": {
+        "1": {
+            "id": 1,
+            "text": "ಠ╭╮ಠ  I need to find all my ingredients!"
+        },
+        "2": {
+            "id": 2,
+            "text": "Help me get all I need for my ritu-... stew!"
+        },
+        "3": {
+            "id": 3,
+            "text": "She is coming..."
+        },
+        "4": {
+            "id": 4,
+            "text": "Thanks for helping this old lady  (˶˃ᆺ˂˶)"
+        }
     },
-    "2": {
-        "id": 2,
-        "text": "Help me get all I need for my ritu-... stew!"
-    },
-    "3": {
-        "id": 3,
-        "text": "She is coming..."
-    },
-    "4": {
-        "id": 4,
-        "text": "Thanks for helping this old lady  (˶˃ᆺ˂˶)"
+    "linked": {
+        "5": {
+            "id": 5,
+            "text": "Oh! You found my homemade...uhm... spicy chudney! It has a metallic smell...",
+            "ingedientId": 3
+        }
     }
 }

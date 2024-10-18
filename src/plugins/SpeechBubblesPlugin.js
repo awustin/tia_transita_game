@@ -9,7 +9,6 @@ import {
     LARGE_DIALOG_H,
     STYLE_DIALOG,
 } from "@constants";
-import dialogs from "@data/dialogs.json";
 
 const getSize = (str = '') => {
     const length = str.length;
@@ -20,75 +19,37 @@ const getSize = (str = '') => {
     
     return 2;
 }
-const isSmall = size => size === 1;
-const isLarge = size => size === 2;
+const isSmall = size => size === 1; // length <= 44 chars
+const isLarge = size => size === 2; // length ideally not greater than 110 chars
 
 /**
- * Creates and destroys text bubbles as they are required at different moments of the game
+ * Creates text bubbles
  */
 export default class SpeechBubblesPlugin extends Phaser.Plugins.BasePlugin
 {
     #game = null;
 
-    // Data from dialogs.json config
-    #dialogs = {};
-
-    // Small: 44 chars
-    #smallBubble = null;
-
-    // Large: 110 chars
-    #largeBubble = null;
-
-    // Current speech bubble shown in the scene
-    #currentBubble = null;
-    #currentText = null
-
     constructor(pluginManager) {
         super(pluginManager);
 
         this.#game = pluginManager.game;
-        this.#dialogs = dialogs;
     }
 
-    add(dialogId = null) {
-        const dialog = dialogId ? this.#dialogs[String(dialogId)] : null;
-    
-        if (dialog) {
-            this.#hideCurrent();
+    comment(message = null) {    
+        if (message) {
+            const dialogScene = this.#game.scene.getScene('dialogs');
+            const bubble = this.#buildBubble(message);
+            const text = this.#buildText(message);
 
-            const dialogText = dialog?.text || '';
-            const bubble = this.#useBubble(dialogText);
-            const text = this.#buildText(dialogText);
-            
-            this.#storeBubble(bubble);
-            bubble.setVisible(true);
-            text.setVisible(true);
-            this.#currentBubble = bubble;
-            this.#currentText = text;
+            return dialogScene.add.group([ bubble, text ], { name: 'comment' });
         }
-    }
-
-    removeCurrent() {
-        return this.#hideCurrent();
     }
 
     //--------------
     // Private
     //--------------
 
-    #hideCurrent() {
-        if (this.#currentBubble) {
-            this.#currentBubble.setVisible(false);
-            this.#currentBubble = null;
-        }
-
-        if (this.#currentText) {
-            this.#currentText.destroy();
-            this.#currentText = null;
-        }
-    }
-
-    #useBubble(text = '') {
+    #buildBubble(text = '') {
         const size = getSize(text);
         let x = SMALL_DIALOG_X;
         let y = SMALL_DIALOG_Y;
@@ -96,15 +57,7 @@ export default class SpeechBubblesPlugin extends Phaser.Plugins.BasePlugin
         let h = SMALL_DIALOG_H;
         let name = 'smallBubble';
 
-        if (isSmall(size) && this.#smallBubble) {
-            return this.#smallBubble;
-        }
-
         if (isLarge(size)) {
-            if (this.#largeBubble) {
-                return this.#largeBubble;
-            }
-
             x = LARGE_DIALOG_X;
             y = LARGE_DIALOG_Y;
             w = LARGE_DIALOG_W;
@@ -129,7 +82,7 @@ export default class SpeechBubblesPlugin extends Phaser.Plugins.BasePlugin
         let w = SMALL_DIALOG_W;
         let name = 'smallText';
 
-        if (size === 2) {
+        if (isLarge(size)) {
             x = LARGE_DIALOG_X;
             y = LARGE_DIALOG_Y;
             w = LARGE_DIALOG_W;
@@ -139,19 +92,5 @@ export default class SpeechBubblesPlugin extends Phaser.Plugins.BasePlugin
         return dialogScene.add.text(x + 5, y + 4, text, STYLE_DIALOG)
             .setWordWrapWidth(w - 5)
             .setName(name);
-    }
-
-    #storeBubble(bubble = null) {
-        if (bubble) {
-            const size = bubble.getData('size');
-
-            if (isSmall(size)) {
-                return this.#smallBubble = bubble;
-            }
-
-            if (isLarge(size)) {
-                return this.#largeBubble = bubble;
-            }
-        }
     }
 }

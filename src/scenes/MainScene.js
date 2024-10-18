@@ -1,5 +1,4 @@
 import IngredientsGameGrid from '@objects/IngredientsGameGrid';
-import MercuriaNPC from '@sprites/MercuriaNPC';
 import {
     BASEMENT_X,
     STAIRCASE_X,
@@ -114,11 +113,9 @@ export default class MainScene extends Phaser.Scene
     #createEnvironment () {
         const basement = this.add.image(BASEMENT_X, 0, 'main', 'basement');
         const staircase = this.add.image(STAIRCASE_X, 0, 'main', 'staircase');
-        const mercuriaNpc = new MercuriaNPC(this);
 
         basement.setOrigin(0, 0);
         staircase.setOrigin(0, 0);
-        mercuriaNpc.setIdle();
 
         this.controls.addCollectButton(this.collectSelected.bind(this));
         this.controls.addCloseButton();

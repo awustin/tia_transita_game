@@ -1,3 +1,5 @@
+import Mercuria from "@sprites/Mercuria";
+
 export default class DialogsScene extends Phaser.Scene
 {
     speech = null;
@@ -11,22 +13,15 @@ export default class DialogsScene extends Phaser.Scene
     }
 
     preload() {
+        //Todo - create spritesheet for dialog scene
+        this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
     }
 
     create() {
-        const { speech } = this;
-        const arr = [1,2,3,4];
-        let index = 0;
+        const mercuria = new Mercuria(this);
 
-        setInterval(() => {
-            speech.add(arr[index]);
-
-            if (index === 3) {
-                index = 0;
-            } else {
-                index++;
-            }
-        }, 3000);
+        mercuria.setIdle();
+        mercuria.speak('this will be destroyed in 2 seconds...', 2);
     }
 
     update() {
