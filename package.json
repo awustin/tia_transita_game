@@ -14,7 +14,9 @@
   "author": "awustin",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "11.4.0",
     "matrix-js": "1.7.1",
+    "node-polyfill-webpack-plugin": "4.0.0",
     "phaser": "3.85.2"
   },
   "devDependencies": {

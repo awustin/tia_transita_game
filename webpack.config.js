@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = {
 	entry: './src/index.js',
@@ -14,6 +15,7 @@ module.exports = {
 			title: 'Tia Transita',
 			template: 'index.html',
 		}),
+		new NodePolyfillPlugin(),
 	],
 	output: {
 		filename: '[name].bundle.js',

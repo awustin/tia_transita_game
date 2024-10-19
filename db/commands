@@ -1,0 +1,3 @@
+.open db/tia_transita.db
+.import --csv db/ingredients.csv ingredients
+.import --csv db/dialogs.csv dialogs

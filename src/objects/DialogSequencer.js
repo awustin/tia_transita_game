@@ -7,7 +7,6 @@ const selectIngredientsDialogs = () => dialogsData?.ingredientsDialogs || {};
 export default class DialogSequencer
 {
     #scene = null;
-    #config = null;
 
     // Comments to be made at any point of the game
     #general = {
@@ -39,7 +38,6 @@ export default class DialogSequencer
         }
 
         this.#scene = scene;
-        this.#config = dialogsData;
         this.updateGeneralDialogs();
         this.updateLinkedDialogs();
     }
@@ -55,7 +53,7 @@ export default class DialogSequencer
 
         this.#timeline = this.#scene.add.timeline({
             at: secondsAt * 1000,
-            run: () => onSpeak(this.#selectRandomMessage()),
+            run: () => onSpeak(this.#getRandomMessage()),
         })
         .repeat()
         .play();
@@ -102,11 +100,10 @@ export default class DialogSequencer
         });
     }
 
-    #selectRandomMessage() {
+    #getRandomMessage() {
         const idPool = [...this.#general.ids, ...this.#linked.ids];
         const dialogsPool = {...this.#general.dialogs, ...this.#linked.dialogs};
-        const index = Math.floor(Math.random() * idPool.length);
-        const id = idPool[index];
+        const id = idPool[Math.floor(Math.random() * idPool.length)];
 
         return dialogsPool[id]?.text || '';
     }
