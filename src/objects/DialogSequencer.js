@@ -1,21 +1,25 @@
 import dialogsData from "@data/dialogs.json";
 
-const selectGeneralComments = () => dialogsData?.general || {};
-const selectLinkedComments = () => dialogsData?.linked || {};
-const selectCommentsByIngredientId = ingredientId => (
-    Object.values(dialogsData?.ingredientsDialogs || {})
-        .filter(comment => Number(comment.ingredientId) === Number(ingredientId))
-);
+const selectGeneral = () => dialogsData?.general || {};
+const selectLinked = () => dialogsData?.linked || {};
+const selectIngredientsDialogs = () => dialogsData?.ingredientsDialogs || {};
 
-export default class DialogSequencer extends Phaser.GameObjects.GameObject
+export default class DialogSequencer
 {
+    #scene = null;
     #config = null;
 
     // Comments to be made at any point of the game
-    #general = {};
+    #general = {
+        ids: [],
+        dialogs: {},
+    };
 
-    // Comments that are only made based on the ingredient ID asociated to it
-    #linked = {};
+    // Comments to be made in relation to an ingredient that's in the board
+    #linked = {
+        ids: [],
+        dialogs: {},
+    };
 
     #timeline = null;
 
@@ -27,33 +31,83 @@ export default class DialogSequencer extends Phaser.GameObjects.GameObject
             };
         }
 
-        super(scene, 'dialogSequencer');
+        if (!scene.plugins.get('supply')) {
+            throw {
+                message: 'DialogSequencer needs SupplyPlugin set up',
+                code: 'C17'
+            };
+        }
 
+        this.#scene = scene;
         this.#config = dialogsData;
-        this.#general = selectGeneralComments();
+        this.updateGeneralDialogs();
+        this.updateLinkedDialogs();
     }
 
-    setRegularDialogs({
+    setSpeakTimeline({
         onSpeak = Function.prototype,
-        seconds = 1,
+        secondsAt = 1,
     }) {
         if (this.#timeline) {
             this.#timeline.destroy();
             this.#timeline = null;
         }
 
-        this.#timeline = this.scene.add.timeline({
-            at: seconds * 1000,
-            run: () => onSpeak(this.#selectRandomGeneralMessage()),
+        this.#timeline = this.#scene.add.timeline({
+            at: secondsAt * 1000,
+            run: () => onSpeak(this.#selectRandomMessage()),
         })
         .repeat()
         .play();
     }
 
-    #selectRandomGeneralMessage() {
-        const ids = Object.keys(this.#general);
-        const id = Math.floor(Math.random() * ids.length);
+    updateGeneralDialogs() {
+        this.#general.dialogs = selectGeneral();
+        this.#general.ids = Object.keys(this.#general.dialogs);
+    }
 
-        return this.#general[id]?.text || '';
+    updateLinkedDialogs() {
+        const supply = this.#scene.plugins.get('supply');
+        const currentIngredients = supply.currentIngredients.map(({ id }) => id) || [];
+        const ingredientsDialogs = selectIngredientsDialogs();
+        const linked = selectLinked();
+
+        // Remove dialogs whose ingredients are not longer in the board
+        this.#linked.ids = this.#linked.ids.reduce((acc, dialogId) => {
+            // Get the ingredient ID with dialog ID
+            const ingredientId = linked[String(dialogId)]?.ingredientId;
+
+            if (currentIngredients.includes(Number(ingredientId))) {
+                acc.push(dialogId);
+            }
+
+            return acc
+        },
+        []
+        );
+
+        // Get linked dialogs based on current ingredients
+        currentIngredients.forEach(ingredientId => {
+            // Get the dialog ID with ingredient ID
+            const found = ingredientsDialogs[String(ingredientId)];
+
+            if (found) {
+                const foundDialogId = String(found.dialogId);
+
+                if (!this.#linked.ids.includes(foundDialogId)) {
+                    this.#linked.ids.push(foundDialogId);
+                    this.#linked.dialogs[foundDialogId] = linked[foundDialogId];
+                }
+            }
+        });
+    }
+
+    #selectRandomMessage() {
+        const idPool = [...this.#general.ids, ...this.#linked.ids];
+        const dialogsPool = {...this.#general.dialogs, ...this.#linked.dialogs};
+        const index = Math.floor(Math.random() * idPool.length);
+        const id = idPool[index];
+
+        return dialogsPool[id]?.text || '';
     }
 }

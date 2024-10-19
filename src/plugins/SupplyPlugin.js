@@ -97,6 +97,10 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         }
     }
 
+    get currentIngredients() {
+        return this.#sortedIngredientsWithProbability;
+    }
+
     // Private functions
 
     #updatePool(list) {

@@ -20,13 +20,23 @@
     "linked": {
         "5": {
             "id": 5,
-            "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves..."
+            "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves...",
+            "ingredientId": 3
+        },
+        "6": {
+            "id": 5,
+            "text": "I love moldy pumpkins!",
+            "ingredientId": 2
         }
     },
     "ingredientsDialogs": {
-        "3-5": {
+        "3": {
             "ingredientId": 3,
             "dialogId": 5
+        },
+        "2": {
+            "ingredientId": 2,
+            "dialogId": 6
         }
     }
 }

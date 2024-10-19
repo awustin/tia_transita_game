@@ -22,11 +22,10 @@ export default class DialogsScene extends Phaser.Scene
         const mercuria = new Mercuria(this);
         const sequencer = new DialogSequencer(this);
         mercuria.setIdle();
-        const onSpeak = message => mercuria.speak(message, 2);
 
-        sequencer.setRegularDialogs({
-            onSpeak: onSpeak.bind(this),
-            seconds: 30,
+        sequencer.setSpeakTimeline({
+            onSpeak: (message => mercuria.speak(message, 5)).bind(this),
+            secondsAt: 15,
         });
     }
 
