@@ -1,7 +1,7 @@
 import Mercuria from "@sprites/Mercuria";
 import DialogSequencer from "@objects/DialogSequencer";
 // Todo: debug error
-import Database from 'better-sqlite3';
+import Database from 'sqlite3';
 
 export default class DialogsScene extends Phaser.Scene
 {
