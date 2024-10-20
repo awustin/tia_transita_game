@@ -1,7 +1,5 @@
 import Mercuria from "@sprites/Mercuria";
 import DialogSequencer from "@objects/DialogSequencer";
-import game from "../config/game.json";
-import { join } from "../utils/data";
 
 export default class DialogsScene extends Phaser.Scene
 {
@@ -29,18 +27,6 @@ export default class DialogsScene extends Phaser.Scene
             onSpeak: (message => mercuria.speak(message, 5)).bind(this),
             secondsAt: 15,
         });
-
-        const ingredients = game.ingredients;
-        const dialogs = game.dialogs;
-        console.log({ ingredients, dialogs });
-        console.log(join({
-            left: dialogs.items,
-            leftOn: 'ingredientId',
-            right: ingredients.items,
-            rightOn: 'id',
-            nameAs: 'ingredient',
-        }));
-
     }
 
     update() {

@@ -11,6 +11,10 @@ export default class MainScene extends Phaser.Scene
         super('intro');
     }
 
+    preload() {
+        this.load.json('game', 'src/config/game.json');
+    }
+
     create() {
         const text = this.add.text(
             TITLE_X,

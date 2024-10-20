@@ -53,12 +53,13 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			"@data": path.resolve(__dirname, "src/data"),
+			"@config": path.resolve(__dirname, "src/config"),
 			"@objects": path.resolve(__dirname, "src/objects"),
 			"@scenes": path.resolve(__dirname, "src/scenes"),
 			"@sprites": path.resolve(__dirname, "src/sprites"),
 			"@plugins": path.resolve(__dirname, "src/plugins"),
 			"@constants": path.resolve(__dirname, "src/constants"),
+			"@utils": path.resolve(__dirname, "src/utils"),
 		}
 	}
 };
