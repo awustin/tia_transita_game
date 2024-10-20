@@ -1,0 +1,22 @@
+{
+    "ingredients": {
+        "ids": [1, 2, 3, 4],
+        "items": [
+            { "id": 1, "labour": 1, "necromancy": 0, "astrology": 0, "name": "apple" },
+            { "id": 2, "labour": 0, "necromancy": 0, "astrology": 1, "name": "gem" },
+            { "id": 3, "labour": 0, "necromancy": 1, "astrology": 0, "name": "jar" },
+            { "id": 4, "labour": 2, "necromancy": 0, "astrology": 0, "name": "pumpkin" }
+        ]
+    },
+    "dialogs": {
+        "ids": [100, 101, 102, 103, 104, 105],
+        "items": [
+            { "id": 100, "text": "ಠ╭╮ಠ  I need to find all my ingredients!" },
+            { "id": 101, "text": "Help me to get all I need for my ritu-... stew!" },
+            { "id": 102, "text": "She is coming..." },
+            { "id": 103, "text": "Thanks for helping this old lady  (˶˃ᆺ˂˶)" },
+            { "id": 104, "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves...", "ingredientId": 3 },
+            { "id": 105, "text": "I love moldy pumpkins!", "ingredientId": 4 }
+        ]
+    }
+}

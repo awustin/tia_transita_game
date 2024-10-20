@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode=development --stats-error-details",
     "watch": "webpack --watch",
-    "start": "webpack serve  --config webpack.config.js --open --mode=development",
+    "start": "webpack serve --config webpack.config.js --mode=development",
     "build:prod": "webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,9 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "matrix-js": "1.7.1",
-    "node-polyfill-webpack-plugin": "4.0.0",
-    "phaser": "3.85.2",
-    "sqlite3": "5.1.7"
+    "phaser": "3.85.2"
   },
   "devDependencies": {
     "@babel/core": "7.25.7",
