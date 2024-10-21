@@ -9,6 +9,9 @@ export default class DialogSequencer
 {
     #scene = null;
 
+    // General dialogs.
+    #general = [];
+
     // Dialogs present in the current timeline. Includes general and ingredient-specific.
     #current = []
 
@@ -37,12 +40,13 @@ export default class DialogSequencer
         }
 
         this.#scene = scene;
+        this.#setGeneralDialogs();
         this.updateCurrentDialogs();
     }
 
     setSpeakTimeline({
         onSpeak = Function.prototype,
-        secondsAt = 1,
+        secondsAt = 0,
     }) {
         if (this.#timeline) {
             this.#timeline.destroy();
@@ -70,15 +74,15 @@ export default class DialogSequencer
         );
 
         this.#current = [
-            ...select(dialogs.items, ({ ingredientId }) => !ingredientId),
-            ...join({
-                left: dialogs.items,
-                leftOn: 'ingredientId',
-                right: currentIngredients,
-                rightOn: 'id',
-                nameAs: 'ingredient',
-            }),
+            ...this.#general,
+            ...join(dialogs.items, currentIngredients).on('ingredientId', 'id').as('ingredient')
         ];
+    }
+
+    #setGeneralDialogs() {
+        const { dialogs } = this.#scene.cache.json.get('game');
+
+        this.#general = select(dialogs.items, ({ ingredientId }) => !ingredientId);
     }
 
     #getRandomMessage() {

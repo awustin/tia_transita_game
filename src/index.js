@@ -17,7 +17,6 @@ import {
 } from "@constants";
 
 const {
-    ingredientsProbabilities,
     ingredientsProperties,
     spells,
 } = initialState;
@@ -40,8 +39,6 @@ new Phaser.Game({
             {
                 key: 'supply',
                 plugin: SupplyPlugin,
-                start: true,
-                data: ingredientsProbabilities,
             },
             {
                 key: 'score',

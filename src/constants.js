@@ -57,12 +57,6 @@ export const initialState = {
         3: {labour: 0, astrology: 0, necromancy: 1},
         4: {labour: 2, astrology: 0, necromancy: 0},
     },
-    ingredientsProbabilities: [
-        {id: 1, probability: 1/4},
-        {id: 2, probability: 1/4},
-        {id: 3, probability: 1/4},
-        {id: 4, probability: 1/4},
-    ],
     spells: {
         'blockCells': {id: 1, params: null},
         'maxMoves': {id: 2, params: null},

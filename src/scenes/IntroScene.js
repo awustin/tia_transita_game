@@ -16,6 +16,8 @@ export default class MainScene extends Phaser.Scene
     }
 
     create() {
+        this.plugins.start('supply');
+
         const text = this.add.text(
             TITLE_X,
             TITLE_Y,

@@ -33,22 +33,22 @@ export const selectByIds = (ids = [], items = []) => {
  * @param {Object} Operation params 
  * @returns Array with the result
  */
-export const join = ({
-    left = [],
-    leftOn,
-    right = [],
-    rightOn,
-    nameAs = 'linked'
-}) => {
-    const lookUp = {};
-
-    right.forEach(item => lookUp[Number(item[rightOn])] = item);
-
-    return left.map(item => {
-        return {
-            ...item,
-            ...Boolean(item[leftOn]) && { [nameAs]: lookUp[item[leftOn]] }
-        }
+export const join = (left, right) => {
+    return ({
+        on: (leftOn, rightOn) => ({
+            as: nameAs => {
+                const lookUp = {};
+            
+                right.forEach(item => lookUp[Number(item[rightOn])] = item);
+            
+                return left.map(item => {
+                    return {
+                        ...item,
+                        ...Boolean(item[leftOn]) && { [nameAs]: lookUp[item[leftOn]] }
+                    }
+                })
+                .filter(result => Boolean(result[nameAs]));
+            }
+        })
     })
-    .filter(result => Boolean(result[nameAs]));
 }

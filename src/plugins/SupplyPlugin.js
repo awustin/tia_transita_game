@@ -1,3 +1,8 @@
+import {
+    select,
+    selectByIds,
+} from "@utils/data";
+
 export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
 {
     #game = null;
@@ -10,18 +15,31 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         this.#game = pluginManager.game;
     }
 
-    init(probabilities) {
-        if (!probabilities) {
+    init() {
+        const {
+            boards,
+            ingredients,
+        } = this.game.cache.json.get('game');
+
+        if (!boards) {
             throw {
-                message: 'SuplliesPlugin: empty probabilities list',
+                message: 'SuplliesPlugin: missing entity "boards" in game config',
                 code: 'C01'
             };
-        } else if (!probabilities.length == 4) {
+        }
+
+        const { initIngredientsIds } = select(boards.items, board => board.default)[0];
+        
+        if (!initIngredientsIds.length == 4) {
             throw {
-                message: 'SuppliesPlugin: probabilities list should be 4',
+                message: 'SuppliesPlugin: board ingredients list should be 4',
                 code: 'C02'
             };
         }
+
+        const initIngredients = selectByIds(initIngredientsIds, ingredients.items);
+        const max = initIngredients.reduce((sum, { relativeProbability }) => sum = sum + relativeProbability, 0);
+        const probabilities = initIngredients.map(({ id, relativeProbability }) => ({ id, probability: relativeProbability / max }));
 
         this.#updatePool(probabilities);
     }
