@@ -1,3 +1,8 @@
+import {
+    select,
+    selectById,
+} from "@utils/data";
+
 /**
  * Keeps track of the accumulated results, based on the amount of each type of ingredient.
  * Results are stored as `{ ... <id>: <amount> }`.
@@ -10,6 +15,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     #labour = 0;
     #necromancy = 0;
     #astrology = 0;
+    #currentIngredients = {};
     #config = null;
     #results = {
         labour: 0,
@@ -28,10 +34,26 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         super(pluginManager);
     }
 
-    init(config = []) {
-        this.#config = config;
+    init() {
+        const {
+            boards,
+            ingredients,
+        } = this.game.cache.json.get('game');
 
-        Object.keys(this.#config).forEach(typeId => this.#amounts[Number(typeId)] = 0);
+        if (!ingredients || !boards) {
+            throw {
+                message: 'ScorePlugin: missing entity "ingredients" and "boards" in game config',
+                code: 'C07'
+            };
+        }
+
+        const { initIngredientsIds } = select(boards.items, board => board.default)[0];
+
+        initIngredientsIds.forEach(id => {
+            this.#amounts[Number(id)] = 0;
+            this.#currentIngredients[Number(id)] = selectById(ingredients.items, id);
+        });
+        console.log({ a: this.#amounts, b: this.#currentIngredients})
     }
 
     /**

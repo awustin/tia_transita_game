@@ -17,6 +17,7 @@ export default class MainScene extends Phaser.Scene
 
     create() {
         this.plugins.start('supply');
+        this.plugins.start('score');
 
         const text = this.add.text(
             TITLE_X,

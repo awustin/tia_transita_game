@@ -16,10 +16,7 @@ import {
     initialState,
 } from "@constants";
 
-const {
-    ingredientsProperties,
-    spells,
-} = initialState;
+const { spells } = initialState;
 
 new Phaser.Game({
     type: Phaser.WEBGL,
@@ -43,8 +40,6 @@ new Phaser.Game({
             {
                 key: 'score',
                 plugin: ScorePlugin,
-                start: true,
-                data: ingredientsProperties,
             },
             {
                 key: 'spell',
