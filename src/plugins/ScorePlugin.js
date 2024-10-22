@@ -1,6 +1,6 @@
 import {
-    select,
     selectById,
+    selectByValue,
 } from "@utils/data";
 
 /**
@@ -16,7 +16,6 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     #necromancy = 0;
     #astrology = 0;
     #currentIngredients = {};
-    #config = null;
     #results = {
         labour: 0,
         astrology: 0,
@@ -43,39 +42,50 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         if (!ingredients || !boards) {
             throw {
                 message: 'ScorePlugin: missing entity "ingredients" and "boards" in game config',
-                code: 'C07'
+                code: 'C08'
             };
         }
 
-        const { initIngredientsIds } = select(boards.items, board => board.default)[0];
-
-        initIngredientsIds.forEach(id => {
-            this.#amounts[Number(id)] = 0;
-            this.#currentIngredients[Number(id)] = selectById(ingredients.items, id);
-        });
-        console.log({ a: this.#amounts, b: this.#currentIngredients})
+        this.updateCurrentIngredients(
+            selectByValue(boards.items, 'default')?.initIngredientsIds
+        );
     }
 
     /**
-     * Add a config key.
-     * @param {*} id Ingredient type id
-     * @param {*} values Values `{<labour>, <necromancy>, <astrology>}`
+     * Updates the current list of ingredients and amounts.
+     * @param {Array} newIds Array of updated ingredient ids
      */
-    addIngredientConfig(id, values = {}) {
-        const {
-            labour = null,
-            necromancy = null,
-            astrology = null
-        } = values;
+    updateCurrentIngredients(newIds = []) {
+        const { ingredients } = this.game.cache.json.get('game');
 
-        if (!labour || !necromancy || !astrology) {
-            throw {
-                message: 'Invalid config for ingredient',
-                code: 'C08'
+        this.#currentIngredients = {};
+
+        newIds.forEach(id => {
+            if (!this.#amounts[Number(id)]) {
+                this.#amounts[Number(id)] = 0;
             }
+
+            this.#currentIngredients[Number(id)] = selectById(ingredients.items, id);
+        });
+    }
+
+    /**
+     * Adds an ingredient to the current ingredients, and removes the one specified.
+     * @param {Number} id New ingredient id
+     * @param {Number} removeId Ingredient to replace
+     */
+    replaceIngredient(id, removeId) {
+        if(!id || !removeId) {
+            return false;
         }
 
-        this.#config[id] = { labour, necromancy, astrology };
+        const current = Object.keys(this.#currentIngredients);
+        const index = current.indexOf(removeId);
+
+        if (index !== -1) {
+            current[index] = id;
+            this.updateCurrentIngredients(current);
+        }
     }
 
     /**
@@ -86,7 +96,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     add(id, amount) {
         const currAmount = this.#amounts[Number(id)] || 0;
         const weightedAmount = this.#weightedMove(amount);
-        const { labour, necromancy, astrology } =  this.#config[id];
+        const { labour, necromancy, astrology } =  this.#currentIngredients[id];
 
         this.#amounts[Number(id)] = currAmount + amount;
         this.#labour = this.#labour + labour * weightedAmount;
@@ -103,8 +113,8 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         return this.#results;
     }
 
-    get config() {
-        return this.#config;
+    get currentIngredients() {
+        return this.#currentIngredients;
     }
 
     get amounts() {

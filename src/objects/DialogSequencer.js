@@ -69,8 +69,8 @@ export default class DialogSequencer
         const supply = this.#scene.plugins.get('supply');
 
         const currentIngredients = selectByIds(
-            supply.currentIngredients.map(({ id }) => Number(id)),
-            ingredients.items
+            ingredients.items,
+            supply.currentIngredients.map(({ id }) => Number(id))
         );
 
         this.#current = [
@@ -90,6 +90,6 @@ export default class DialogSequencer
 
         const id = Math.floor(Math.random() * this.#current.length);
         
-        return selectById(lookUpIds[id], this.#current)?.text || '';
+        return selectById(this.#current, lookUpIds[id])?.text || '';
     }
 }

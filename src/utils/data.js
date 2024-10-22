@@ -8,25 +8,41 @@ export const select = (items = [], condition = Function.prototype) => items.filt
 
 /**
  * Selects the first item with the given ID
- * @param {Number} id ID to search
  * @param {Array} items Lookup array
- * @returns Single item
+ * @param {Number} id ID to search
+ * @returns Single object
  */
-export const selectById = (id = null, items = []) => !id ? {} : items.filter(item => Number(item.id) == Number(id))[0];
+export const selectById = (items = [], id = null) => !id ? {} : items.filter(item => Number(item.id) == Number(id))[0];
 
 /**
  * Selects the items with the given IDs
- * @param {Array} ids IDs to search
  * @param {Array} items Lookup array
+ * @param {Array} ids IDs to search
  * @returns Array of items
  */
-export const selectByIds = (ids = [], items = []) => {
+export const selectByIds = (items = [], ids = []) => {
     if (!ids.length) {
         return [];
     }
 
     return items.filter(item => ids.includes(Number(item.id)));
 }
+
+/**
+ * Selects the first item that has an attribute with the specified value
+ * @param {Array} items Lookup array
+ * @param {String} attr Name of attribute
+ * @param {Any} value Value of attribute, defaults to `true`
+ * @returns Single object
+ */
+export const selectByValue = (items = [], attr = null, value = true) => {
+    if (!attr) {
+        return {};
+    }
+
+    return items.filter(item => item[attr] ? item[attr] === value : false)[0] || {};
+};
+
 
 /**
  * Performs a JOIN operation between `left` and `right` arrays, comparing `leftOn` and `rightOn` keys

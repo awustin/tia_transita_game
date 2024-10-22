@@ -37,7 +37,7 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
             };
         }
 
-        const initIngredients = selectByIds(initIngredientsIds, ingredients.items);
+        const initIngredients = selectByIds(ingredients.items, initIngredientsIds);
         const max = initIngredients.reduce((sum, { relativeProbability }) => sum = sum + relativeProbability, 0);
         const probabilities = initIngredients.map(({ id, relativeProbability }) => ({ id, probability: relativeProbability / max }));
 
