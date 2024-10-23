@@ -101,7 +101,7 @@ export default class MainScene extends Phaser.Scene
             });
     
             this.score.add(removed[0].typeId, removed.length);
-            this.spell.updateProbabilities(this.score.results);
+            this.spell.updateProbabilities(this.score.points);
             this.supply.redistributeProbabilities(this.score.amounts);
             this.basket.toggleCollectAvailable();
     
@@ -130,7 +130,7 @@ export default class MainScene extends Phaser.Scene
             labour,
             necromancy,
             astrology,
-        } = this.score.results;
+        } = this.score.points;
         const spell = this.spell;
 
         this.registry.debugText.setText([

@@ -16,11 +16,6 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     #necromancy = 0;
     #astrology = 0;
     #currentIngredients = {};
-    #results = {
-        labour: 0,
-        astrology: 0,
-        necromancy: 0
-    };
 
     constructor(pluginManager) {
         if(!pluginManager) {
@@ -65,7 +60,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
                 this.#amounts[Number(id)] = 0;
             }
 
-            this.#currentIngredients[Number(id)] = selectById(ingredients.items, id);
+            this.#currentIngredients[Number(id)] = selectById(ingredients.items, id) || {};
         });
     }
 
@@ -80,7 +75,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         }
 
         const current = Object.keys(this.#currentIngredients);
-        const index = current.indexOf(removeId);
+        const index = current.indexOf(String(removeId));
 
         if (index !== -1) {
             current[index] = id;
@@ -96,21 +91,28 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     add(id, amount) {
         const currAmount = this.#amounts[Number(id)] || 0;
         const weightedAmount = this.#weightedMove(amount);
-        const { labour, necromancy, astrology } =  this.#currentIngredients[id];
+        const { labour, necromancy, astrology } =  this.#currentIngredients[id] || {};
 
-        this.#amounts[Number(id)] = currAmount + amount;
-        this.#labour = this.#labour + labour * weightedAmount;
-        this.#necromancy = this.#necromancy + necromancy * weightedAmount;
-        this.#astrology = this.#astrology + astrology * weightedAmount;
-
-        this.#setRegistryResults();
+        if (typeof labour !== 'undefined' &&
+            typeof necromancy !== 'undefined' &&
+            typeof astrology !== 'undefined'
+        ) {
+            this.#amounts[Number(id)] = currAmount + amount;
+            this.#labour = this.#labour + labour * weightedAmount;
+            this.#necromancy = this.#necromancy + necromancy * weightedAmount;
+            this.#astrology = this.#astrology + astrology * weightedAmount;
+        }
     }
 
     /**
      * Retrieves accumulated results
      */
-    get results() {
-        return this.#results;
+    get points() {
+        return ({
+            astrology: this.#astrology,
+            necromancy: this.#necromancy,
+            labour: this.#labour
+        });
     }
 
     get currentIngredients() {
@@ -129,11 +131,5 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
      */
     #weightedMove(amount) {
         return amount * amount;
-    }
-
-    #setRegistryResults() {
-        this.#results.labour = this.#labour;
-        this.#results.necromancy = this.#necromancy;
-        this.#results.astrology = this.#astrology;
     }
 }
