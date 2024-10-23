@@ -13,10 +13,7 @@ import SpeechBubblesPlugin from "@plugins/SpeechBubblesPlugin";
 import {
     WIDTH,
     HEIGHT,
-    initialState,
 } from "@constants";
-
-const { spells } = initialState;
 
 new Phaser.Game({
     type: Phaser.WEBGL,
@@ -45,7 +42,6 @@ new Phaser.Game({
                 key: 'spell',
                 plugin: SpellPlugin,
                 start: true,
-                data: spells,
             },
             {
                 key: 'board',

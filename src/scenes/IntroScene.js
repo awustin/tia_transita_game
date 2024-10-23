@@ -13,6 +13,7 @@ export default class MainScene extends Phaser.Scene
 
     preload() {
         this.load.json('game', 'src/config/game.json');
+        this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
     }
 
     create() {

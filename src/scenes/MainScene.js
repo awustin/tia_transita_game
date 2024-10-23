@@ -28,7 +28,6 @@ export default class MainScene extends Phaser.Scene
     }
 
     preload () {
-        this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
         this.input.keyboard.addCapture('SPACE');
     }
 
@@ -39,7 +38,6 @@ export default class MainScene extends Phaser.Scene
             basket,
             board,
             spell,
-            score,
         } = this;
 
         this.ingredientsGrid = new IngredientsGameGrid(this);

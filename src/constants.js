@@ -48,19 +48,3 @@ export const TITLE_Y = 416;
 export const TRANSITA_X = 614;
 export const TRANSITA_Y = 312;
 export const WIDTH = 1280;
-
-// Should read from config file
-export const initialState = {
-    ingredientsProperties: {
-        1: {labour: 1, astrology: 0, necromancy: 0},
-        2: {labour: 0, astrology: 1, necromancy: 0},
-        3: {labour: 0, astrology: 0, necromancy: 1},
-        4: {labour: 2, astrology: 0, necromancy: 0},
-    },
-    spells: {
-        'blockCells': {id: 1, params: null},
-        'maxMoves': {id: 2, params: null},
-        'changeBoard': {id: 3, params: null},
-        'resetBoard': {id: 4, params: null},
-    },
-};

@@ -3,7 +3,12 @@
  */
 export default class SpellPlugin extends Phaser.Plugins.BasePlugin
 {
-    #effects = {};
+    #effects = {
+        'blockCells': {id: 1, params: null},
+        'maxMoves': {id: 2, params: null},
+        'changeBoard': {id: 3, params: null},
+        'resetBoard': {id: 4, params: null},
+    };
     #current = 'none';
 
     // To do - Need calibration: properties for probability computing
@@ -22,8 +27,7 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         super(pluginManager);
     }
 
-    init(config = {}) {
-        this.#effects = config;
+    init() {
         this.#sortedProbabilitySegments = this.#updateProbabilitySegments();
     }
     
