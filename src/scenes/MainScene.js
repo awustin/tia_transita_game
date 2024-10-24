@@ -1,8 +1,10 @@
-import IngredientsGameGrid from '@objects/IngredientsGameGrid';
+import IngredientsTree from "@objects/IngredientsTree";
+import IngredientsGrid from '@objects/IngredientsGrid';
 import {
     BASEMENT_X,
     STAIRCASE_X,
 } from "@constants";
+
 export default class MainScene extends Phaser.Scene
 {
     basket = null;
@@ -10,8 +12,10 @@ export default class MainScene extends Phaser.Scene
     score = null;
     spell = null;
     board = null;
-    ingredientsGrid = null;
+    grid = null;
+    tree = null;
     controls = null;
+    moves = 0;
 
     constructor() {
         super('main');
@@ -38,10 +42,12 @@ export default class MainScene extends Phaser.Scene
             basket,
             board,
             spell,
+            score,
         } = this;
 
-        this.ingredientsGrid = new IngredientsGameGrid(this);
-        board.matrix = this.ingredientsGrid.grid;
+        this.tree = new IngredientsTree(this);
+        this.grid = new IngredientsGrid(this);
+        board.matrix = this.grid.array;
         
         this.input.on('pointerup', (value, [ ingredient ]) => {
             if (ingredient?.collectable) {
@@ -75,12 +81,25 @@ export default class MainScene extends Phaser.Scene
         });
 
         this.events.on('newmove', () => {
+            this.moves++;
             spell.clearEffect();
-            spell.pickEffect();
 
-            //To do: apply effect
-            this.ingredientsGrid.fillInWithNewIngredients();
-            //To do: monitor available moves
+            if (this.tree.isBranchIncrease(this.moves)) {
+                console.log('New ingredient!!');
+                // Get new ingredient
+                // Replace new ingredient in grid
+                // Replace new ingredient in supply
+                // Replace new ingredient in score
+                // Replace new ingredient in spell
+            } else {
+                spell.pickEffect();
+
+                //Todo: apply effect
+            }
+
+            this.grid.fillInWithNewIngredients();
+
+            //Todo: monitor available moves
         });
     }
 
@@ -95,10 +114,10 @@ export default class MainScene extends Phaser.Scene
         if (removed.length) {
             removed.forEach(ingredient => {
                 ingredient.setCollected();
-                this.ingredientsGrid.replaceWithEmpty(ingredient);
+                this.grid.replaceWithEmpty(ingredient);
             });
     
-            this.score.add(removed[0].typeId, removed.length);
+            this.score.add(removed[0].id, removed.length);
             this.spell.updateProbabilities(this.score.points);
             this.supply.redistributeProbabilities(this.score.amounts);
             this.basket.toggleCollectAvailable();
@@ -130,6 +149,7 @@ export default class MainScene extends Phaser.Scene
             astrology,
         } = this.score.points;
         const spell = this.spell;
+        const tree = this.tree
 
         this.registry.debugText.setText([
             'Selected: ' + basket.selected.map(ingredients => ingredients.cell.join(':')),
@@ -138,6 +158,8 @@ export default class MainScene extends Phaser.Scene
             'Necromancy: ' + necromancy,
             'Astrology: ' + astrology,
             'Spell: ' + spell.current,
+            'New ingredient: ' + tree.isNew || false,
+            'Moves: ' + this.moves,
         ].join('\n'));
     }
 }

@@ -1,14 +1,14 @@
 import Sparkles from "@sprites/Sparkles";
 export default class Ingredient extends Phaser.GameObjects.Sprite
 {
-    #typeId = null;
+    #id = null;
     #cell = [];
     #cellBorder = null;
     #sparkles = null;
     #collectable = true;
 
-    constructor(typeId = null, cell = [], config) {
-        if (!typeId) {
+    constructor(id = null, cell = [], config) {
+        if (!id) {
             throw {
                 message: 'Ingredient missing type id',
                 code: 'C05'
@@ -26,14 +26,14 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             config.x,
             config.y,
             'main',
-            `ingredient${typeId}`,
+            `ingredient${id}`,
         );
-        this.#typeId = typeId;
+        this.#id = id;
         this.#cell = cell;
 
         this.scene.add.existing(this);
         this.setStart();
-        this.setName(`ingredient${typeId}`);
+        this.setName(`ingredient${id}`);
 
         this.on('pointerover', () => {
             this.#addCellBorder();
@@ -46,8 +46,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         }, this);
     }
 
-    get typeId() {
-        return this.#typeId;
+    get id() {
+        return this.#id;
     }
 
     get cell() {

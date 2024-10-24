@@ -37,7 +37,7 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
 
         if (!selected.length) {
             selected.push(ingredient);
-            this.#combinationTypeId = ingredient.typeId;
+            this.#combinationTypeId = ingredient.id;
 
             return true;
         }
@@ -92,7 +92,7 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
     // Private
 
     #isCombinationType(ingredient) {
-        return Number(ingredient.typeId) === Number(this.#combinationTypeId);
+        return Number(ingredient.id) === Number(this.#combinationTypeId);
     }
 
     #isAdjacent(ingredient) {

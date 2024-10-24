@@ -8,10 +8,18 @@
     "ingredients": {
         "ids": [1, 2, 3, 4],
         "items": [
-            { "id": 1, "labour": 1, "necromancy": 0, "astrology": 0, "name": "apple", "relativeProbability": 2 },
-            { "id": 2, "labour": 0, "necromancy": 0, "astrology": 1, "name": "gem", "relativeProbability": 1 },
-            { "id": 3, "labour": 0, "necromancy": 1, "astrology": 0, "name": "jar", "relativeProbability": 1 },
-            { "id": 4, "labour": 2, "necromancy": 0, "astrology": 0, "name": "pumpkin", "relativeProbability": 2 }
+            { "id": 1, "labour": 1, "astrology": 0, "necromancy": 0, "name": "apple", "branchId": 300, "relativeProbability": 3 },
+            { "id": 2, "labour": 0, "astrology": 1, "necromancy": 0, "name": "gem", "branchId": 301, "relativeProbability": 1 },
+            { "id": 3, "labour": 0, "astrology": 0, "necromancy": 1, "name": "jar", "branchId": 302, "relativeProbability": 1 },
+            { "id": 4, "labour": 2, "astrology": 0, "necromancy": 0, "name": "pumpkin", "branchId": 300, "relativeProbability": 3 }
+        ]
+    },
+    "branches": {
+        "ids": [300, 301, 302],
+        "items": [
+            { "id": 300, "name": "natural", "ingredients": [1, 4] },
+            { "id": 301, "name": "amulet", "ingredients": [2] },
+            { "id": 302, "name": "witchcraft", "ingredients": [3] }
         ]
     },
     "dialogs": {

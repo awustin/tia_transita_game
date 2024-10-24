@@ -1,0 +1,9 @@
+{
+    "tree": {
+        "MOVES_CHECK": 20,
+        "ifBranchIncrease": {
+            "MAGIC_COEFF": 1.1,
+            "NATURAL_COEFF": 1
+        }
+    }
+}

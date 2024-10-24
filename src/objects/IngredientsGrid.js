@@ -12,7 +12,7 @@ import {
  * @param {*} scene This scene
  * @param {*} size Size of the grid. If not set it defaults to 9
  */
-export default class IngredientsGameGrid extends Phaser.GameObjects.Group
+export default class IngredientsGrid extends Phaser.GameObjects.Group
 {
     #group = null;
     #grid = [];
@@ -22,7 +22,7 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
     constructor(scene = null, size = GRID_COUNT) {
         if (!scene) {
             throw {
-                message: 'IngredientsGameGrid missing scene',
+                message: 'IngredientsGrid missing scene',
                 code: 'C10'
             }
         }
@@ -32,7 +32,7 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
 
         if (!this.supply) {
             throw {
-                message: 'IngredientsGameGrid: add SupplyPlugin to game',
+                message: 'IngredientsGrid: add SupplyPlugin to game',
                 code: 'C11'
             }
         }
@@ -74,9 +74,6 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
 
     /**
      * Places a new ingredient in the empty positions, and untracks the empty cell
-     * @param {Number} typeId The type if of the ingredient
-     * @param {Number} row index
-     * @param {Number} col index
      */
     fillInWithNewIngredients() {
         if (this.#emptyPositions.length) {
@@ -92,7 +89,7 @@ export default class IngredientsGameGrid extends Phaser.GameObjects.Group
         return this.#emptyPositions;
     }
 
-    get grid() {
+    get array() {
         return this.#grid;
     }
 

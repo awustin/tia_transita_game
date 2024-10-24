@@ -68,3 +68,61 @@ export const join = (left, right) => {
         })
     })
 }
+
+/**
+ * Groups an array of objects by the attribute provided
+ * @param {Array} items Original array
+ * @param {Any} by Attribute
+ * @returns Object with the groups as keys and arrays of objects as values
+ */
+export const groupBy = (items = [], by = null) => {
+    if (!by) {
+        return {};
+    }
+
+    const key = String(by);
+
+    return items.reduce((acc, current) => {
+        if (current[key] == null) {
+            if (!acc.unmatched) {
+                acc.unmatched = [current];
+            } else {
+                acc.unmatched = [...acc.unmatched, current];
+            }            
+        } else {
+            const value = String(current[key]);
+    
+            if (!acc[value]) {
+                acc[value] = [current];
+            } else {
+                acc[value] = [...acc[value], current];
+            }
+        }
+
+        return acc;
+    }, {});
+}
+
+/**
+ * Gets the element with the maximum value for the key specified
+ * @param {Array} items Lookup array
+ * @param {Any} key Key to sort by. Must have numeric values
+ * @return The object whose value is the maximum 
+ */
+export const selectByMaxValue = (items = [], key = null) => {
+    if (!key) {
+        return {}
+    }
+
+    return items.reduce((acc, current) => {
+        if (acc.max == null || Number(current[key]) >= Number(acc.max)) {
+            acc.max = current[key];
+            acc.result = current;
+        }
+
+        return acc;
+    }, {
+        max: null,
+        result: {},
+    }).result;
+}
