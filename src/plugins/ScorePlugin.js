@@ -16,6 +16,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     #necromancy = 0;
     #astrology = 0;
     #currentIngredients = {};
+    #weightedMove = Function.prototype;
 
     constructor(pluginManager) {
         if(!pluginManager) {
@@ -41,6 +42,20 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
             };
         }
 
+        const {
+            score: {
+                add: { weightedMove }
+            }
+        } = this.game.cache.json.get('calibration');
+
+        if (!weightedMove) {
+            throw {
+                message: 'ScorePlugin: missing entity "score: { add: { weightedMove } } " in calibration config',
+                code: 'C08'
+            };
+        }
+
+        this.#weightedMove = new Function(weightedMove.args, weightedMove.body);
         this.updateCurrentIngredients(
             selectByValue(boards.items, 'default')?.initIngredientsIds
         );
@@ -90,7 +105,6 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
      */
     add(id, amount) {
         const currAmount = this.#amounts[Number(id)] || 0;
-        const weightedAmount = this.#weightedMove(amount);
         const { labour, necromancy, astrology } =  this.#currentIngredients[id] || {};
 
         if (typeof labour !== 'undefined' &&
@@ -98,9 +112,9 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
             typeof astrology !== 'undefined'
         ) {
             this.#amounts[Number(id)] = currAmount + amount;
-            this.#labour = this.#labour + labour * weightedAmount;
-            this.#necromancy = this.#necromancy + necromancy * weightedAmount;
-            this.#astrology = this.#astrology + astrology * weightedAmount;
+            this.#labour = this.#labour + this.#weightedMove(amount, labour);
+            this.#necromancy = this.#necromancy + this.#weightedMove(amount, necromancy);
+            this.#astrology = this.#astrology + this.#weightedMove(amount, astrology);
         }
     }
 
@@ -121,15 +135,5 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
 
     get amounts() {
         return this.#amounts;
-    }
-
-    // Private
-
-    /**
-     * The more ingredients in one move, the more influence in the results.
-     * Uses a factor that indicates the relation between the amount and the weight in the results
-     */
-    #weightedMove(amount) {
-        return amount * amount;
     }
 }

@@ -11,8 +11,11 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     };
     #current = 'none';
 
-    // To do - Need calibration: properties for probability computing
-    #probabilityScaleFactor = 1/50;
+    #blockCells = Function.prototype;
+    #maxMoves = Function.prototype;
+    #changeBoard = Function.prototype;
+    #resetBoard = Function.prototype;
+
     #sortedEffectsProbabilities = [{ name: 'none', probability: 1 }];
     #sortedProbabilitySegments = [];
 
@@ -28,6 +31,22 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     }
 
     init() {
+        const {
+            spell: {
+                computeEffectProbability: {
+                    blockCellsProbability,
+                    maxMovesProbability,
+                    changeBoardProbability,
+                    resetBoardProbability,
+                }
+            }
+        } = this.game.cache.json.get('calibration');
+
+        this.#blockCells = new Function(blockCellsProbability.args, blockCellsProbability.body);
+        this.#maxMoves = new Function(maxMovesProbability.args, maxMovesProbability.body);
+        this.#changeBoard = new Function(changeBoardProbability.args, changeBoardProbability.body);
+        this.#resetBoard = new Function(resetBoardProbability.args, resetBoardProbability.body);
+
         this.#sortedProbabilitySegments = this.#updateProbabilitySegments();
     }
     
@@ -93,23 +112,20 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     // Private
 
     #computeEffectProbability(name, { labour, necromancy, astrology }) {
+        // Todo - Need calibration: properties for probability computing
         // On the limit to infinite, the sum of of probabilities should not be over 1
         switch(name) {
             case 'blockCells':
-                return 3/10 - 3 / (this.#scaleInput(labour) + 10);
+                return this.#blockCells(labour);
             case 'maxMoves':
-                return 3/10 - 3 / (this.#scaleInput(labour) + 10);
+                return this.#maxMoves(labour);
             case 'changeBoard':
-                return 1/5 - 1 / (this.#scaleInput(necromancy) + 5);
+                return this.#changeBoard(necromancy);
             case 'resetBoard':
-                return 1/5 - 1 / (this.#scaleInput(astrology) + 5);
+                return this.#resetBoard(astrology);
             default:
                 break;
         }
-    }
-
-    #scaleInput(value) {
-        return value * this.#probabilityScaleFactor;
     }
     
     #updateProbabilitySegments() {

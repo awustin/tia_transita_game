@@ -1,7 +1,38 @@
 {
+    "DISCLAIMER": "This file should NOT get to production",
+    "spell": {
+        "computeEffectProbability": {
+            "blockCellsProbability": {
+                "args": "points",
+                "body": "return 3/10 - 3 / (points * 1/50 + 10);"
+            },
+            "maxMovesProbability": {
+                "args": "points",
+                "body": "return 3/10 - 3 / (points * 1/50 + 10);"
+            },
+            "changeBoardProbability": {
+                "args": "points",
+                "body": "return 1/5 - 1 / (points * 1/50 + 5);"
+            },
+            "resetBoardProbability": {
+                "args": "points",
+                "body": "return 1/5 - 1 / (points * 1/50 + 5);"
+            },
+            "comment": "On the limit points -> infinite, the sum of the four probabilities functions should not be over 1"
+        }
+    },
+    "score": {
+        "add": {
+            "weightedMove": {
+                "args": "amount, points",
+                "body": "return amount * amount * points;",
+                "comment": "The more ingredients in one move, the more influence in the results" 
+            }
+        }
+    },
     "tree": {
         "MOVES_CHECK": 20,
-        "ifBranchIncrease": {
+        "decideIfBranchIncrease": {
             "MAGIC_COEFF": 1.1,
             "NATURAL_COEFF": 1
         }

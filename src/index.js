@@ -41,7 +41,6 @@ new Phaser.Game({
             {
                 key: 'spell',
                 plugin: SpellPlugin,
-                start: true,
             },
             {
                 key: 'board',

@@ -132,7 +132,7 @@ export default class IngredientsTree
     #decideIfBranchIncrease(points = {}, moves = 0) {
         const { tree: {
             MOVES_CHECK,
-            ifBranchIncrease: {
+            decideIfBranchIncrease: {
                 MAGIC_COEFF,
                 NATURAL_COEFF,
             }
