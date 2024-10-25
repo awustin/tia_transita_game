@@ -1,3 +1,5 @@
+import { spell as spellMechanics } from "@utils/mechanics";
+
 /**
  * Enable / disable the effects in the game
  */
@@ -10,11 +12,6 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         'resetBoard': {id: 4, params: null},
     };
     #current = 'none';
-
-    #blockCells = Function.prototype;
-    #maxMoves = Function.prototype;
-    #changeBoard = Function.prototype;
-    #resetBoard = Function.prototype;
 
     #sortedEffectsProbabilities = [{ name: 'none', probability: 1 }];
     #sortedProbabilitySegments = [];
@@ -31,22 +28,6 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     }
 
     init() {
-        const {
-            spell: {
-                computeEffectProbability: {
-                    blockCellsProbability,
-                    maxMovesProbability,
-                    changeBoardProbability,
-                    resetBoardProbability,
-                }
-            }
-        } = this.game.cache.json.get('calibration');
-
-        this.#blockCells = new Function(blockCellsProbability.args, blockCellsProbability.body);
-        this.#maxMoves = new Function(maxMovesProbability.args, maxMovesProbability.body);
-        this.#changeBoard = new Function(changeBoardProbability.args, changeBoardProbability.body);
-        this.#resetBoard = new Function(resetBoardProbability.args, resetBoardProbability.body);
-
         this.#sortedProbabilitySegments = this.#updateProbabilitySegments();
     }
     
@@ -112,17 +93,24 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     // Private
 
     #computeEffectProbability(name, { labour, necromancy, astrology }) {
-        // Todo - Need calibration: properties for probability computing
+        const { compute: {
+                blockCellsProbability,
+                maxMovesProbability,
+                changeBoardProbability,
+                resetBoardProbability,
+            }
+        } = spellMechanics;
+
         // On the limit to infinite, the sum of of probabilities should not be over 1
         switch(name) {
             case 'blockCells':
-                return this.#blockCells(labour);
+                return blockCellsProbability(labour);
             case 'maxMoves':
-                return this.#maxMoves(labour);
+                return maxMovesProbability(labour);
             case 'changeBoard':
-                return this.#changeBoard(necromancy);
+                return changeBoardProbability(necromancy);
             case 'resetBoard':
-                return this.#resetBoard(astrology);
+                return resetBoardProbability(astrology);
             default:
                 break;
         }

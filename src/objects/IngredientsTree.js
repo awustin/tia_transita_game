@@ -4,6 +4,7 @@ import {
     groupBy,
 } from "@utils/data";
 import { linear } from "@utils/math";
+import { tree as treeMechanics } from "@utils/mechanics";
 
 const NATURAL = 300;
 const AMULET = 301;
@@ -64,14 +65,7 @@ export default class IngredientsTree
             throw {
                 message: 'IngredientsTree missing a game config object. Check it\'s being loaded in Intro scene',
                 code: 'C22'
-            };
-        }
-
-        if (!scene.cache.json.get('calibration')) {
-            throw {
-                message: 'IngredientsTree missing a calibration config object. Check it\'s being loaded in Intro scene',
-                code: 'C23'
-            };
+            }
         }
 
         this.#scene = scene;
@@ -84,7 +78,6 @@ export default class IngredientsTree
      */
     isBranchIncrease(moves) {
         if (moves != null) {
-            // Todo: needs calibration
             const score = this.#scene.plugins.get('score');
     
             return this.#decideIfBranchIncrease(score.points, moves);
@@ -130,13 +123,13 @@ export default class IngredientsTree
      * @returns Boolean
      */
     #decideIfBranchIncrease(points = {}, moves = 0) {
-        const { tree: {
-            MOVES_CHECK,
-            decideIfBranchIncrease: {
-                MAGIC_COEFF,
-                NATURAL_COEFF,
+        const {
+            constants: {
+                MOVES_CHECK,
+                DECIDE_MAGIC_POINTS_COEFF,
+                DECIDE_NATURAL_POINTS_COEFF,
             }
-        } } = this.#scene.cache.json.get('calibration');
+        } = treeMechanics;
 
         // Every given number of moves, check if there's a new ingredient coming up
         if ((moves !== 0) && !(moves % MOVES_CHECK)) {
@@ -149,14 +142,14 @@ export default class IngredientsTree
             /* 
                 "Yes" probability is based on the ratio of magical points / total points
 
-                                        MAGIC_COEFF . (astrology + necromancy)
-                P(Yes) ∝ ------------------------------------------------------------------
-                           MAGIC_COEFF . (astology + necromancy) + NATURAL_COEFF . labour
+                                        DECIDE_MAGIC_POINTS_COEFF . (astrology + necromancy)
+                P(Yes) ∝ --------------------------------------------------------------------------------------------------
+                           DECIDE_MAGIC_POINTS_COEFF . (astology + necromancy) + DECIDE_NATURAL_POINTS_COEFF . labour
             */
 
             // Result should be <= 1
-            const yesProbability = linear([astrology, necromancy], [MAGIC_COEFF, MAGIC_COEFF]) /
-                linear([astrology, necromancy, labour], [MAGIC_COEFF, MAGIC_COEFF, NATURAL_COEFF]);
+            const yesProbability = linear([astrology, necromancy], [DECIDE_MAGIC_POINTS_COEFF, DECIDE_MAGIC_POINTS_COEFF]) /
+                linear([astrology, necromancy, labour], [DECIDE_MAGIC_POINTS_COEFF, DECIDE_MAGIC_POINTS_COEFF, DECIDE_NATURAL_POINTS_COEFF]);
 
             return Math.random() <= yesProbability;
         }

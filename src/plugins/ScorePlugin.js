@@ -2,6 +2,7 @@ import {
     selectById,
     selectByValue,
 } from "@utils/data";
+import { score as scoreMechanics } from "@utils/mechanics";
 
 /**
  * Keeps track of the accumulated results, based on the amount of each type of ingredient.
@@ -16,7 +17,6 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
     #necromancy = 0;
     #astrology = 0;
     #currentIngredients = {};
-    #weightedMove = Function.prototype;
 
     constructor(pluginManager) {
         if(!pluginManager) {
@@ -42,20 +42,6 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
             };
         }
 
-        const {
-            score: {
-                add: { weightedMove }
-            }
-        } = this.game.cache.json.get('calibration');
-
-        if (!weightedMove) {
-            throw {
-                message: 'ScorePlugin: missing entity "score: { add: { weightedMove } } " in calibration config',
-                code: 'C08'
-            };
-        }
-
-        this.#weightedMove = new Function(weightedMove.args, weightedMove.body);
         this.updateCurrentIngredients(
             selectByValue(boards.items, 'default')?.initIngredientsIds
         );
@@ -104,6 +90,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
      * @param {Number} amount Number of ingredients in the move
      */
     add(id, amount) {
+        const { compute: { weightedMove } } = scoreMechanics;
         const currAmount = this.#amounts[Number(id)] || 0;
         const { labour, necromancy, astrology } =  this.#currentIngredients[id] || {};
 
@@ -112,9 +99,9 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
             typeof astrology !== 'undefined'
         ) {
             this.#amounts[Number(id)] = currAmount + amount;
-            this.#labour = this.#labour + this.#weightedMove(amount, labour);
-            this.#necromancy = this.#necromancy + this.#weightedMove(amount, necromancy);
-            this.#astrology = this.#astrology + this.#weightedMove(amount, astrology);
+            this.#labour = this.#labour + weightedMove(amount, labour);
+            this.#necromancy = this.#necromancy + weightedMove(amount, necromancy);
+            this.#astrology = this.#astrology + weightedMove(amount, astrology);
         }
     }
 
