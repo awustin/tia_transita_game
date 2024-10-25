@@ -109,18 +109,27 @@ export default class MainScene extends Phaser.Scene
     }
 
     collectSelected () {
-        const removed = this.basket.untrackSelectedIngredients(0) || [];
+        const {
+            grid,
+            score,
+            spell,
+            supply,
+            basket,
+            tree,
+        } = this;
+        const removed = basket.untrackSelectedIngredients(0) || [];
 
         if (removed.length) {
             removed.forEach(ingredient => {
                 ingredient.setCollected();
-                this.grid.replaceWithEmpty(ingredient);
+                grid.replaceWithEmpty(ingredient);
             });
     
-            this.score.add(removed[0].id, removed.length);
-            this.spell.updateProbabilities(this.score.points);
-            this.supply.redistributeProbabilities(this.score.amounts);
-            this.basket.toggleCollectAvailable();
+            score.add(removed[0].id, removed.length);
+            spell.updateProbabilities(score.points);
+            supply.updateProbabilities(score.amounts);
+            tree.updateProbabilites(score.points);
+            basket.toggleCollectAvailable();
     
             // To do: analyze results. If it's winner emit WIN, else start a new move
             this.events.emit('newmove');

@@ -126,3 +126,28 @@ export const selectByMaxValue = (items = [], key = null) => {
         result: {},
     }).result;
 }
+
+/**
+ * Performs an aggregation operation on an array of items. Defaults to sum,
+ * @param {Array} items Original array
+ * @param {Any} by Key to aggregate by
+ * @param {String} operation Possible operations: `'sum'`. Defaults to `'sum'`
+ * @returns Result
+ */
+export const aggregate = (items = [], by = null, operation = 'sum') => {
+    if(!items.length || !by) {
+        return false;
+    }
+
+    const key = by ? String(by) : false;
+
+    if (operation === 'sum' && key) {
+        return items.reduce((acc, current) => {
+            if (!current[key]) {
+                return acc;
+            }
+
+            acc += Number(current[key]);
+        }, 0);
+    }
+}

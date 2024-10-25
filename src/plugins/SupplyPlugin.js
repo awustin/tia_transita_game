@@ -83,7 +83,7 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
      * @param {Object} ingredientsAmount Object with ids as keys and amounts as values
      * `{ ... <id>: <amount> }`
      */
-    redistributeProbabilities(ingredientsAmount = {}) {
+    updateProbabilities(ingredientsAmount = {}) {
         if (Object.keys(ingredientsAmount).length) {
             const sortedIngredients = this.#sortedIngredientsWithProbability;
             let max = 0;
