@@ -81,23 +81,36 @@ export default class MainScene extends Phaser.Scene
         });
 
         this.events.on('newmove', () => {
+            const {
+                spell,
+                tree,
+                score,
+                grid,
+            } = this;
+
             this.moves++;
             spell.clearEffect();
 
-            if (this.tree.isBranchIncrease(this.moves)) {
+            if (tree.isBranchLevelUp(this.moves)) {
                 console.log('New ingredient!!');
+
                 // Get new ingredient
-                // Replace new ingredient in grid
-                // Replace new ingredient in supply
-                // Replace new ingredient in score
-                // Replace new ingredient in spell
+                const newIngredientId = tree.levelUpBranch(score.amounts);
+
+                if (newIngredientId) {
+                    // Replace new ingredient in grid
+                    // Replace new ingredient in supply
+                    // Replace new ingredient in score
+                    // Replace new ingredient in spell
+                    // Update branches in ingredients tree
+                }
             } else {
                 spell.pickEffect();
 
                 //Todo: apply effect
             }
 
-            this.grid.fillInWithNewIngredients();
+            grid.fillInWithNewIngredients();
 
             //Todo: monitor available moves
         });
@@ -167,8 +180,9 @@ export default class MainScene extends Phaser.Scene
             'Necromancy: ' + necromancy,
             'Astrology: ' + astrology,
             'Spell: ' + spell.current,
-            'New ingredient: ' + tree.isNew || false,
+            'Last level up failed: ' + tree.lastLevelUpFailed,
             'Moves: ' + this.moves,
+            'Amounts: ' + Object.keys(this.score.amounts).map(id => `\n  ${id}: ${this.score.amounts[id]}`)
         ].join('\n'));
     }
 }
