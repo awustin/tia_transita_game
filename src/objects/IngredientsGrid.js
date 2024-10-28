@@ -17,7 +17,6 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     #group = null;
     #grid = [];
     #emptyPositions = [];
-    supply = null;
 
     constructor(scene = null, size = GRID_COUNT) {
         if (!scene) {
@@ -28,9 +27,8 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
         }
 
         super(scene);
-        this.supply = scene.plugins.get('supply');
 
-        if (!this.supply) {
+        if (!scene.plugins.get('supply')) {
             throw {
                 message: 'IngredientsGrid: add SupplyPlugin to game',
                 code: 'C11'
@@ -53,12 +51,12 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     }
 
     /**
-     * Replaces the cell with a temporary empty value for the ingredient sent,
-     * and tracks the replaced index
+     * Replaces a cell with a temporary empty value for the ingredient sent,
+     * and tracks the voided position
      * @param {Object} ingredient
      * @returns Array of index `[row, col]`
      */
-    replaceWithEmpty(ingredient = null) {
+    voidSingleIngredient(ingredient = null) {
         let position = null;
 
         if (ingredient) {
@@ -70,6 +68,37 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
         }
 
         return position;
+    }
+
+    /**
+     * Replaces cells with a temporary empty value for the id sent,
+     * and tracks the voided positions.
+     * @param {Number} id Ingredient id to void
+     * @return 2D array: `[ ... [row_i, col_i] ... ]`
+     */
+    voidByIngredientId(id = null) {
+        let positions = [];
+
+        if (id) {
+            const grid = this.#grid;
+
+            grid.forEach(row => {
+                row.forEach(ingredient => {
+                    if (Number(ingredient.id) === Number(id)) {
+                        const [row, col] = ingredient.cell;
+
+                        ingredient.setCollected();
+                        positions.push([row, col]);
+                        this.#grid[row][col] = 'empty';
+                    }
+                })
+            });
+            this.#emptyPositions.push(...positions);
+
+            return positions;
+        }
+
+        return [];
     }
 
     /**
@@ -96,8 +125,10 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     // Private
 
     #newIngredientAtPosition(row, col) {
+        const supply = this.scene.plugins.get('supply');
+
         const ingredient = new Ingredient(
-            this.supply.getNextIngredients()[0].id,
+            supply.getNextIngredients()[0].id,
             [row, col],
             {
                 scene: this.scene,

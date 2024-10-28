@@ -93,22 +93,22 @@ export default class MainScene extends Phaser.Scene
             spell.clearEffect();
 
             if (tree.isBranchLevelUp(this.moves)) {
-                console.log('New ingredient');
-
-                // Get new ingredient
-                const { add: addId, remove: removeId } = tree.levelUpBranch(score.amounts);
+                const {
+                    add: addId,
+                    remove: removeId,
+                } = tree.levelUpBranch(score.amounts);
 
                 if (addId) {
                     console.log('New id: ', addId);
 
-                    // Replace new ingredient in supply
                     supply.addIngredient(addId, removeId);
-                    console.log('New pool:', this.supply.currentIngredients);
+                    const removed = grid.voidByIngredientId(removeId);
 
-                    // Replace new ingredient in grid
                     // Replace new ingredient in score
                     // Replace new ingredient in spell
                     // Update branches in ingredients tree
+
+                    // Todo: show New Ingredient scene
                 }
             } else {
                 spell.pickEffect();
@@ -141,7 +141,7 @@ export default class MainScene extends Phaser.Scene
         if (removed.length) {
             removed.forEach(ingredient => {
                 ingredient.setCollected();
-                grid.replaceWithEmpty(ingredient);
+                grid.voidSingleIngredient(ingredient);
             });
     
             score.add(removed[0].id, removed.length);

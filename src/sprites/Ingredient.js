@@ -121,8 +121,14 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             loop: 0,
             onComplete: () => this.destroy(),
         });
-        this.#cellBorder.destroy();
-        this.#sparkles.destroy();
+
+        if (this.#cellBorder) {
+            this.#cellBorder.destroy();
+        }
+
+        if (this.#sparkles) {
+            this.#sparkles.destroy();
+        }
     }
 
     #addCellBorder() {
