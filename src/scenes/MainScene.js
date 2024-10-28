@@ -86,20 +86,26 @@ export default class MainScene extends Phaser.Scene
                 tree,
                 score,
                 grid,
+                supply,
             } = this;
 
             this.moves++;
             spell.clearEffect();
 
             if (tree.isBranchLevelUp(this.moves)) {
-                console.log('New ingredient!!');
+                console.log('New ingredient');
 
                 // Get new ingredient
-                const newIngredientId = tree.levelUpBranch(score.amounts);
+                const { add: addId, remove: removeId } = tree.levelUpBranch(score.amounts);
 
-                if (newIngredientId) {
-                    // Replace new ingredient in grid
+                if (addId) {
+                    console.log('New id: ', addId);
+
                     // Replace new ingredient in supply
+                    supply.addIngredient(addId, removeId);
+                    console.log('New pool:', this.supply.currentIngredients);
+
+                    // Replace new ingredient in grid
                     // Replace new ingredient in score
                     // Replace new ingredient in spell
                     // Update branches in ingredients tree

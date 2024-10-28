@@ -142,7 +142,7 @@ export default class IngredientsTree
     /**
      * Gets a new ingredient
      * @param {Object} amounts Amounts by historical ingredient ID
-     * @returns Ingredient ID
+     * @returns Ingredients IDs to add and remove, respectively `{ add, remove }`
      */
     levelUpBranch(amounts = {}) {
         /*
@@ -172,15 +172,14 @@ export default class IngredientsTree
         const { path, leaf } = this.#current[this.#pickBranchWithProbability()];
 
         if (path) {
-            // The leaf of the tree is an ingredient currently in the board
-            console.log('leaf', leaf);
-
             const currIndex = path.findIndex(id => Number(id) === Number(leaf.id));
 
             // Return the nex ingredient ID. If no ingredient, return false
             if (path[currIndex + 1]) {
-                console.log('Next ingredient', path[currIndex + 1]);
-                return path[currIndex + 1];
+                return {
+                    add: path[currIndex + 1],
+                    remove: leaf.id,
+                };
             }
 
             return false;
@@ -234,6 +233,6 @@ export default class IngredientsTree
             segments: [],
         });
 
-        return (segments.find(({ prob }) => target <= prob) || {})[id];
+        return (segments.find(({ prob }) => target <= prob) || {})['id'];
     }
 }

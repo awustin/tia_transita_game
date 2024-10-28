@@ -57,24 +57,25 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
 
     /**
      * Adds an ingredient to the pool. It always keeps 4 ingredients.
-     * The ingredient with the higher probability gets discarted.
+     * The second parameter specifies the ingredient to remove.
      * It recalculates the probabilities to distribute them evenly.
-     * @param {*} newIngredient
-     * @returns Discarded ingredient
+     * @param {Number} addId
+     * @param {Number} removeId
+     * @returns Boolean
      */
-    addIngredient(newIngredient = {}) {
+    addIngredient(addId = null, removeId = null) {
         const ingredients = this.#sortedIngredientsWithProbability;
-        const mostLikelyIngredient = ingredients.reduce((acc, curr, index) => {
-            if (!index || (curr.probability >= acc?.probability))
-                return curr;
-        }, {});
-        const restockedIngredients = ingredients.filter(({ id }) => Number(id) !== Number(mostLikelyIngredient.id))
-        
-        restockedIngredients.push(newIngredient);
-        
-        this.#updatePool(restockedIngredients.map(ingredient => ({ ...ingredient, probability: 1/4 })));
 
-        return mostLikelyIngredient;
+        const removeIndex = ingredients.findIndex(({ id }) => Number(id) === Number(removeId));
+
+        if (removeIndex >= 0) {
+            ingredients[removeIndex] = { id: addId };
+            this.#updatePool(ingredients.map(ingredient => ({ ...ingredient, probability: 1/4 })));
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
