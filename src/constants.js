@@ -20,6 +20,10 @@ export const LARGE_DIALOG_Y = 104;
 export const LARGE_DIALOG_X = 484;
 export const MERCURIA_X = 900;
 export const MERCURIA_Y = 104;
+export const MODAL_H = 104;
+export const MODAL_W = 364;
+export const MODAL_Y = 364;
+export const MODAL_X = 457;
 export const SMALL_DIALOG_H = 52;
 export const SMALL_DIALOG_W = 156;
 export const SMALL_DIALOG_Y = 104;
@@ -28,13 +32,17 @@ export const STAIRCASE_X = 224;
 export const STYLE_DIALOG = {
     color: '#fff',
     font: '15px munro',
-}
+};
 export const STYLE_GREEN = {
     color: '#dfff68',
     font: '20px munro',
 };
 export const STYLE_WHITE = {
     color: '#e6e6e6',
+    font: '20px munro',
+};
+export const STYLE_MODAL_TEXT = {
+    color: '#fff',
     font: '20px munro',
 };
 export const TEXT_COLLECT = 'collect';

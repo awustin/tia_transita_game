@@ -15,6 +15,7 @@ export default class MainScene extends Phaser.Scene
     grid = null;
     tree = null;
     controls = null;
+    notification = null;
     moves = 0;
 
     constructor() {
@@ -28,6 +29,7 @@ export default class MainScene extends Phaser.Scene
         this.spell = this.plugins.get('spell');
         this.board = this.plugins.get('board');
         this.controls = this.plugins.get('controls');
+        this.notification = this.plugins.get('notification');
         this.scene.launch('dialogs');
     }
 
@@ -84,27 +86,14 @@ export default class MainScene extends Phaser.Scene
             const {
                 spell,
                 tree,
-                score,
                 grid,
-                supply,
             } = this;
 
             this.moves++;
             spell.clearEffect();
 
             if (tree.isBranchLevelUp(this.moves)) {
-                const {
-                    add: addId,
-                    remove: removeId,
-                } = tree.levelUpBranch(score.amounts);
-
-                if (addId) {
-                    // Todo: show New Ingredient scene
-
-                    supply.addIngredient(addId, removeId);
-                    grid.voidByIngredientId(removeId);
-                    score.addCurrentIngredient(addId, removeId);
-                }
+                this.levelUpNewIngredient();
             } else {
                 spell.pickEffect();
 
@@ -147,6 +136,29 @@ export default class MainScene extends Phaser.Scene
     
             // To do: analyze results. If it's winner emit WIN, else start a new move
             this.events.emit('newmove');
+        }
+    }
+
+    levelUpNewIngredient () {
+        const {
+            tree,
+            score,
+            grid,
+            supply,
+            notification,
+        } = this;
+
+        const {
+            add: addId,
+            remove: removeId,
+        } = tree.levelUpBranch(score.amounts);
+
+        if (addId) {
+            notification.newIngredient();
+
+            supply.addIngredient(addId, removeId);
+            grid.voidByIngredientId(removeId);
+            score.addCurrentIngredient(addId, removeId);
         }
     }
 

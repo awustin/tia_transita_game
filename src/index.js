@@ -10,6 +10,7 @@ import SpellPlugin from "@plugins/SpellPlugin";
 import BoardPlugin from "@plugins/BoardPlugin";
 import ControlsPlugin from "@plugins/ControlsPlugin";
 import SpeechBubblesPlugin from "@plugins/SpeechBubblesPlugin";
+import NotificationPlugin from "@plugins/NotificationPlugin";
 import {
     WIDTH,
     HEIGHT,
@@ -56,6 +57,11 @@ new Phaser.Game({
             {
                 key: 'speech',
                 plugin: SpeechBubblesPlugin,
+                start: true,
+            },
+            {
+                key: 'notification',
+                plugin: NotificationPlugin,
                 start: true,
             }
         ],
