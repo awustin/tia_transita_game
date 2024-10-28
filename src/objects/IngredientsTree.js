@@ -1,4 +1,5 @@
 import {
+    selectById,
     selectByIds,
     selectByMaxValue,
     groupBy,
@@ -169,15 +170,19 @@ export default class IngredientsTree
         this.#current[AMULET].probability = amulet;
         this.#current[WITCHCRAFT].probability = witchcraft;
 
-        const { path, leaf } = this.#current[this.#pickBranchWithProbability()];
+        const branchId = this.#pickBranchWithProbability();
+        const { path, leaf } = this.#current[branchId];
 
         if (path) {
             const currIndex = path.findIndex(id => Number(id) === Number(leaf.id));
+            const newId = path[currIndex + 1]
 
             // Return the nex ingredient ID. If no ingredient, return false
-            if (path[currIndex + 1]) {
+            if (newId) {
+                this.#addLeaf(branchId, newId);
+
                 return {
-                    add: path[currIndex + 1],
+                    add: newId,
                     remove: leaf.id,
                 };
             }
@@ -188,6 +193,10 @@ export default class IngredientsTree
 
     get lastLevelUpFailed() {
         return this.#lastLevelUpFailed;
+    }
+
+    get current() {
+        return this.#current;
     }
 
     //----
@@ -234,5 +243,11 @@ export default class IngredientsTree
         });
 
         return (segments.find(({ prob }) => target <= prob) || {})['id'];
+    }
+
+    #addLeaf(branchId, ingredientId) {
+        const { ingredients } = this.#scene.cache.json.get('game');
+
+        this.#current[branchId].leaf = selectById(ingredients.items, ingredientId);
     }
 }

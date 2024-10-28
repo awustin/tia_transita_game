@@ -99,16 +99,11 @@ export default class MainScene extends Phaser.Scene
                 } = tree.levelUpBranch(score.amounts);
 
                 if (addId) {
-                    console.log('New id: ', addId);
+                    // Todo: show New Ingredient scene
 
                     supply.addIngredient(addId, removeId);
-                    const removed = grid.voidByIngredientId(removeId);
-
-                    // Replace new ingredient in score
-                    // Replace new ingredient in spell
-                    // Update branches in ingredients tree
-
-                    // Todo: show New Ingredient scene
+                    grid.voidByIngredientId(removeId);
+                    score.addCurrentIngredient(addId, removeId);
                 }
             } else {
                 spell.pickEffect();

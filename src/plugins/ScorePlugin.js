@@ -42,16 +42,14 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
             };
         }
 
-        this.updateCurrentIngredients(
-            selectByValue(boards.items, 'default')?.initIngredientsIds
-        );
+        this.initCurrentIngredients(selectByValue(boards.items, 'default')?.initIngredientsIds);
     }
 
     /**
-     * Updates the current list of ingredients and amounts.
+     * Initializes the current list of ingredients and amounts.
      * @param {Array} newIds Array of updated ingredient ids
      */
-    updateCurrentIngredients(newIds = []) {
+    initCurrentIngredients(newIds = []) {
         const { ingredients } = this.game.cache.json.get('game');
 
         this.#currentIngredients = {};
@@ -63,6 +61,28 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
 
             this.#currentIngredients[Number(id)] = selectById(ingredients.items, id) || {};
         });
+    }
+
+    /**
+     * Adds an ingredient to current list and to amounts.
+     * @param {Number} addId New ingredient id
+     * @param {Number} removeId Id to remove
+     */
+    addCurrentIngredient(addId = [], removeId = null) {
+        const { ingredients } = this.game.cache.json.get('game');
+        const ingredient = selectById(ingredients.items, addId);
+
+        if (ingredient && removeId) {
+            this.#currentIngredients[Number(addId)] = ingredient;
+    
+            if (removeId) {
+                delete this.#currentIngredients[Number(removeId)];
+            }
+
+            if (!this.#amounts[Number(addId)]) {
+                this.#amounts[Number(addId)] = 0;
+            }
+        }
     }
 
     /**
