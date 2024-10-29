@@ -220,6 +220,26 @@
                 "h": 52
             }
         },
+        "ingredient5": {
+            "frame": {
+                "x": 208,
+                "y": 780,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 52,
+                "h": 52
+            },
+            "sourceSize": {
+                "w": 52,
+                "h": 52
+            }
+        },
         "sparks1": {
             "frame": {
                 "x": 832,
