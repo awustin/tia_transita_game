@@ -148,19 +148,39 @@
                 "h": 52
             },
             "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
+            "trimmed": false
+        },
+        "ingredient2": {
+            "frame": {
                 "x": 0,
-                "y": 0,
+                "y": 832,
                 "w": 52,
                 "h": 52
             },
-            "sourceSize": {
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient3": {
+            "frame": {
+                "x": 0,
+                "y": 884,
                 "w": 52,
                 "h": 52
-            }
+            },
+            "rotated": false,
+            "trimmed": false
         },
-        "ingredient2": {
+        "ingredient4": {
+            "frame": {
+                "x": 52,
+                "y": 780,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient5": {
             "frame": {
                 "x": 104,
                 "y": 780,
@@ -180,65 +200,45 @@
                 "h": 52
             }
         },
-        "ingredient3": {
-            "frame": {
-                "x": 156,
-                "y": 780,
-                "w": 52,
-                "h": 52
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 52,
-                "h": 52
-            },
-            "sourceSize": {
-                "w": 52,
-                "h": 52
-            }
-        },
-        "ingredient4": {
+        "ingredient6": {
             "frame": {
                 "x": 52,
-                "y": 780,
+                "y": 832,
                 "w": 52,
                 "h": 52
             },
             "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 52,
-                "h": 52
-            },
-            "sourceSize": {
-                "w": 52,
-                "h": 52
-            }
+            "trimmed": false
         },
-        "ingredient5": {
+        "ingredient7": {
             "frame": {
-                "x": 208,
-                "y": 780,
+                "x": 104,
+                "y": 832,
                 "w": 52,
                 "h": 52
             },
             "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
+            "trimmed": false
+        },
+        "ingredient8": {
+            "frame": {
+                "x": 52,
+                "y": 884,
                 "w": 52,
                 "h": 52
             },
-            "sourceSize": {
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient9": {
+            "frame": {
+                "x": 104,
+                "y": 884,
                 "w": 52,
                 "h": 52
-            }
+            },
+            "rotated": false,
+            "trimmed": false
         },
         "sparks1": {
             "frame": {

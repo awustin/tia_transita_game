@@ -154,7 +154,7 @@ export default class MainScene extends Phaser.Scene
         } = tree.levelUpBranch(score.amounts);
 
         if (addId) {
-            notification.newIngredient();
+            notification.newIngredient(addId);
 
             supply.addIngredient(addId, removeId);
             grid.voidByIngredientId(removeId);

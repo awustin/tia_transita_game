@@ -8,15 +8,15 @@
     "ingredients": {
         "ids": [1, 2, 3, 4],
         "items": [
-            { "id": 1, "labour": 1, "astrology": 0, "necromancy": 0, "name": "apple", "branchId": 300, "relativeProbability": 1 },
-            { "id": 2, "labour": 0, "astrology": 1, "necromancy": 0, "name": "gem", "branchId": 301, "relativeProbability": 1 },
-            { "id": 3, "labour": 0, "astrology": 0, "necromancy": 1, "name": "jar", "branchId": 302, "relativeProbability": 1 },
-            { "id": 4, "labour": 2, "astrology": 0, "necromancy": 0, "name": "pumpkin", "branchId": 300, "relativeProbability": 1 },
-            { "id": 5, "labour": 3, "astrology": 3, "necromancy": 3, "name": "fig", "branchId": 300, "relativeProbability": 1 },
-            { "id": 6, "labour": 1, "astrology": 2, "necromancy": 1, "name": "amulet1", "branchId": 301, "relativeProbability": 1 },
-            { "id": 7, "labour": 2, "astrology": 3, "necromancy": 1, "name": "amulet2", "branchId": 301, "relativeProbability": 1 },
-            { "id": 8, "labour": 1, "astrology": 1, "necromancy": 2, "name": "witchcraft1", "branchId": 302, "relativeProbability": 1 },
-            { "id": 9, "labour": 2, "astrology": 1, "necromancy": 3, "name": "witchcraft2", "branchId": 302, "relativeProbability": 1 }
+            { "id": 1, "labour": 1, "astrology": 0, "necromancy": 0, "name": "apple", "label": "Black Lady apple", "branchId": 300, "relativeProbability": 1 },
+            { "id": 2, "labour": 0, "astrology": 1, "necromancy": 0, "name": "gem", "label": "Aventurine", "branchId": 301, "relativeProbability": 1 },
+            { "id": 3, "labour": 0, "astrology": 0, "necromancy": 1, "name": "jar", "label": "Jar of surprise chudney", "branchId": 302, "relativeProbability": 1 },
+            { "id": 4, "labour": 2, "astrology": 0, "necromancy": 0, "name": "pumpkin", "label": "Moldy pumpkin", "branchId": 300, "relativeProbability": 1 },
+            { "id": 5, "labour": 3, "astrology": 3, "necromancy": 3, "name": "fig", "label": "Fig from the backyard", "branchId": 300, "relativeProbability": 1 },
+            { "id": 6, "labour": 1, "astrology": 2, "necromancy": 1, "name": "solarGem", "label": "Solar stone", "branchId": 301, "relativeProbability": 1 },
+            { "id": 7, "labour": 2, "astrology": 3, "necromancy": 1, "name": "lunarGem", "label": "Lunar stone", "branchId": 301, "relativeProbability": 1 },
+            { "id": 8, "labour": 1, "astrology": 1, "necromancy": 2, "name": "jarEyes", "label": "Jar of animal eyeballs", "branchId": 302, "relativeProbability": 1 },
+            { "id": 9, "labour": 2, "astrology": 1, "necromancy": 3, "name": "pieMold", "label": "Moldy pie", "branchId": 302, "relativeProbability": 1 }
         ]
     },
     "branches": {
