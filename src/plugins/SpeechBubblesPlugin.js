@@ -53,22 +53,17 @@ export default class SpeechBubblesPlugin extends Phaser.Plugins.BasePlugin
         const size = getSize(text);
         let x = SMALL_DIALOG_X;
         let y = SMALL_DIALOG_Y;
-        let w = SMALL_DIALOG_W;
-        let h = SMALL_DIALOG_H;
-        let name = 'smallBubble';
+        let name = 'bubble_small';
 
         if (isLarge(size)) {
             x = LARGE_DIALOG_X;
             y = LARGE_DIALOG_Y;
-            w = LARGE_DIALOG_W;
-            h = LARGE_DIALOG_H;
-            name = 'largeBubble';
+            name = 'bubble_large';
         }
 
         const dialogScene = this.#game.scene.getScene('dialogs');
 
-        return dialogScene.add.rectangle(x, y, w, h, 0x0, 0.7)
-            .setStrokeStyle(1, 0xaeaeae)
+        return dialogScene.add.sprite(x, y, 'main', name)
             .setOrigin(0, 0)
             .setName(name)
             .setData('size', size);
@@ -89,7 +84,7 @@ export default class SpeechBubblesPlugin extends Phaser.Plugins.BasePlugin
             name = 'largeText';
         }
 
-        return dialogScene.add.text(x + 5, y + 4, text, STYLE_DIALOG)
+        return dialogScene.add.text(x + 7, y + 6, text, STYLE_DIALOG)
             .setWordWrapWidth(w - 5)
             .setName(name);
     }

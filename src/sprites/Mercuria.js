@@ -50,7 +50,7 @@ export default class Mercuria extends Phaser.GameObjects.Sprite
         this.#destroyComment();
         this.#current = this.#speech.comment(message);
 
-        const timeoutId = setTimeout(() => this.#destroyComment(), seconds * 1000);
+        const timeoutId = setTimeout(() => this.#destroyComment(), seconds * 2000);
 
         this.#timeoutId = timeoutId;
     }

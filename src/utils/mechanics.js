@@ -19,8 +19,8 @@ const score = {
 
 const tree = {
     constants: {
-        MOVES_CHECK: 1,
-        MOVES_LEVEL_UP_FAILED: 1,
+        MOVES_CHECK: 20,
+        MOVES_LEVEL_UP_FAILED: 5,
     },
     compute: {
         levelUpProbability: (labourPoints = 0, astrologyPoints = 0, necromancyPoints = 0) => {

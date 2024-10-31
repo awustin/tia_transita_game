@@ -30,15 +30,13 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
 
         if (ingredientId) {
             const { ingredients } = this.#game.cache.json.get('game');
-            console.log(this.#game)
             const { label } = selectById(ingredients.items, ingredientId);
             
-            const ingredientLabel = this.#buildText(label)
-                .setY(MODAL_Y + MODAL_H - 20);
+            const ingredientLabel = this.#buildText(label).setY(MODAL_Y + MODAL_H - 20 - 10);
 
             const ingredientSprite = mainScene.add.sprite(
                 MODAL_X + MODAL_W / 2,
-                MODAL_Y + MODAL_H / 2,
+                MODAL_Y + MODAL_H / 2 - 10,
                 'main',
                 `ingredient${ingredientId}`,
             ).setOrigin(0.5, 0.5);
@@ -63,8 +61,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
 
         const group = mainScene.add.group(groupChildren);
 
-        group.setName('modal_newIngredient')
-            .setDepth(2);
+        group.setName('modal_newIngredient').setDepth(2);
 
         mainScene.tweens.addMultiple([
             {
@@ -80,7 +77,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
                 ease: 'quad.out',
             }
         ]);
-        
+
         setTimeout(() => group.destroy(true), 2500);
     }
 
@@ -91,7 +88,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
     #buildText(text = '') {
         const mainScene = this.#game.scene.getScene('main');
         let x = MODAL_X + MODAL_W / 2;
-        let y = MODAL_Y + 20;
+        let y = MODAL_Y + 20 - 10;
         let w = MODAL_W;
         let name = 'text_newIngredient';
 
@@ -104,14 +101,10 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
 
     #buildModal() {
         const mainScene = this.#game.scene.getScene('main');
-
-        const h = MODAL_H;
-        const w = MODAL_W;
-        const y = MODAL_Y;
+        const y = MODAL_Y - 10;
         const x = MODAL_X;
 
-        return mainScene.add.rectangle(x, y, w, h, 0x0)
-            .setStrokeStyle(1, 0xaeaeae)
+        return mainScene.add.sprite(x, y, 'main', 'modal_generic',)
             .setOrigin(0, 0)
             .setToTop()
             .setName('box_newIngredient');

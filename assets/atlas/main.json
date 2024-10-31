@@ -399,6 +399,36 @@
                 "w": 52,
                 "h": 52
             }
+        },
+        "modal_generic": {
+            "frame": {
+                "x": 936,
+                "y": 0,
+                "w": 364,
+                "h": 156
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "bubble_small": {
+            "frame": {
+                "x": 1144,
+                "y": 156,
+                "w": 156,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "bubble_large": {
+            "frame": {
+                "x": 988,
+                "y": 260,
+                "w": 312,
+                "h": 104
+            },
+            "rotated": false,
+            "trimmed": false
         }
     },
     "meta": {
@@ -406,7 +436,7 @@
         "version": "v1.0",
         "image": "main.png",
         "size": {
-            "w": 1040,
+            "w": 1300,
             "h": 1040
         },
         "scale": 1
