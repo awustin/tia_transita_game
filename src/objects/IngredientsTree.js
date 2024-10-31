@@ -17,24 +17,24 @@ export default class IngredientsTree
 {
     #scene = null;
 
-    // Current developed tree
+    // Each one represents an ingredient in the board.
     #current = {
         [NATURAL]: {
             id: NATURAL,
-            leaf: {},
+            pointerId: null,
             probability: 1/3,
             // Paths config for the ingredients tree evolution
             path: [],
         },
         [AMULET]: {
             id: AMULET,
-            leaf: {},
+            pointerId: null,
             probability: 1/3,
             path: [],
         },
         [WITCHCRAFT]: {
             id: WITCHCRAFT,
-            leaf: {},
+            pointerId: null,
             probability: 1/3,
             path: [],
         },
@@ -84,13 +84,13 @@ export default class IngredientsTree
             'branchId'
         );
 
-        this.#current[NATURAL].leaf = selectByMaxValue(groupedByBranch[String(NATURAL)], 'id');
+        this.#current[NATURAL].pointerId = selectByMaxValue(groupedByBranch[String(NATURAL)], 'id').id;
         this.#current[NATURAL].path = naturalBranch.ingredients;
 
-        this.#current[AMULET].leaf = selectByMaxValue(groupedByBranch[String(AMULET)], 'id');
+        this.#current[AMULET].pointerId = selectByMaxValue(groupedByBranch[String(AMULET)], 'id').id;
         this.#current[AMULET].path = amuletBranch.ingredients;
 
-        this.#current[WITCHCRAFT].leaf = selectByMaxValue(groupedByBranch[String(WITCHCRAFT)], 'id');
+        this.#current[WITCHCRAFT].pointerId = selectByMaxValue(groupedByBranch[String(WITCHCRAFT)], 'id').id;
         this.#current[WITCHCRAFT].path = witchcraftBranch.ingredients;
     }
 
@@ -171,19 +171,24 @@ export default class IngredientsTree
         this.#current[WITCHCRAFT].probability = witchcraft;
 
         const branchId = this.#pickBranchWithProbability();
-        const { path, leaf } = this.#current[branchId];
+        const { path, pointerId: currentPointerId } = this.#current[branchId];
 
         if (path) {
-            const currIndex = path.findIndex(id => Number(id) === Number(leaf.id));
-            const newId = path[currIndex + 1]
+            const currIndex = path.findIndex(id => Number(id) === Number(currentPointerId));
+            const nextPointerId = path[currIndex + 1]
 
-            // Return the nex ingredient ID. If no ingredient, return false
-            if (newId) {
-                this.#addLeaf(branchId, newId);
+            // Return the new ingredients. If no ingredient, return false
+            if (nextPointerId) {
+                this.#current[branchId].pointerId = nextPointerId;
 
                 return {
-                    add: newId,
-                    remove: leaf.id,
+                    add: nextPointerId,
+                    remove: currentPointerId,
+                    slots: {
+                        [NATURAL]: this.#current[NATURAL].pointerId,
+                        [AMULET]: this.#current[AMULET].pointerId,
+                        [WITCHCRAFT]: this.#current[WITCHCRAFT].pointerId,
+                    },
                 };
             }
 
@@ -243,11 +248,5 @@ export default class IngredientsTree
         });
 
         return (segments.find(({ prob }) => target <= prob) || {})['id'];
-    }
-
-    #addLeaf(branchId, ingredientId) {
-        const { ingredients } = this.#scene.cache.json.get('game');
-
-        this.#current[branchId].leaf = selectById(ingredients.items, ingredientId);
     }
 }

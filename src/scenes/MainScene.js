@@ -147,18 +147,26 @@ export default class MainScene extends Phaser.Scene
             supply,
             notification,
         } = this;
+        const voided = [];
 
         const {
             add: addId,
             remove: removeId,
+            slots
         } = tree.levelUpBranch(score.amounts);
 
-        if (addId) {
+        if (addId && removeId) {
             notification.newIngredient(addId);
 
-            supply.addIngredient(addId, removeId);
-            grid.voidByIngredientId(removeId);
+            supply.updateIngredientsSlots(slots);
+            const removeExtraId = supply.updateExtraIngredient();
             score.addCurrentIngredient(addId, removeId);
+
+            voided.push(removeId, removeExtraId);
+
+            if (voided.length) {
+                grid.voidByIngredientId(voided.length === 1 ? voided[0] : voided);
+            }
         }
     }
 

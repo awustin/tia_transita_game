@@ -3,16 +3,28 @@ import {
     selectByIds,
 } from "@utils/data";
 
+const NATURAL = 300;
+const AMULET = 301;
+const WITCHCRAFT = 302;
+
 export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
 {
-    #game = null;
     #sortedIngredientsWithProbability = [];
     #sortedProbabilitySegments = [];
+
+    // Each place holds a specific branch. The fourth place is reserved for discarded ingredients
+    #slots = {
+        [NATURAL]: null,
+        [AMULET]: null,
+        [WITCHCRAFT]: null,
+        extra: null,
+    };
+
+    // Discarded ingredients will be picked randomly as a fourth ingredient in the board
+    #discard = [];
  
     constructor(pluginManager) {
         super(pluginManager);
-
-        this.#game = pluginManager.game;
     }
 
     init() {
@@ -41,6 +53,12 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         const max = initIngredients.reduce((sum, { relativeProbability }) => sum = sum + relativeProbability, 0);
         const probabilities = initIngredients.map(({ id, relativeProbability }) => ({ id, probability: relativeProbability / max }));
 
+        this.#slots.extra = initIngredientsIds[0];
+        this.#slots[AMULET] = initIngredientsIds[1];
+        this.#slots[WITCHCRAFT] = initIngredientsIds[2];
+        this.#slots[NATURAL] = initIngredientsIds[3];
+        this.#discard.push(initIngredientsIds[0]);
+
         this.#updatePool(probabilities);
     }
 
@@ -56,23 +74,42 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
     }
 
     /**
-     * Adds an ingredient to the pool. It always keeps 4 ingredients.
-     * The second parameter specifies the ingredient to remove.
+     * Updates ingredients in the pool. It always keeps 4 ingredients.
      * It recalculates the probabilities to distribute them evenly.
-     * @param {Number} addId
-     * @param {Number} removeId
-     * @returns Boolean
+     * @param {Number} newSlots in the format `{ [NATURAL]: <id>, [AMULET]: <id>, [WITCHCRAFT]: <id> }`
      */
-    addIngredient(addId = null, removeId = null) {
-        const ingredients = this.#sortedIngredientsWithProbability;
+    updateIngredientsSlots(newSlots = {}) {
+        Object.keys(newSlots).forEach(branchId => { 
+            if (Number(this.#slots[String(branchId)]) !== Number(newSlots[branchId])) {
+                this.#discard.push(this.#slots[String(branchId)]);
 
-        const removeIndex = ingredients.findIndex(({ id }) => Number(id) === Number(removeId));
+                this.#slots[String(branchId)] = newSlots[branchId];
+            }
+        });
 
-        if (removeIndex >= 0) {
-            ingredients[removeIndex] = { id: addId };
-            this.#updatePool(ingredients.map(ingredient => ({ ...ingredient, probability: 1/4 })));
+        const probabilities = Object.values(this.#slots).map(id => ({ id, probability: 1/4 }));
+        this.#updatePool(probabilities);
 
-            return true;
+        return true;
+    }
+
+    /**
+     * Replaces the current extra ingredient with one of the discarded
+     * and returns the new ID.
+     * @returns New ID
+     */
+    updateExtraIngredient() {
+        const discard = this.#discard;
+        const randomExtra = discard[Math.floor(Math.random() * discard.length)];
+        const oldId = this.#slots.extra;
+
+        if (!Object.values(this.#slots).includes(randomExtra)) {
+            this.#slots.extra = randomExtra;
+
+            const probabilities = Object.values(this.#slots).map(id => ({ id, probability: 1/4 }));
+            this.#updatePool(probabilities);
+    
+            return oldId;
         }
 
         return false;
@@ -118,6 +155,14 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
 
     get currentIngredients() {
         return this.#sortedIngredientsWithProbability;
+    }
+
+    get slots() {
+        return this.#slots;
+    }
+
+    get discard() {
+        return this.#discard;
     }
 
     // Private functions

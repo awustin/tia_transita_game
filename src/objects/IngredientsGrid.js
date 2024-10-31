@@ -73,18 +73,26 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     /**
      * Replaces cells with a temporary empty value for the id sent,
      * and tracks the voided positions.
-     * @param {Number} id Ingredient id to void
+     * @param {Any} id Ingredient id or ingredient ids array to void
      * @return 2D array: `[ ... [row_i, col_i] ... ]`
      */
     voidByIngredientId(id = null) {
         let positions = [];
+
+        const equalOperation = compareTo => {
+            if (typeof id === 'number' || typeof id === 'string') {
+                return Number(compareTo) === Number(id);
+            }
+
+            return id.includes(Number(compareTo));
+        }
 
         if (id) {
             const grid = this.#grid;
 
             grid.forEach(row => {
                 row.forEach(ingredient => {
-                    if (Number(ingredient.id) === Number(id)) {
+                    if (equalOperation(ingredient.id)) {
                         const [row, col] = ingredient.cell;
 
                         ingredient.setCollected();
