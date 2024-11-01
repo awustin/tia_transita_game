@@ -1,3 +1,4 @@
+import { tree as treeMechanics } from "@utils/mechanics";
 import {
     select,
     selectByIds,
@@ -71,6 +72,19 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         return new Array(amount)
             .fill(null)
             .map(() => this.#pickIngredientWithProbability());
+    }
+
+    /**
+     * Checks if the extra ingredient should be replaced
+     * @param {Number} moves Number of moves in the game
+     * @returns Boolean
+     */
+    isReplaceExtraIngredient(moves = null) {
+        const { constants: { MOVES_SWAP_EXTRA } } = treeMechanics;
+
+        if (!(moves % MOVES_SWAP_EXTRA)) {
+            return Math.random() < 0.4;
+        }
     }
 
     /**

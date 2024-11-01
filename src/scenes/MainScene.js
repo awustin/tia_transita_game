@@ -60,8 +60,7 @@ export default class MainScene extends Phaser.Scene
                 const index = basket.selectedIndex(ingredient);
 
                 if (index >= 0) {
-                    basket.untrackSelectedIngredients(index)
-                        .forEach(ingredient => ingredient.setIdle());
+                    basket.untrackSelectedIngredients(index).forEach(ingredient => ingredient.setIdle());
                 } else {
                     if (basket.trackIngredient(ingredient)) {
                         ingredient.setActive();
@@ -73,12 +72,8 @@ export default class MainScene extends Phaser.Scene
         });
 
         this.input.keyboard.on('keyup', ({ code }) => {
-            if (basket.collectAvailable && code === 'Space') {
+            if (basket.collectAvailable && (code === 'Space' || code === 'KeyQ')) {
                 return this.collectSelected();
-            }
-
-            if (code === 'KeyQ') {
-                this.scene.restart();
             }
         });
 
@@ -87,17 +82,38 @@ export default class MainScene extends Phaser.Scene
                 spell,
                 tree,
                 grid,
+                supply,
             } = this;
+            const voidIngredientsIds = [];
 
             this.moves++;
             spell.clearEffect();
 
             if (tree.isBranchLevelUp(this.moves)) {
-                this.levelUpNewIngredient();
+                const voided = this.levelUpNewIngredient();
+
+                if (voided.length) {
+                    voidIngredientsIds.push(...voided);
+                }
             } else {
                 spell.pickEffect();
 
                 //Todo: apply effect
+            }
+
+            if (supply.isReplaceExtraIngredient(this.moves)) {
+                const extraId = supply.updateExtraIngredient();
+
+                if (!voidIngredientsIds.includes(extraId)) {
+                    voidIngredientsIds.push(extraId);
+                }
+            }
+
+            if (voidIngredientsIds.length) {
+                grid.voidByIngredientId(voidIngredientsIds.length === 1
+                    ? voidIngredientsIds[0]
+                    : voidIngredientsIds
+                );
             }
 
             grid.fillInWithNewIngredients();
@@ -159,15 +175,12 @@ export default class MainScene extends Phaser.Scene
             notification.newIngredient(addId);
 
             supply.updateIngredientsSlots(slots);
-            const removeExtraId = supply.updateExtraIngredient();
             score.addCurrentIngredient(addId, removeId);
 
-            voided.push(removeId, removeExtraId);
-
-            if (voided.length) {
-                grid.voidByIngredientId(voided.length === 1 ? voided[0] : voided);
-            }
+            voided.push(removeId);
         }
+
+        return voided;
     }
 
     #createEnvironment () {
