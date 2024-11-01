@@ -13,7 +13,7 @@ export default class DialogSequencer
     #general = [];
 
     // Dialogs present in the current timeline. Includes general and ingredient-specific.
-    #current = []
+    #current = [];
 
     #timeline = null;
 
@@ -32,16 +32,8 @@ export default class DialogSequencer
             };
         }
 
-        if (!scene.plugins.get('supply')) {
-            throw {
-                message: 'DialogSequencer needs SupplyPlugin to be set up',
-                code: 'C18'
-            };
-        }
-
         this.#scene = scene;
         this.#setGeneralDialogs();
-        this.updateCurrentDialogs();
     }
 
     setSpeakTimeline({
@@ -61,16 +53,15 @@ export default class DialogSequencer
         .play();
     }
 
-    updateCurrentDialogs() {
+    updateCurrentDialogs(ingredientsSupply = {}) {
         const {
             ingredients,
             dialogs,
         } = this.#scene.cache.json.get('game');
-        const supply = this.#scene.plugins.get('supply');
 
         const currentIngredients = selectByIds(
             ingredients.items,
-            supply.currentIngredients.map(({ id }) => Number(id))
+            ingredientsSupply.map(({ id }) => Number(id))
         );
 
         this.#current = [
@@ -79,6 +70,14 @@ export default class DialogSequencer
         ];
     }
 
+    get current() {
+        return this.#current;
+    }
+
+    // ----------
+    // Private
+    // ----------
+
     #setGeneralDialogs() {
         const { dialogs } = this.#scene.cache.json.get('game');
 
@@ -86,10 +85,9 @@ export default class DialogSequencer
     }
 
     #getRandomMessage() {
-        const { dialogs: { ids: lookUpIds } } = this.#scene.cache.json.get('game');
-
-        const id = Math.floor(Math.random() * this.#current.length);
+        const dialog = this.#current[Math.floor(Math.random() * this.#current.length)];
         
-        return selectById(this.#current, lookUpIds[id])?.text || '';
+        console.log('*** message', {msg: dialog?.text, curr: this.#current});
+        return dialog?.text || '';
     }
 }

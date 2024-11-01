@@ -1,3 +1,4 @@
+import eventsCentre from "@objects/EventsCentre";
 import IngredientsTree from "@objects/IngredientsTree";
 import IngredientsGrid from '@objects/IngredientsGrid';
 import {
@@ -43,14 +44,13 @@ export default class MainScene extends Phaser.Scene
         const {
             basket,
             board,
-            spell,
-            score,
         } = this;
 
         this.tree = new IngredientsTree(this);
         this.grid = new IngredientsGrid(this);
         board.matrix = this.grid.array;
         
+        // Ingredients selected
         this.input.on('pointerup', (value, [ ingredient ]) => {
             if (ingredient?.collectable) {
                 if (ingredient.state !== 'idle' && ingredient.state !== 'active') {
@@ -71,12 +71,14 @@ export default class MainScene extends Phaser.Scene
             }
         });
 
+        // Collect ingredients
         this.input.keyboard.on('keyup', ({ code }) => {
             if (basket.collectAvailable && (code === 'Space' || code === 'KeyQ')) {
                 return this.collectSelected();
             }
         });
 
+        // Start a new move
         this.events.on('newmove', () => {
             const {
                 spell,
@@ -117,6 +119,8 @@ export default class MainScene extends Phaser.Scene
             }
 
             grid.fillInWithNewIngredients();
+
+            eventsCentre.emit('updateDialogs');
 
             //Todo: monitor available moves
         });
@@ -159,7 +163,6 @@ export default class MainScene extends Phaser.Scene
         const {
             tree,
             score,
-            grid,
             supply,
             notification,
         } = this;

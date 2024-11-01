@@ -50,14 +50,14 @@ export default class IngredientsTree
         if (!scene) {
             throw {
                 message: 'IngredientsTree missing scene',
-                code: 'C19'
+                code: 'C18'
             }
         }
 
         if (!scene.cache.json.get('game')) {
             throw {
                 message: 'IngredientsTree missing a game config object. Check it\'s being loaded in Intro scene',
-                code: 'C20'
+                code: 'C19'
             }
         }
 

@@ -28,14 +28,26 @@
         ]
     },
     "dialogs": {
-        "ids": [100, 101, 102, 103, 104, 105],
+        "ids": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117],
         "items": [
             { "id": 100, "text": "ಠ╭╮ಠ  I need to find all my ingredients!" },
             { "id": 101, "text": "Help me to get all the items I need for my ritu-... stew!" },
             { "id": 102, "text": "She is coming..." },
             { "id": 103, "text": "Thanks for helping this old lady  (˶˃ᆺ˂˶)" },
             { "id": 104, "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves...", "ingredientId": 3 },
-            { "id": 105, "text": "I love moldy pumpkins!", "ingredientId": 4 }
+            { "id": 105, "text": "I love moldy pumpkins!", "ingredientId": 4 },
+            { "id": 106, "text": "Tia Transita will arrive any minute now" },
+            { "id": 107, "text": "Did you hear that?! I think it's her..." },
+            { "id": 108, "text": "My crows need some corn, if you find some" },
+            { "id": 109, "text": "The mold on the walls is refreshing... I mean, dangerous..." },
+            { "id": 110, "text": "It smells of ashes in here, I think the old heater is broken" },
+            { "id": 111, "text": "Banshee my cat went missing again..." },
+            { "id": 112, "text": "I once read that I could cook those worms that you see crawling up the floor" },
+            { "id": 113, "text": "Oh! Delicious wasps inside those figs... Just delightful!", "ingredientId": 5 },
+            { "id": 114, "text": "Those old rocks... I don't need them", "ingredientId": 6 },
+            { "id": 115, "text": "They say the lunar stone is charged with magic... that's bollocks!", "ingredientId": 7 },
+            { "id": 116, "text": "I forgot I was keeping those eyeballs... Give them to me, I'll keep them here", "ingredientId": 8 },
+            { "id": 117, "text": "You know the salty mushrooms on that old fruit pie are a DELICIOUS side", "ingredientId": 9 }
         ]
     }
 }
