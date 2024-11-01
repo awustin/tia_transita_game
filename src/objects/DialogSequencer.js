@@ -86,8 +86,7 @@ export default class DialogSequencer
 
     #getRandomMessage() {
         const dialog = this.#current[Math.floor(Math.random() * this.#current.length)];
-        
-        console.log('*** message', {msg: dialog?.text, curr: this.#current});
+
         return dialog?.text || '';
     }
 }
