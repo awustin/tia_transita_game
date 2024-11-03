@@ -105,6 +105,7 @@ export default class MainScene extends Phaser.Scene
 
             if (supply.isReplaceExtraIngredient(this.moves)) {
                 const extraId = supply.updateExtraIngredient();
+                console.log('Fix: no scores added');
 
                 if (!voidIngredientsIds.includes(extraId)) {
                     voidIngredientsIds.push(extraId);

@@ -37,7 +37,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
             const ingredientSprite = mainScene.add.sprite(
                 MODAL_X + MODAL_W / 2,
                 MODAL_Y + MODAL_H / 2 - 10,
-                'main',
+                'ingredients',
                 `ingredient${ingredientId}`,
             ).setOrigin(0.5, 0.5);
 

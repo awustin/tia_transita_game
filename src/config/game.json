@@ -2,40 +2,54 @@
     "boards": {
         "ids": [200],
         "items": [
-            { "id": 200, "initIngredientsIds": [1, 2, 3, 4], "default": true }
+            { "id": 200, "initIngredientsIds": [1, 2, 21, 41], "default": true }
         ]
     },
     "ingredients": {
-        "ids": [1, 2, 3, 4],
+        "ids": [
+            1, 2, 3, 4, 5, 6, 7,
+            21, 22, 23, 24, 25,
+            41, 42, 43, 44, 45
+        ],
         "items": [
             { "id": 1, "labour": 1, "astrology": 0, "necromancy": 0, "name": "apple", "label": "Black Lady apple", "branchId": 300, "relativeProbability": 1 },
-            { "id": 2, "labour": 0, "astrology": 1, "necromancy": 0, "name": "gem", "label": "Aventurine", "branchId": 301, "relativeProbability": 1 },
-            { "id": 3, "labour": 0, "astrology": 0, "necromancy": 1, "name": "jar", "label": "Jar of surprise chudney", "branchId": 302, "relativeProbability": 1 },
-            { "id": 4, "labour": 2, "astrology": 0, "necromancy": 0, "name": "pumpkin", "label": "Moldy pumpkin", "branchId": 300, "relativeProbability": 1 },
-            { "id": 5, "labour": 3, "astrology": 3, "necromancy": 3, "name": "fig", "label": "Fig from the backyard", "branchId": 300, "relativeProbability": 1 },
-            { "id": 6, "labour": 1, "astrology": 2, "necromancy": 1, "name": "solarGem", "label": "Solar stone", "branchId": 301, "relativeProbability": 1 },
-            { "id": 7, "labour": 2, "astrology": 3, "necromancy": 1, "name": "lunarGem", "label": "Lunar stone", "branchId": 301, "relativeProbability": 1 },
-            { "id": 8, "labour": 1, "astrology": 1, "necromancy": 2, "name": "jarEyes", "label": "Jar of animal eyeballs", "branchId": 302, "relativeProbability": 1 },
-            { "id": 9, "labour": 2, "astrology": 1, "necromancy": 3, "name": "pieRotten", "label": "Rotten fruit pie", "branchId": 302, "relativeProbability": 1 }
+            { "id": 2, "labour": 2, "astrology": 0, "necromancy": 0, "name": "pumpkin", "label": "Moldy pumpkin", "branchId": 300, "relativeProbability": 1 },
+            { "id": 3, "labour": 3, "astrology": 0, "necromancy": 0, "name": "fig", "label": "Fig from the backyard", "branchId": 300, "relativeProbability": 1 },
+            { "id": 4, "labour": 4, "astrology": 0, "necromancy": 0, "name": "grapes", "label": "Soft grapes", "branchId": 300, "relativeProbability": 1 },
+            { "id": 5, "labour": 5, "astrology": 0, "necromancy": 0, "name": "lime", "label": "Misterious red lime", "branchId": 300, "relativeProbability": 1 },
+            { "id": 6, "labour": 6, "astrology": 0, "necromancy": 0, "name": "rottenPlum", "label": "Rotten plum", "branchId": 300, "relativeProbability": 1 },
+            { "id": 7, "labour": 7, "astrology": 0, "necromancy": 0, "name": "rottenBeetroot", "label": "Smelly beetroot", "branchId": 300, "relativeProbability": 1 },
+
+            { "id": 21, "labour": 0, "astrology": 1, "necromancy": 0, "name": "gem", "label": "Polished blue aventurine", "branchId": 301, "relativeProbability": 1 },
+            { "id": 22, "labour": 0, "astrology": 2, "necromancy": 0, "name": "solarStone", "label": "Solar stone", "branchId": 301, "relativeProbability": 1 },
+            { "id": 23, "labour": 0, "astrology": 3, "necromancy": 0, "name": "lunarPearl", "label": "Lunar pearl", "branchId": 301, "relativeProbability": 1 },
+            { "id": 24, "labour": 0, "astrology": 4, "necromancy": 0, "name": "ring", "label": "Strange ring", "branchId": 301, "relativeProbability": 1 },
+            { "id": 25, "labour": 0, "astrology": 5, "necromancy": 0, "name": "rubyRing", "label": "Ring with a vibrating gem", "branchId": 301, "relativeProbability": 1 },
+
+            { "id": 41, "labour": 0, "astrology": 0, "necromancy": 1, "name": "jar", "label": "Red smelly chudney", "branchId": 302, "relativeProbability": 1 },
+            { "id": 42, "labour": 0, "astrology": 0, "necromancy": 2, "name": "eyeballs", "label": "Pot of animal eyeballs", "branchId": 302, "relativeProbability": 1 },
+            { "id": 43, "labour": 0, "astrology": 0, "necromancy": 3, "name": "dirtyWater", "label": "Bottle of dirty water", "branchId": 302, "relativeProbability": 1 },
+            { "id": 44, "labour": 0, "astrology": 0, "necromancy": 4, "name": "rat", "label": "Bottle with a dead rat", "branchId": 302, "relativeProbability": 1 },
+            { "id": 45, "labour": 0, "astrology": 0, "necromancy": 5, "name": "pie", "label": "Flesh pie covered in mushrooms", "branchId": 302, "relativeProbability": 1 }
         ]
     },
     "branches": {
         "ids": [300, 301, 302],
         "items": [
-            { "id": 300, "name": "natural", "ingredients": [1, 4, 5] },
-            { "id": 301, "name": "amulet", "ingredients": [2, 6, 7] },
-            { "id": 302, "name": "witchcraft", "ingredients": [3, 8, 9] }
+            { "id": 300, "name": "natural", "ingredients": [1, 2, 3, 4, 5, 6, 7] },
+            { "id": 301, "name": "amulet", "ingredients": [21, 22, 23, 24, 25] },
+            { "id": 302, "name": "witchcraft", "ingredients": [41, 42, 43, 44, 45] }
         ]
     },
     "dialogs": {
-        "ids": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117],
+        "ids": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121],
         "items": [
             { "id": 100, "text": "ಠ╭╮ಠ  I need to find all my ingredients!" },
             { "id": 101, "text": "Help me to get all the items I need for my ritu-... stew!" },
             { "id": 102, "text": "She is coming..." },
             { "id": 103, "text": "Thanks for helping this old lady  (˶˃ᆺ˂˶)" },
-            { "id": 104, "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves...", "ingredientId": 3 },
-            { "id": 105, "text": "I love moldy pumpkins!", "ingredientId": 4 },
+            { "id": 104, "text": "You found my...uhm... homemade jam!... Its metallic smell... it's probably the cloves...", "ingredientId": 41 },
+            { "id": 105, "text": "I love moldy pumpkins!", "ingredientId": 2 },
             { "id": 106, "text": "Tia Transita will arrive any minute now" },
             { "id": 107, "text": "Did you hear that?! I think it's her..." },
             { "id": 108, "text": "My crows need some corn, if you find some" },
@@ -43,11 +57,15 @@
             { "id": 110, "text": "It smells of ashes in here, I think the old heater is broken" },
             { "id": 111, "text": "Banshee my cat went missing again..." },
             { "id": 112, "text": "I once read that I could cook those worms that you see crawling up the floor" },
-            { "id": 113, "text": "Oh! Delicious wasps inside those figs... Just delightful!", "ingredientId": 5 },
-            { "id": 114, "text": "Those old rocks... I don't need them", "ingredientId": 6 },
-            { "id": 115, "text": "They say the lunar stone is charged with magic... that's bollocks!", "ingredientId": 7 },
-            { "id": 116, "text": "I forgot I was keeping those eyeballs... Give them to me, I'll keep them here", "ingredientId": 8 },
-            { "id": 117, "text": "You know the salty mushrooms on that old fruit pie are a DELICIOUS side", "ingredientId": 9 }
+            { "id": 113, "text": "Oh! Delicious wasps inside those figs... Just delightful!", "ingredientId": 3 },
+            { "id": 114, "text": "Those old rocks... I don't need them", "ingredientId": 22 },
+            { "id": 115, "text": "They say the lunar pearl is charged with magic... that's bollocks!", "ingredientId": 23 },
+            { "id": 116, "text": "I forgot I was keeping those eyeballs... Give them to me, I'll keep them here", "ingredientId": 42 },
+            { "id": 117, "text": "Just across the back garden, I keep my frog farm and a secret pond", "ingredientId": 43 },
+            { "id": 118, "text": "You know, the salty mushrooms on that old pie are a DELICIOUS side", "ingredientId": 45 },
+            { "id": 119, "text": "Those limes... they are my creation!", "ingredientId": 5 },
+            { "id": 120, "text": "Those plums were supposed to become preserves...", "ingredientId": 6 },
+            { "id": 121, "text": "I think those rings are vibrating...", "ingredientId": 25 }
         ]
     }
 }

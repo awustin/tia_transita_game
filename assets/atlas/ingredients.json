@@ -1,0 +1,166 @@
+{
+    "frames": {
+        "ingredient1": {
+            "frame": {
+                "x": 26,
+                "y": 26,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient2": {
+            "frame": {
+                "x": 26,
+                "y": 78,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient3": {
+            "frame": {
+                "x": 26,
+                "y": 130,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient4": {
+            "frame": {
+                "x": 26,
+                "y": 182,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient5": {
+            "frame": {
+                "x": 26,
+                "y": 234,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient6": {
+            "frame": {
+                "x": 26,
+                "y": 286,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient7": {
+            "frame": {
+                "x": 26,
+                "y": 338,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+
+        "ingredient21": {
+            "frame": {
+                "x": 78,
+                "y": 26,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient22": {
+            "frame": {
+                "x": 78,
+                "y": 78,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient23": {
+            "frame": {
+                "x": 78,
+                "y": 130,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient24": {
+            "frame": {
+                "x": 78,
+                "y": 182,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient25": {
+            "frame": {
+                "x": 78,
+                "y": 234,
+                "w": 52,
+                "h": 52
+            }
+        },
+
+        "ingredient41": {
+            "frame": {
+                "x": 130,
+                "y": 26,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient42": {
+            "frame": {
+                "x": 130,
+                "y": 78,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient43": {
+            "frame": {
+                "x": 130,
+                "y": 130,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient44": {
+            "frame": {
+                "x": 130,
+                "y": 182,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "ingredient45": {
+            "frame": {
+                "x": 130,
+                "y": 234,
+                "w": 52,
+                "h": 52
+            }
+        }
+    },
+    "meta": {
+        "app": "TiaTransitaGame",
+        "version": "v1.0",
+        "image": "ingredients.png",
+        "size": {
+            "w": 208,
+            "h": 520
+        },
+        "scale": 1
+    }
+}
