@@ -85,12 +85,14 @@ export default class MainScene extends Phaser.Scene
                 tree,
                 grid,
                 supply,
+                score,
             } = this;
             const voidIngredientsIds = [];
 
             this.moves++;
             spell.clearEffect();
 
+            // Grab new ingredient or apply spell
             if (tree.isBranchLevelUp(this.moves)) {
                 const voided = this.levelUpNewIngredient();
 
@@ -103,15 +105,20 @@ export default class MainScene extends Phaser.Scene
                 //Todo: apply effect
             }
 
+            // Replace extra ingredient
             if (supply.isReplaceExtraIngredient(this.moves)) {
-                const extraId = supply.updateExtraIngredient();
-                console.log('Fix: no scores added');
+                const { addId, removeId } = supply.updateExtraIngredient();
 
-                if (!voidIngredientsIds.includes(extraId)) {
-                    voidIngredientsIds.push(extraId);
+                if (addId && removeId) {
+                    score.addCurrentIngredient(addId, removeId);
+    
+                    if (!voidIngredientsIds.includes(removeId)) {
+                        voidIngredientsIds.push(removeId);
+                    }
                 }
             }
 
+            // Void all removed ingredients
             if (voidIngredientsIds.length) {
                 grid.voidByIngredientId(voidIngredientsIds.length === 1
                     ? voidIngredientsIds[0]

@@ -111,6 +111,26 @@
                 "h": 52
             }
         },
+        "ingredient26": {
+            "frame": {
+                "x": 78,
+                "y": 286,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient27": {
+            "frame": {
+                "x": 78,
+                "y": 338,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
 
         "ingredient41": {
             "frame": {
@@ -151,6 +171,26 @@
                 "w": 52,
                 "h": 52
             }
+        },
+        "ingredient46": {
+            "frame": {
+                "x": 130,
+                "y": 286,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "ingredient47": {
+            "frame": {
+                "x": 130,
+                "y": 338,
+                "w": 52,
+                "h": 52
+            },
+            "rotated": false,
+            "trimmed": false
         }
     },
     "meta": {

@@ -123,7 +123,10 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
             const probabilities = Object.values(this.#slots).map(id => ({ id, probability: 1/4 }));
             this.#updatePool(probabilities);
     
-            return oldId;
+            return {
+                removeId: oldId,
+                addId: randomExtra,
+            };
         }
 
         return false;
