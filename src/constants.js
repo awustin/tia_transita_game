@@ -37,6 +37,10 @@ export const STYLE_GREEN = {
     color: '#dfff68',
     font: '20px munro',
 };
+export const STYLE_RED = {
+    color: '#fa7959',
+    font: '20px munro',
+};
 export const STYLE_WHITE = {
     color: '#e6e6e6',
     font: '20px munro',
