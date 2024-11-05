@@ -1,6 +1,5 @@
 export default class BasketPlugin extends Phaser.Plugins.BasePlugin
 {
-    #game = null;
     #selected = [];
     #combinationTypeId = null;
     #collectAvailable = false;
@@ -13,8 +12,12 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
             }
         }
         super(pluginManager);
+    }
 
-        this.#game = pluginManager.game;
+    stop() {
+        this.#selected = [];
+        this.#combinationTypeId = null;
+        this.#collectAvailable = false;
     }
 
     /**

@@ -28,7 +28,7 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         super(pluginManager);
     }
 
-    init() {
+    start() {
         const {
             boards,
             ingredients,
@@ -61,6 +61,18 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         this.#discard.push(initIngredientsIds[0]);
 
         this.#updatePool(probabilities);
+    }
+
+    stop() {
+        this.#sortedIngredientsWithProbability = [];
+        this.#sortedProbabilitySegments = [];
+        this.#slots = {
+            [NATURAL]: null,
+            [AMULET]: null,
+            [WITCHCRAFT]: null,
+            extra: null,
+        };
+        this.#discard = [];
     }
 
     /**

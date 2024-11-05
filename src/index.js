@@ -28,44 +28,14 @@ new Phaser.Game({
     ],
     plugins: {
         global: [
-            {
-                key: 'basket',
-                plugin: BasketPlugin,
-                start: true,
-            },
-            {
-                key: 'supply',
-                plugin: SupplyPlugin,
-            },
-            {
-                key: 'score',
-                plugin: ScorePlugin,
-            },
-            {
-                key: 'spell',
-                plugin: SpellPlugin,
-            },
-            {
-                key: 'board',
-                plugin: BoardPlugin,
-                start: true,
-            },
-            {
-                key: 'controls',
-                plugin: ControlsPlugin,
-                start: true,
-                sceneKey: 'main',
-            },
-            {
-                key: 'speech',
-                plugin: SpeechBubblesPlugin,
-                start: true,
-            },
-            {
-                key: 'notification',
-                plugin: NotificationPlugin,
-                start: true,
-            }
+            { key: 'basket', plugin: BasketPlugin },
+            { key: 'supply', plugin: SupplyPlugin },
+            { key: 'score', plugin: ScorePlugin },
+            { key: 'spell', plugin: SpellPlugin },
+            { key: 'board', plugin: BoardPlugin },
+            { key: 'controls', plugin: ControlsPlugin },
+            { key: 'speech', plugin: SpeechBubblesPlugin },
+            { key: 'notification', plugin: NotificationPlugin }
         ],
     },
     pixelArt: true,

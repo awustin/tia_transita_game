@@ -29,7 +29,7 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         super(pluginManager);
     }
 
-    init() {
+    start() {
         const {
             boards,
             ingredients,
@@ -43,6 +43,14 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         }
 
         this.initCurrentIngredients(selectByValue(boards.items, 'default')?.initIngredientsIds);
+    }
+
+    stop() {
+        this.#amounts = {};
+        this.#labour = 0;
+        this.#necromancy = 0;
+        this.#astrology = 0;
+        this.#currentIngredients = {};
     }
 
     /**

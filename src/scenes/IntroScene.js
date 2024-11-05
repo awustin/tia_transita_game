@@ -1,14 +1,25 @@
 import {
     STYLE_WHITE,
     TEXT_PRESS_SPACE_TO_START,
+    TEXT_WAS_RESTARTED,
     TITLE_X,
     TITLE_Y
 } from "@constants";
 
 export default class MainScene extends Phaser.Scene
 {
+    #isRestart = false;
+    #points = {};
+
     constructor() {
         super('intro');
+    }
+
+    init({ isRestart = false, points }) {
+        if (isRestart) {
+            this.#isRestart = true;
+            this.#points = points || {};
+        }
     }
 
     preload() {
@@ -18,18 +29,37 @@ export default class MainScene extends Phaser.Scene
     }
 
     create() {
+        this.plugins.start('spell');
         this.plugins.start('supply');
         this.plugins.start('score');
-        this.plugins.start('spell');
+        this.plugins.start('basket');
+        this.plugins.start('board');
+        this.plugins.start('controls');
+        this.plugins.start('speech');
+        this.plugins.start('notification');
 
-        const text = this.add.text(
+        if (this.#isRestart) {
+            this.add.text(
+                TITLE_X,
+                TITLE_Y - 120,
+                TEXT_WAS_RESTARTED,
+                STYLE_WHITE
+            ).setOrigin(0.5, 0.5);
+
+            this.add.text(
+                TITLE_X,
+                TITLE_Y - 60,
+                Object.entries(this.#points).map(([k, v]) => `${k}: ${v}`).join('\n'),
+                STYLE_WHITE
+            ).setOrigin(0.5, 0.5);
+        }
+
+        this.add.text(
             TITLE_X,
             TITLE_Y,
             TEXT_PRESS_SPACE_TO_START,
             STYLE_WHITE
-        );
-
-        text.setOrigin(0.5, 0.5);
+        ).setOrigin(0.5, 0.5);
 
         this.input.keyboard.on('keyup', ({ code }) => {
             if (code === 'Space') {

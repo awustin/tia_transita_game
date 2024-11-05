@@ -2,6 +2,7 @@ import eventsCentre from "@objects/EventsCentre";
 
 export default class UIScene extends Phaser.Scene
 {
+    score = null;
     basket = null;
     controls = null;
 
@@ -10,6 +11,7 @@ export default class UIScene extends Phaser.Scene
     }
 
     init() {
+        this.score = this.plugins.get('score');
         this.basket = this.plugins.get('basket');
         this.controls = this.plugins.get('controls');
     }
@@ -20,8 +22,12 @@ export default class UIScene extends Phaser.Scene
     create() {
         const { controls } = this;
 
+        // Collect selected on button click
         controls.addCollectButton(() => eventsCentre.emit('uiCollect'));
-        controls.addCloseButton();
+
+        // Restart game on close button click
+        controls.addCloseButton(() => this.teardownGame());
+
         controls.addSoundToggle();
     }
 
@@ -30,7 +36,25 @@ export default class UIScene extends Phaser.Scene
             controls,
             basket,
         } = this;
-    
+
         controls.showCollectButton(basket.collectAvailable);
+    }
+
+    teardownGame() {
+        const gameScore = this.score.points;
+
+        this.scene.stop('main');
+        this.scene.stop('dialogs');
+
+        this.plugins.stop('score');
+        this.plugins.stop('supply');
+        this.plugins.stop('speech');
+        this.plugins.stop('basket');
+        this.plugins.stop('notification');
+        this.plugins.stop('board');
+        this.plugins.stop('spell');
+        this.plugins.stop('controls');
+
+        this.scene.start('intro', { isRestart: true, points: gameScore });
     }
 }
