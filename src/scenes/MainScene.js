@@ -15,7 +15,6 @@ export default class MainScene extends Phaser.Scene
     board = null;
     grid = null;
     tree = null;
-    controls = null;
     notification = null;
     moves = 0;
 
@@ -29,7 +28,6 @@ export default class MainScene extends Phaser.Scene
         this.score = this.plugins.get('score');
         this.spell = this.plugins.get('spell');
         this.board = this.plugins.get('board');
-        this.controls = this.plugins.get('controls');
         this.notification = this.plugins.get('notification');
         this.scene.launch('dialogs');
     }
@@ -71,15 +69,18 @@ export default class MainScene extends Phaser.Scene
             }
         });
 
-        // Collect ingredients
+        // Collect ingredients on key pressed
         this.input.keyboard.on('keyup', ({ code }) => {
             if (basket.collectAvailable && (code === 'Space' || code === 'KeyQ')) {
                 return this.collectSelected();
             }
         });
 
+        // Collect ingredients on button clicked
+        eventsCentre.on('uiCollect', () => this.collectSelected());
+
         // Start a new move
-        this.events.on('newmove', () => {
+        eventsCentre.on('newMove', () => {
             const {
                 spell,
                 tree,
@@ -136,7 +137,6 @@ export default class MainScene extends Phaser.Scene
 
     update () {
         this.#debugInfoOnScreen();
-        this.controls.showCollectButton(this.basket.collectAvailable);
     }
 
     collectSelected () {
@@ -163,7 +163,7 @@ export default class MainScene extends Phaser.Scene
             basket.toggleCollectAvailable();
     
             // To do: analyze results. If it's winner emit WIN, else start a new move
-            this.events.emit('newmove');
+            eventsCentre.emit('newMove');
         }
     }
 
@@ -200,10 +200,6 @@ export default class MainScene extends Phaser.Scene
 
         basement.setOrigin(0, 0);
         staircase.setOrigin(0, 0);
-
-        this.controls.addCollectButton(this.collectSelected.bind(this));
-        this.controls.addCloseButton();
-        this.controls.addSoundToggle();
         
         this.registry.debugText = this.add.text(0, 0, 'Debug Info...');
     }

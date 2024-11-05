@@ -34,9 +34,11 @@ export default class MainScene extends Phaser.Scene
         this.input.keyboard.on('keyup', ({ code }) => {
             if (code === 'Space') {
                 const main = this.scene.get('main');
+                const ui = this.scene.get('ui');
     
                 this.scene.stop();
                 main.scene.start();
+                ui.scene.start();
             }
         });
     }

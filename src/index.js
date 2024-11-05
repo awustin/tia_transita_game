@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import MainScene from "@scenes/MainScene";
+import UiScene from "@scenes/UiScene";
 import IntroScene from "@scenes/IntroScene";
 import EndScene from "@scenes/EndScene";
 import DialogsScene from "@scenes/DialogsScene";
@@ -21,6 +22,7 @@ new Phaser.Game({
     scene: [
         IntroScene,
         MainScene,
+        UiScene,
         DialogsScene,
         EndScene,
     ],
