@@ -65,6 +65,7 @@ export default class UIScene extends Phaser.Scene
         this.plugins.stop('board');
         this.plugins.stop('spell');
         this.plugins.stop('controls');
+        eventsCentre.removeAllListeners();
 
         this.scene.start('intro', { isRestart: true, points: gameScore });
     }

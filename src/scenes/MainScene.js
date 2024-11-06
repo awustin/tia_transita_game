@@ -133,6 +133,12 @@ export default class MainScene extends Phaser.Scene
 
             //Todo: monitor available moves
         });
+
+        // Shutdown scene
+        this.events.once('shutdown', () => {
+            this.input.removeListener('pointerup');
+            this.input.keyboard.removeListener('keyup');
+        });
     }
 
     update () {

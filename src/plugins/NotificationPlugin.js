@@ -30,11 +30,11 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
             });
 
             mainScene.scene.pause();
-    
-            setTimeout(() => {
-                modalGroup.destroy(true);
+
+            uiScene.time.delayedCall(2000, () => {
                 mainScene.scene.resume();
-            }, 2000);
+                modalGroup.destroy(true);
+            }, [], this);
         }
     }
 

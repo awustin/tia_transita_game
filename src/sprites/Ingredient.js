@@ -119,7 +119,10 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
                 },
             ],
             loop: 0,
-            onComplete: () => this.destroy(),
+            onComplete: () => {
+                this.removeAllListeners();
+                this.destroy();
+            },
         });
 
         if (this.#cellBorder) {
