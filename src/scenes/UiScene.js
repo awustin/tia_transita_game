@@ -5,6 +5,7 @@ export default class UIScene extends Phaser.Scene
     score = null;
     basket = null;
     controls = null;
+    notification = null;
 
     constructor() {
         super('ui');
@@ -14,6 +15,7 @@ export default class UIScene extends Phaser.Scene
         this.score = this.plugins.get('score');
         this.basket = this.plugins.get('basket');
         this.controls = this.plugins.get('controls');
+        this.notification = this.plugins.get('notification');
     }
 
     preload() {
@@ -23,7 +25,7 @@ export default class UIScene extends Phaser.Scene
         const { controls } = this;
 
         // Collect selected on button click
-        controls.addCollectButton(() => eventsCentre.emit('uiCollect'));
+        controls.addCollectButton(() => eventsCentre.emit('collectButtonClick'));
 
         // Restart game on close button click
         controls.addCloseButton(() => this.teardownGame());
@@ -41,7 +43,16 @@ export default class UIScene extends Phaser.Scene
     }
 
     teardownGame() {
-        const gameScore = this.score.points;
+        const {
+            score,
+            notification,
+        } = this;
+        const gameScore = score.points;
+
+        notification.onPauseMenu({
+            onQuit: () => console.log('quit'),
+            onCancel: () => console.log('resume'),
+        });
 
         this.scene.stop('main');
         this.scene.stop('dialogs');

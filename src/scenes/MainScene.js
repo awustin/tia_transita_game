@@ -77,7 +77,7 @@ export default class MainScene extends Phaser.Scene
         });
 
         // Collect ingredients on button clicked
-        eventsCentre.on('uiCollect', () => this.collectSelected());
+        eventsCentre.on('collectButtonClick', () => this.collectSelected());
 
         // Start a new move
         eventsCentre.on('newMove', () => {
@@ -183,7 +183,7 @@ export default class MainScene extends Phaser.Scene
         } = tree.levelUpBranch(score.amounts);
 
         if (addId && removeId) {
-            notification.newIngredient(addId);
+            notification.onNewIngredient(addId);
 
             supply.updateIngredientsSlots(slots);
             score.addCurrentIngredient(addId, removeId);

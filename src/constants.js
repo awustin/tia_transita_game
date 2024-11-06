@@ -49,11 +49,15 @@ export const STYLE_MODAL_TEXT = {
     color: '#fff',
     font: '20px munro',
 };
+export const TEXT_BUTTON_QUIT = 'Quit';
+export const TEXT_BUTTON_CANCEL = 'Cancel';
 export const TEXT_COLLECT = 'collect';
+export const TEXT_GAME_OVER = 'GAME OVER';
+export const TEXT_NEW_INGREDIENT = 'You found a new ingredient !';
 export const TEXT_OFF = 'off';
 export const TEXT_ON = 'on';
+export const TEXT_PAUSED = 'PAUSED';
 export const TEXT_PRESS_SPACE_TO_START = 'Press SPACE to start...';
-export const TEXT_WAS_RESTARTED = 'GAME OVER';
 export const TEXT_SOUND = 'sound';
 export const TEXT_X = 'x';
 export const TITLE_X = 640;

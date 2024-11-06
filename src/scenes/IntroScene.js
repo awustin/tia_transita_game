@@ -1,7 +1,7 @@
 import {
     STYLE_WHITE,
     TEXT_PRESS_SPACE_TO_START,
-    TEXT_WAS_RESTARTED,
+    TEXT_GAME_OVER,
     TITLE_X,
     TITLE_Y
 } from "@constants";
@@ -42,7 +42,7 @@ export default class MainScene extends Phaser.Scene
             this.add.text(
                 TITLE_X,
                 TITLE_Y - 120,
-                TEXT_WAS_RESTARTED,
+                TEXT_GAME_OVER,
                 STYLE_WHITE
             ).setOrigin(0.5, 0.5);
 

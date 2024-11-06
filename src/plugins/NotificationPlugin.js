@@ -1,11 +1,6 @@
+import ModalGroup from "@objects/ModalGroup";
 import { selectById } from "@utils/data";
-import {
-    MODAL_H,
-    MODAL_W,
-    MODAL_Y,
-    MODAL_X,
-    STYLE_MODAL_TEXT
-} from "@constants";
+import { TEXT_NEW_INGREDIENT } from "@constants";
 
 /**
  * Creates interactive notificiations on screen
@@ -20,93 +15,30 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
         this.#game = pluginManager.game;
     }
 
-    newIngredient(ingredientId = null) {
-        const mainScene = this.#game.scene.getScene('main');
-        let groupChildren = [];
-
-        const modal = this.#buildModal();
-        const text = this.#buildText('You found a new item !');
-        groupChildren.push(modal, text);
-
+    onNewIngredient(ingredientId = null) {
         if (ingredientId) {
+            const uiScene = this.#game.scene.getScene('ui');
+            const mainScene = this.#game.scene.getScene('main');
             const { ingredients } = this.#game.cache.json.get('game');
             const { label } = selectById(ingredients.items, ingredientId);
-            
-            const ingredientLabel = this.#buildText(label).setY(MODAL_Y + MODAL_H - 20 - 10);
+            const modalGroup = new ModalGroup(uiScene);
+    
+            modalGroup.show({
+                headerText: TEXT_NEW_INGREDIENT,
+                bodyGameObject: uiScene.add.sprite(0, 0, 'ingredients', `ingredient${ingredientId}`),
+                footerText: label,
+            });
 
-            const ingredientSprite = mainScene.add.sprite(
-                MODAL_X + MODAL_W / 2,
-                MODAL_Y + MODAL_H / 2 - 10,
-                'ingredients',
-                `ingredient${ingredientId}`,
-            ).setOrigin(0.5, 0.5);
-
-            groupChildren.push(ingredientLabel, ingredientSprite);
-
-            mainScene.tweens.addMultiple([
-                {
-                    targets: ingredientLabel,
-                    y: ingredientLabel.y + 10,
-                    duration: 600,
-                    ease: 'quad.out'
-                },
-                {
-                    targets: ingredientSprite,
-                    y: ingredientSprite.y + 10,
-                    duration: 600,
-                    ease: 'quad.out',
-                }
-            ]);
+            mainScene.scene.pause();
+    
+            setTimeout(() => {
+                modalGroup.destroy(true);
+                mainScene.scene.resume();
+            }, 2000);
         }
-
-        const group = mainScene.add.group(groupChildren);
-
-        group.setName('modal_newIngredient').setDepth(2);
-
-        mainScene.tweens.addMultiple([
-            {
-                targets: modal,
-                y: modal.y + 10,
-                duration: 600,
-                ease: 'quad.out'
-            },
-            {
-                targets: text,
-                y: text.y + 10,
-                duration: 600,
-                ease: 'quad.out',
-            }
-        ]);
-
-        setTimeout(() => group.destroy(true), 2500);
     }
 
-    //--------------
-    // Private
-    //--------------
-
-    #buildText(text = '') {
-        const mainScene = this.#game.scene.getScene('main');
-        let x = MODAL_X + MODAL_W / 2;
-        let y = MODAL_Y + 20 - 10;
-        let w = MODAL_W;
-        let name = 'text_newIngredient';
-
-        return mainScene.add.text(x, y, text, STYLE_MODAL_TEXT)
-            .setWordWrapWidth(w - 5)
-            .setOrigin(0.5, 0.5)
-            .setToTop()
-            .setName(name);
-    }
-
-    #buildModal() {
-        const mainScene = this.#game.scene.getScene('main');
-        const y = MODAL_Y - 10;
-        const x = MODAL_X;
-
-        return mainScene.add.sprite(x, y, 'main', 'modal_generic',)
-            .setOrigin(0, 0)
-            .setToTop()
-            .setName('box_newIngredient');
+    onPauseMenu({ onQuit = Function.prototype, onCancel = Function.prototype }) {
+        // Todo - implement
     }
 }
