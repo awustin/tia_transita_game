@@ -1,6 +1,11 @@
 import ModalGroup from "@objects/ModalGroup";
 import { selectById } from "@utils/data";
-import { TEXT_NEW_INGREDIENT } from "@constants";
+import {
+    TEXT_BUTTON_QUIT,
+    TEXT_NEW_INGREDIENT,
+    TEXT_PAUSED,
+    TEXT_BUTTON_CANCEL,
+} from "@constants";
 
 /**
  * Creates interactive notificiations on screen
@@ -28,6 +33,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
                 bodyGameObject: uiScene.add.sprite(0, 0, 'ingredients', `ingredient${ingredientId}`),
                 footerText: label,
             });
+            modalGroup.animate();
 
             mainScene.scene.pause();
 
@@ -39,6 +45,32 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
     }
 
     onPauseMenu({ onQuit = Function.prototype, onCancel = Function.prototype }) {
-        // Todo - implement
+        const uiScene = this.#game.scene.getScene('ui');
+        const mainScene = this.#game.scene.getScene('main');
+        const modalGroup = new ModalGroup(uiScene);
+
+        mainScene.scene.pause();
+
+        modalGroup.show({
+            headerText: TEXT_PAUSED,
+            withButtons: true,
+        });
+
+        modalGroup.button(
+            TEXT_BUTTON_QUIT,
+            () => {
+                mainScene.scene.resume();
+                onQuit();
+            }
+        ).setToLeft();
+
+        modalGroup.button(
+            TEXT_BUTTON_CANCEL,
+            () => {
+                mainScene.scene.resume();
+                onCancel();
+                modalGroup.destroy(true);
+            }
+        ).setToRight();
     }
 }

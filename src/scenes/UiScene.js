@@ -50,23 +50,25 @@ export default class UIScene extends Phaser.Scene
         const gameScore = score.points;
 
         notification.onPauseMenu({
-            onQuit: () => console.log('quit'),
+            onQuit: () => {
+                console.log('quit');
+
+                this.scene.stop('main');
+                this.scene.stop('dialogs');
+        
+                this.plugins.stop('score');
+                this.plugins.stop('supply');
+                this.plugins.stop('speech');
+                this.plugins.stop('basket');
+                this.plugins.stop('notification');
+                this.plugins.stop('board');
+                this.plugins.stop('spell');
+                this.plugins.stop('controls');
+                eventsCentre.removeAllListeners();
+        
+                this.scene.start('intro', { isRestart: true, points: gameScore });
+            },
             onCancel: () => console.log('resume'),
         });
-
-        this.scene.stop('main');
-        this.scene.stop('dialogs');
-
-        this.plugins.stop('score');
-        this.plugins.stop('supply');
-        this.plugins.stop('speech');
-        this.plugins.stop('basket');
-        this.plugins.stop('notification');
-        this.plugins.stop('board');
-        this.plugins.stop('spell');
-        this.plugins.stop('controls');
-        eventsCentre.removeAllListeners();
-
-        this.scene.start('intro', { isRestart: true, points: gameScore });
     }
 }

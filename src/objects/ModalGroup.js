@@ -1,3 +1,4 @@
+import Button from "@sprites/Button";
 import {
     MODAL_H,
     MODAL_W,
@@ -12,13 +13,13 @@ export default class ModalGroup extends Phaser.GameObjects.Group
         super(scene);
 
         this.setName('modalGroup');
+        this.scene.add.existing(this);
     }
 
     show({
         headerText = null,
         bodyGameObject = null,
         footerText = null,
-        withButtons = false,
     }) {
         const y = MODAL_Y - 10;
         const x = MODAL_X;
@@ -51,7 +52,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
             );
         }
 
-        if (footerText && !withButtons) {
+        if (footerText) {
             this.add(
                 this.scene.add.text(
                     x + MODAL_W / 2,
@@ -64,16 +65,37 @@ export default class ModalGroup extends Phaser.GameObjects.Group
                 .setToTop()
             )
         }
+    }
 
-        if (withButtons) {
-            // Add buttons sprites
+    button(text = '', onClick = Function.prototype) {
+        const buttonSprite = new Button(this.scene, MODAL_X, MODAL_Y + 84);
+        // Todo - finish text
+        // const label = this.scene.add.text(
+        //     x + MODAL_W / 2,
+        //     y + 20,
+        //     headerText,
+        //     STYLE_MODAL_TEXT
+        // )
+        // .setWordWrapWidth(MODAL_W - 5)
+        // .setOrigin(0.5, 0.5)
+        // .setToTop();
+
+        this.add(buttonSprite.setToTop());
+        // this.add(label);
+
+        return {
+            setToLeft: () => buttonSprite.setX(MODAL_X + 52),
+            setToRight: () => buttonSprite.setX(MODAL_X + 208),
+            setToCenter: () => buttonSprite.setOrigin(0.5, 0.5).setX(MODAL_X + MODAL_W / 2),
         }
+    }
 
+    animate() {
         this.children.iterate(child => {
             this.scene.add.tween({
                 targets: child,
                 y: child.y + 10,
-                duration: 600,
+                duration: 500,
                 ease: 'quad.out'
             });   
         });
