@@ -50,9 +50,7 @@ export default class UIScene extends Phaser.Scene
         const gameScore = score.points;
 
         notification.onPauseMenu({
-            onQuit: () => {
-                console.log('quit');
-
+            onConfirm: () => {
                 this.scene.stop('main');
                 this.scene.stop('dialogs');
         
@@ -68,7 +66,6 @@ export default class UIScene extends Phaser.Scene
         
                 this.scene.start('intro', { isRestart: true, points: gameScore });
             },
-            onCancel: () => console.log('resume'),
         });
     }
 }

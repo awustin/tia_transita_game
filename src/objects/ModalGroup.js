@@ -5,6 +5,8 @@ import {
     MODAL_Y,
     MODAL_X,
     STYLE_MODAL_TEXT,
+    BUTTON_W,
+    BUTTON_H,
 } from "@constants";
 
 export default class ModalGroup extends Phaser.GameObjects.Group
@@ -68,25 +70,21 @@ export default class ModalGroup extends Phaser.GameObjects.Group
     }
 
     button(text = '', onClick = Function.prototype) {
-        const buttonSprite = new Button(this.scene, MODAL_X, MODAL_Y + 84);
-        // Todo - finish text
-        // const label = this.scene.add.text(
-        //     x + MODAL_W / 2,
-        //     y + 20,
-        //     headerText,
-        //     STYLE_MODAL_TEXT
-        // )
-        // .setWordWrapWidth(MODAL_W - 5)
-        // .setOrigin(0.5, 0.5)
-        // .setToTop();
+        const offsetX = MODAL_X + BUTTON_W / 2;
 
-        this.add(buttonSprite.setToTop());
-        // this.add(label);
+        const button = new Button(this.scene, {
+            label: text,
+            onClick,
+            x: offsetX,
+            y: MODAL_Y + BUTTON_H / 2 + 84
+        });
+
+        this.add(button);
 
         return {
-            setToLeft: () => buttonSprite.setX(MODAL_X + 52),
-            setToRight: () => buttonSprite.setX(MODAL_X + 208),
-            setToCenter: () => buttonSprite.setOrigin(0.5, 0.5).setX(MODAL_X + MODAL_W / 2),
+            setToLeft: () => button.setX(offsetX + 52),
+            setToRight: () => button.setX(offsetX + 208),
+            setToCenter: () => button.setOrigin(0.5, 0.5).setX(offsetX + MODAL_W / 2),
         }
     }
 

@@ -44,7 +44,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
         }
     }
 
-    onPauseMenu({ onQuit = Function.prototype, onCancel = Function.prototype }) {
+    onPauseMenu({ onConfirm = Function.prototype, onCancel = Function.prototype }) {
         const uiScene = this.#game.scene.getScene('ui');
         const mainScene = this.#game.scene.getScene('main');
         const modalGroup = new ModalGroup(uiScene);
@@ -60,7 +60,7 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
             TEXT_BUTTON_QUIT,
             () => {
                 mainScene.scene.resume();
-                onQuit();
+                onConfirm();
             }
         ).setToLeft();
 
