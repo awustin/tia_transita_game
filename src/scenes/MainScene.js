@@ -23,6 +23,7 @@ export default class MainScene extends Phaser.Scene
     }
 
     init () {
+        this.moves = 0;
         this.basket = this.plugins.get('basket');
         this.supply = this.plugins.get('supply');
         this.score = this.plugins.get('score');
