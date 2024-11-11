@@ -144,6 +144,10 @@ export default class ScorePlugin extends Phaser.Plugins.BasePlugin
         });
     }
 
+    get totalPoints() {
+        return this.#astrology + this.#necromancy + this.#labour;
+    }
+
     get currentIngredients() {
         return this.#currentIngredients;
     }

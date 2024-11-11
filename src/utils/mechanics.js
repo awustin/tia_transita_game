@@ -1,4 +1,9 @@
 // Todo - Need calibration: properties for probability computing
+const game = {
+    constants: {
+        POINTS_TO_GAME_OVER: 10000,
+    }
+};
 
 const spell = {
     compute: {
@@ -86,6 +91,7 @@ const tree = {
 };
 
 module.exports = {
+    game,
     spell,
     score,
     tree,

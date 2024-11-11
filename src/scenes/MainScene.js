@@ -1,6 +1,7 @@
 import eventsCentre from "@objects/EventsCentre";
 import IngredientsTree from "@objects/IngredientsTree";
-import IngredientsGrid from '@objects/IngredientsGrid';
+import IngredientsGrid from "@objects/IngredientsGrid";
+import { game as gameMechanics } from "@utils/mechanics";
 import {
     BASEMENT_X,
     STAIRCASE_X,
@@ -158,6 +159,8 @@ export default class MainScene extends Phaser.Scene
         const removed = basket.untrackSelectedIngredients(0) || [];
 
         if (removed.length) {
+            const { constants: { POINTS_TO_GAME_OVER } } = gameMechanics;
+
             removed.forEach(ingredient => {
                 ingredient.setCollected();
                 grid.voidSingleIngredient(ingredient);
@@ -168,9 +171,12 @@ export default class MainScene extends Phaser.Scene
             supply.updateProbabilities(score.amounts);
             tree.updateProbabilites(score.points);
             basket.toggleCollectAvailable();
-    
-            // To do: analyze results. If it's winner emit WIN, else start a new move
-            eventsCentre.emit('newMove');
+
+            if (score.totalPoints >= POINTS_TO_GAME_OVER) {
+                this.gameOver();
+            } else {
+                eventsCentre.emit('newMove');
+            }
         }
     }
 
@@ -199,6 +205,17 @@ export default class MainScene extends Phaser.Scene
         }
 
         return voided;
+    }
+
+    gameOver() {
+        const end = this.scene.get('end');
+        const ui = this.scene.get('ui');
+        const dialogs = this.scene.get('dialogs');
+
+        ui.scene.stop();
+        dialogs.scene.stop();
+        this.scene.stop();
+        end.scene.start();
     }
 
     #createEnvironment () {

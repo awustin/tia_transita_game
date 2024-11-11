@@ -70,6 +70,13 @@ export default class DialogSequencer
         ];
     }
 
+    stop() {
+        if (this.#timeline) {
+            this.#timeline.destroy();
+            this.#timeline = null;
+        }
+    }
+
     get current() {
         return this.#current;
     }

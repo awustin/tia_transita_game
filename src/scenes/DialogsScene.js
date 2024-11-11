@@ -32,6 +32,10 @@ export default class DialogsScene extends Phaser.Scene
         eventsCentre.on('updateDialogs', () => {
             sequencer.updateCurrentDialogs(supply.currentIngredients);
         });
+
+        this.events.once('shutdown', () => {
+            eventsCentre.removeAllListeners();
+        });
     }
 
     update() {

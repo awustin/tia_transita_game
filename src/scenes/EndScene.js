@@ -1,3 +1,4 @@
+import eventsCentre from "@objects/EventsCentre";
 import {
     BASEMENT_X,
     STAIRCASE_X,
@@ -8,15 +9,25 @@ import TransitaNPC from "../sprites/TransitaNPC";
 
 export default class EndScene extends Phaser.Scene
 {
+    score = null;
+    controls = null;
     #isWin = false;
 
     constructor() {
         super('end');
     }
 
-    init(data) {
-        // Todo: implement scores calculation
-        this.#isWin = true;
+    init() {
+        this.controls = this.plugins.get('controls');
+        this.score = this.plugins.get('score');
+
+        const { astrology, necromancy } = this.score.points;
+
+        if (astrology >= necromancy) {
+            this.#isWin = true;
+        } else {
+            this.#isWin = false;
+        }
     }
 
     preload() {
@@ -29,9 +40,36 @@ export default class EndScene extends Phaser.Scene
         } else {
             this.#createBadEnding();
         }
+
+        this.input.on('pointerup', () => {
+            this.teardownGame();
+        });
     }
 
     update() {
+    }
+
+    teardownGame() {
+        const {
+            score,
+        } = this;
+        const gameScore = score.points;
+
+        this.scene.stop('main');
+        this.scene.stop('dialogs');
+        this.scene.stop('ui');
+
+        this.plugins.stop('score');
+        this.plugins.stop('supply');
+        this.plugins.stop('speech');
+        this.plugins.stop('basket');
+        this.plugins.stop('notification');
+        this.plugins.stop('board');
+        this.plugins.stop('spell');
+        this.plugins.stop('controls');
+        eventsCentre.removeAllListeners();
+
+        this.scene.start('intro', { isRestart: true, points: gameScore });
     }
 
     #settings() {
