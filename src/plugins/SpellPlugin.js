@@ -7,7 +7,7 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
 {
     #effects = {
         'blockCells': {id: 1, params: null},
-        'maxMoves': {id: 2, params: null},
+        'minMoves': {id: 2, params: null},
         'changeBoard': {id: 3, params: null},
         'resetBoard': {id: 4, params: null},
     };
@@ -34,7 +34,7 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     stop() {
         this.#effects = {
             'blockCells': { id: 1, params: null },
-            'maxMoves': { id: 2, params: null },
+            'minMoves': { id: 2, params: null },
             'changeBoard': { id: 3, params: null },
             'resetBoard': { id: 4, params: null },
         };
@@ -108,7 +108,7 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     #computeEffectProbability(name, { labour, necromancy, astrology }) {
         const { compute: {
                 blockCellsProbability,
-                maxMovesProbability,
+                minMovesProbability,
                 changeBoardProbability,
                 resetBoardProbability,
             }
@@ -118,8 +118,8 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         switch(name) {
             case 'blockCells':
                 return blockCellsProbability(labour);
-            case 'maxMoves':
-                return maxMovesProbability(labour);
+            case 'minMoves':
+                return minMovesProbability(labour);
             case 'changeBoard':
                 return changeBoardProbability(necromancy);
             case 'resetBoard':

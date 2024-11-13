@@ -1,6 +1,7 @@
 import eventsCentre from "@objects/EventsCentre";
 import IngredientsTree from "@objects/IngredientsTree";
 import IngredientsGrid from "@objects/IngredientsGrid";
+import SpellRestrictions from "@objects/SpellRestrictions";
 import { game as gameMechanics } from "@utils/mechanics";
 import {
     BASEMENT_X,
@@ -13,6 +14,7 @@ export default class MainScene extends Phaser.Scene
     supply = null;
     score = null;
     spell = null;
+    spellRestrictions = null;
     board = null;
     grid = null;
     tree = null;
@@ -48,6 +50,7 @@ export default class MainScene extends Phaser.Scene
 
         this.tree = new IngredientsTree(this);
         this.grid = new IngredientsGrid(this);
+        this.spellRestrictions = new SpellRestrictions(this);
         board.matrix = this.grid.array;
         
         // Ingredients selected
@@ -103,9 +106,7 @@ export default class MainScene extends Phaser.Scene
                     voidIngredientsIds.push(...voided);
                 }
             } else {
-                spell.pickEffect();
-
-                //Todo: apply effect
+                this.applySpell();
             }
 
             // Replace extra ingredient
@@ -205,6 +206,25 @@ export default class MainScene extends Phaser.Scene
         }
 
         return voided;
+    }
+
+    applySpell() {
+        const {
+            spell,
+            spellRestrictions,
+        } = this;
+
+        const { name } = spell.pickEffect();
+
+        switch(name) {
+            case 'minMoves':
+                spellRestrictions.applyMovesRestriction();
+
+                break;
+            default:
+                break;
+        }
+
     }
 
     gameOver() {
