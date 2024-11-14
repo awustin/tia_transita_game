@@ -20,6 +20,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
 
     show({
         headerText = null,
+        bodyText = null,
         bodyGameObject = null,
         footerText = null,
     }) {
@@ -44,13 +45,27 @@ export default class ModalGroup extends Phaser.GameObjects.Group
             );
         }
 
-        if (bodyGameObject) {
+        if (bodyGameObject && !bodyText) {
             this.add(
                 bodyGameObject
                 .setX(x + MODAL_W / 2)
                 .setY(y + MODAL_H / 2)
                 .setToTop()
                 .setOrigin(0.5, 0.5)
+            );
+        }
+
+        if (bodyText) {
+            this.add(
+                this.scene.add.text(
+                    x + MODAL_W / 2,
+                    y + MODAL_H / 2,
+                    bodyText,
+                    STYLE_MODAL_TEXT
+                )
+                .setWordWrapWidth(MODAL_W - 5)
+                .setOrigin(0.5, 0.5)
+                .setToTop()
             );
         }
 

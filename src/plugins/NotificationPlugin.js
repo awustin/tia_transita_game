@@ -2,6 +2,7 @@ import ModalGroup from "@objects/ModalGroup";
 import { selectById } from "@utils/data";
 import {
     TEXT_BUTTON_QUIT,
+    TEXT_MIN_MOVES,
     TEXT_NEW_INGREDIENT,
     TEXT_PAUSED,
     TEXT_BUTTON_CANCEL,
@@ -72,5 +73,25 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
                 modalGroup.destroy(true);
             }
         ).setToRight();
+    }
+
+    onSpell(name) {
+        if (name === 'minMoves') {
+            const uiScene = this.#game.scene.getScene('ui');
+            const mainScene = this.#game.scene.getScene('main');
+            const modalGroup = new ModalGroup(uiScene);
+    
+            modalGroup.show({
+                bodyText: TEXT_MIN_MOVES,
+            });
+            modalGroup.animate();
+
+            mainScene.scene.pause();
+
+            uiScene.time.delayedCall(2000, () => {
+                mainScene.scene.resume();
+                modalGroup.destroy(true);
+            }, [], this);
+        }
     }
 }

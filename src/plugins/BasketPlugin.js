@@ -1,3 +1,5 @@
+import { spell as spellMechanics } from "@utils/mechanics";
+
 export default class BasketPlugin extends Phaser.Plugins.BasePlugin
 {
     #selected = [];
@@ -68,21 +70,22 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
     }
 
     /**
-     * Toggles the flag for collecting ingredients.
-     * If the length of selected is greater or equal than 2, it's true.
-     * @param {Boolean} value 
+     * Checks if the selected ingredients are ready to collect
+     * @param {Boolean} withMinMoves Flag that indicates if the spell `minMoves` is active
+     * @returns {Boolean} Boolean
      */
-    toggleCollectAvailable() {
-        const selected = this.#selected;
+    checkCollectEnabled(withMinMoves = false) {
+        const { constants: { MIN_MOVES }} = spellMechanics;
+        const { selected } = this;
+        const minMovesThreshold = withMinMoves ? selected.length >= MIN_MOVES : true;
 
-        if (selected.length >= 2 && !this.#collectAvailable) {
-            this.#collectAvailable = true;
+        if (selected.length >= 2 && minMovesThreshold) {
+            return true;
         }
 
-        if (selected.length < 2 && this.#collectAvailable) {
-            this.#collectAvailable = false;
-        }
+        return false;
     }
+    
 
     get selected() {
         return this.#selected;
@@ -90,6 +93,16 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
 
     get collectAvailable() {
         return this.#collectAvailable;
+    }
+
+    set collectAvailable(value) {
+        if (value && !this.#collectAvailable) {
+            this.#collectAvailable = value;
+        }
+
+        if (!value && this.#collectAvailable) {
+            this.#collectAvailable = value;
+        }
     }
 
     // Private

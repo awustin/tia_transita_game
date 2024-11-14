@@ -1,7 +1,6 @@
 import eventsCentre from "@objects/EventsCentre";
 import IngredientsTree from "@objects/IngredientsTree";
 import IngredientsGrid from "@objects/IngredientsGrid";
-import SpellRestrictions from "@objects/SpellRestrictions";
 import { game as gameMechanics } from "@utils/mechanics";
 import {
     BASEMENT_X,
@@ -14,7 +13,6 @@ export default class MainScene extends Phaser.Scene
     supply = null;
     score = null;
     spell = null;
-    spellRestrictions = null;
     board = null;
     grid = null;
     tree = null;
@@ -46,11 +44,11 @@ export default class MainScene extends Phaser.Scene
         const {
             basket,
             board,
+            spell,
         } = this;
 
         this.tree = new IngredientsTree(this);
         this.grid = new IngredientsGrid(this);
-        this.spellRestrictions = new SpellRestrictions(this);
         board.matrix = this.grid.array;
         
         // Ingredients selected
@@ -70,7 +68,11 @@ export default class MainScene extends Phaser.Scene
                     };
                 }
 
-                basket.toggleCollectAvailable();
+                if (basket.checkCollectEnabled(spell.current === 'minMoves')) {
+                    basket.collectAvailable = true;
+                } else {
+                    basket.collectAvailable = false;
+                }
             }
         });
 
@@ -166,12 +168,12 @@ export default class MainScene extends Phaser.Scene
                 ingredient.setCollected();
                 grid.voidSingleIngredient(ingredient);
             });
-    
+
+            basket.collectAvailable = false;
             score.add(removed[0].id, removed.length);
             spell.updateProbabilities(score.points);
             supply.updateProbabilities(score.amounts);
             tree.updateProbabilites(score.points);
-            basket.toggleCollectAvailable();
 
             if (score.totalPoints >= POINTS_TO_GAME_OVER) {
                 this.gameOver();
@@ -209,20 +211,11 @@ export default class MainScene extends Phaser.Scene
     }
 
     applySpell() {
-        const {
-            spell,
-            spellRestrictions,
-        } = this;
-
+        const { spell, notification } = this;
         const { name } = spell.pickEffect();
 
-        switch(name) {
-            case 'minMoves':
-                spellRestrictions.applyMovesRestriction();
-
-                break;
-            default:
-                break;
+        if (name !== 'none') {
+            notification.onSpell(name);
         }
 
     }

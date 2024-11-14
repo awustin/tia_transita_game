@@ -55,6 +55,7 @@ export const TEXT_BUTTON_QUIT = 'Quit';
 export const TEXT_BUTTON_CANCEL = 'Cancel';
 export const TEXT_COLLECT = 'collect';
 export const TEXT_GAME_OVER = 'GAME OVER';
+export const TEXT_MIN_MOVES = 'SWOOOSHH.... Now you can\'t select under 5 ingredients';
 export const TEXT_NEW_INGREDIENT = 'You found a new ingredient !';
 export const TEXT_OFF = 'off';
 export const TEXT_ON = 'on';
