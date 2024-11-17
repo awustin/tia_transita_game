@@ -1,4 +1,6 @@
 import Ingredient from '@sprites/Ingredient';
+import PathTable from "@classes/PathTable";
+import { spell as spellMechanics } from "@utils/mechanics";
 import {
     GRID_COUNT,
     GRID_X,
@@ -17,6 +19,7 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     #group = null;
     #grid = [];
     #emptyPositions = [];
+    #pathTable = null;
 
     constructor(scene = null, size = GRID_COUNT) {
         if (!scene) {
@@ -37,16 +40,18 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
 
         this.#group = scene.add.group();
         this.#group.setName('ingredientsGrid');
+        this.#pathTable = new PathTable(this);
 
         for (let row = 0; row < size; row++) {
-            let columnArray = [];
+            this.#grid[row] = [];
 
             for (let col = 0; col < size; col++) {
                 const ingredient = this.#newIngredientAtPosition(row, col);
-                columnArray.push(ingredient);
-            }
+                this.#grid[row].push(ingredient);
 
-            this.#grid.push(columnArray);
+                // Add entry to track moves
+                this.#pathTable.add(ingredient.id, [row, col]);
+            }
         }
     }
 
@@ -115,11 +120,44 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     fillInWithNewIngredients() {
         if (this.#emptyPositions.length) {
             this.#emptyPositions.forEach(([row, col]) => {
-                this.#grid[row][col] = this.#newIngredientAtPosition(row, col);
+                const ingredient = this.#newIngredientAtPosition(row, col);
+                this.#grid[row][col] = ingredient;
+
+                // Add entry to track moves
+                this.#pathTable.add(ingredient.id, [row, col]);
             });
         }
 
-        this.#emptyPositions.splice(0);
+        this.#emptyPositions = [];
+    }
+
+    /**
+     * Gets the ingredient ID at the given position in the grid
+     * @param {Number} row 
+     * @param {Number} col 
+     * @returns id
+     */
+    idAtCell(row, col) {
+        const ingredient = this.#grid[row][col];
+
+        if (ingredient) {
+            return ingredient.id;
+        }
+    }
+
+    /**
+     * Checks if there's any existing path with the minimum number of ingredients
+     * @param {Boolean} withMinMoves Flag to indicate if spell is activated
+     * @returns `true` or `false` if found minimum path
+     */
+    detectMinimumPath(withMinMoves = false) {
+        if (withMinMoves) {
+            const { constants: { MIN_MOVES }} = spellMechanics;
+
+            return this.#pathTable.detect(MIN_MOVES);
+        }
+        
+        return this.#pathTable.detect();
     }
 
     get emptyPositions() {

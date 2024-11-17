@@ -60,6 +60,7 @@ module.exports = {
 			"@plugins": path.resolve(__dirname, "src/plugins"),
 			"@constants": path.resolve(__dirname, "src/constants"),
 			"@utils": path.resolve(__dirname, "src/utils"),
+			"@classes": path.resolve(__dirname, "src/classes"),
 		}
 	}
 };

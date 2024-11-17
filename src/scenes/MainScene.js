@@ -132,11 +132,15 @@ export default class MainScene extends Phaser.Scene
                 );
             }
 
+            //If effect = minMoves, update moves tree
             grid.fillInWithNewIngredients();
 
-            eventsCentre.emit('updateDialogs');
+            if (spell.current === 'minMoves') {
+                const detected = grid.detectMinimumPath(true);
+                console.log({detected});
+            }
 
-            //Todo: monitor available moves
+            eventsCentre.emit('updateDialogs');
         });
 
         // Shutdown scene
