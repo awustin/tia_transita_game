@@ -94,6 +94,7 @@ export default class MainScene extends Phaser.Scene
                 grid,
                 supply,
                 score,
+                notification,
             } = this;
             const voidIngredientsIds = [];
 
@@ -132,15 +133,20 @@ export default class MainScene extends Phaser.Scene
                 );
             }
 
-            //If effect = minMoves, update moves tree
             grid.fillInWithNewIngredients();
 
+            // Checks there's a minimum path if spell is minMoves.
+            // If not Game over
             if (spell.current === 'minMoves') {
                 const detected = grid.detectMinimumPath(true);
-                console.log({detected});
+                
+                if (!detected) {
+                    notification.push('noMoves');
+                }
             }
 
             eventsCentre.emit('updateDialogs');
+            eventsCentre.emit('notificationsQueue');
         });
 
         // Shutdown scene
@@ -162,6 +168,7 @@ export default class MainScene extends Phaser.Scene
             supply,
             basket,
             tree,
+            notification,
         } = this;
         const removed = basket.untrackSelectedIngredients(0) || [];
 
@@ -180,10 +187,10 @@ export default class MainScene extends Phaser.Scene
             tree.updateProbabilites(score.points);
 
             if (score.totalPoints >= POINTS_TO_GAME_OVER) {
-                this.gameOver();
-            } else {
-                eventsCentre.emit('newMove');
+                notification.push('pointsGameOver', { points: score.totalPoints });
             }
+
+            eventsCentre.emit('newMove');
         }
     }
 
@@ -203,7 +210,7 @@ export default class MainScene extends Phaser.Scene
         } = tree.levelUpBranch(score.amounts);
 
         if (addId && removeId) {
-            notification.onNewIngredient(addId);
+            notification.push('newIngredient', { addId });
 
             supply.updateIngredientsSlots(slots);
             score.addCurrentIngredient(addId, removeId);
@@ -219,20 +226,9 @@ export default class MainScene extends Phaser.Scene
         const { name } = spell.pickEffect();
 
         if (name !== 'none') {
-            notification.onSpell(name);
+            notification.push('spell', { name });
         }
 
-    }
-
-    gameOver() {
-        const end = this.scene.get('end');
-        const ui = this.scene.get('ui');
-        const dialogs = this.scene.get('dialogs');
-
-        ui.scene.stop();
-        dialogs.scene.stop();
-        this.scene.stop();
-        end.scene.start();
     }
 
     #createEnvironment () {

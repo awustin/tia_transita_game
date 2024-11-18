@@ -23,6 +23,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
         bodyText = null,
         bodyGameObject = null,
         footerText = null,
+        padTop = 0,
     }) {
         const y = MODAL_Y - 10;
         const x = MODAL_X;
@@ -35,7 +36,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
             this.add(
                 this.scene.add.text(
                     x + MODAL_W / 2,
-                    y + 20,
+                    y + 20 + padTop,
                     headerText,
                     STYLE_MODAL_TEXT
                 )
@@ -99,7 +100,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
         return {
             setToLeft: () => button.setX(offsetX + 52),
             setToRight: () => button.setX(offsetX + 208),
-            setToCenter: () => button.setOrigin(0.5, 0.5).setX(offsetX + MODAL_W / 2),
+            setToCenter: () => button.setX(offsetX + MODAL_W / 3),
         }
     }
 
