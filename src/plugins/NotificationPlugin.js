@@ -8,6 +8,7 @@ import {
     TEXT_BUTTON_CANCEL,
     TEXT_NO_MOVES,
     TEXT_POINTS_REACHED,
+    TEXT_BLOCK_CELLS,
 } from "@constants";
 
 /**
@@ -122,6 +123,21 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
 
             this.#current = {
                 type: 'spell/minMoves',
+                cancelCallback: () => modalGroup.destroy(true),
+            };
+        }
+
+        if (name === 'blockCells') {
+            const uiScene = this.#game.scene.getScene('ui');
+            const modalGroup = new ModalGroup(uiScene);
+
+            modalGroup.show({
+                bodyText: TEXT_BLOCK_CELLS,
+            });
+            modalGroup.animate();
+
+            this.#current = {
+                type: 'spell/blockCells',
                 cancelCallback: () => modalGroup.destroy(true),
             };
         }

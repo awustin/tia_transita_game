@@ -78,7 +78,6 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
      */
     pickEffect() {
         let e = this.#pickEffectWithProbability();
-        e = { name: 'minMoves', probability: 1 };
 
         if (e.name !== 'none') {
             this.#current = e.name;
@@ -94,6 +93,14 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
      */
     clearEffect() {
         this.#current = 'none';
+    }
+
+    currentMinMoves() {
+        return this.#current === 'minMoves';
+    }
+
+    currentBlockCells() {
+        return this.#current === 'blockCells';
     }
 
     get current() {

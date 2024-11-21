@@ -51,11 +51,12 @@ export const STYLE_MODAL_TEXT = {
     color: '#fff',
     font: '20px munro',
 };
+export const TEXT_BLOCK_CELLS = 'LAIR OF UNFRIENDLY ARACHNIDS... You are blocked from going through the infested spots';
 export const TEXT_BUTTON_QUIT = 'Quit';
 export const TEXT_BUTTON_CANCEL = 'Cancel';
 export const TEXT_COLLECT = 'collect';
 export const TEXT_GAME_OVER = 'GAME OVER';
-export const TEXT_MIN_MOVES = 'SWOOOSHH.... Now you can\'t select under 5 ingredients';
+export const TEXT_MIN_MOVES = 'MULTIPLYING TROUTS... You can\'t select under 5 ingredients';
 export const TEXT_NEW_INGREDIENT = 'You found a new ingredient !';
 export const TEXT_NO_MOVES = 'There are no more moves available';
 export const TEXT_OFF = 'off';

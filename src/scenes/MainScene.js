@@ -68,7 +68,7 @@ export default class MainScene extends Phaser.Scene
                     };
                 }
 
-                if (basket.checkCollectEnabled(spell.current === 'minMoves')) {
+                if (basket.checkCollectEnabled(spell.currentMinMoves())) {
                     basket.collectAvailable = true;
                 } else {
                     basket.collectAvailable = false;
@@ -137,7 +137,7 @@ export default class MainScene extends Phaser.Scene
 
             // Checks there's a minimum path if spell is minMoves.
             // If not Game over
-            if (spell.current === 'minMoves') {
+            if (spell.currentMinMoves()) {
                 const detected = grid.detectMinimumPath(true);
                 
                 if (!detected) {
