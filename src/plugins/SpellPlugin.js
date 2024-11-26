@@ -11,6 +11,7 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         'changeBoard': {id: 3, params: null},
         'resetBoard': {id: 4, params: null},
     };
+    #previous = null;
     #current = 'none';
 
     #sortedEffectsProbabilities = [{ name: 'none', probability: 1 }];
@@ -92,6 +93,7 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
      * @returns 
      */
     clearEffect() {
+        this.#previous = this.#current;
         this.#current = 'none';
     }
 
@@ -103,8 +105,16 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         return this.#current === 'blockCells';
     }
 
+    previousBlockCells() {
+        return this.#previous === 'blockCells';
+    }
+
     get current() {
         return this.#current;
+    }
+
+    get previous() {
+        return this.#previous;
     }
 
     get sortedEffectsProbabilities() {

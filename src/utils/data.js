@@ -43,6 +43,17 @@ export const selectByValue = (items = [], attr = null, value = true) => {
     return items.filter(item => item[attr] ? item[attr] === value : false)[0] || {};
 };
 
+/**
+ * Selects a random item in the array provided
+ * @param {Array} items Lookup array
+ */
+export const selectRandom = (items = []) => {
+    if (!items.length) {
+        return false;
+    }
+
+    return items[Math.floor(Math.random() * items.length)];
+};
 
 /**
  * Performs a JOIN operation between `left` and `right` arrays, comparing `leftOn` and `rightOn` keys

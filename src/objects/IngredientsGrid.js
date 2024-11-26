@@ -1,6 +1,7 @@
 import Ingredient from '@sprites/Ingredient';
 import PathTable from "@classes/PathTable";
 import { spell as spellMechanics } from "@utils/mechanics";
+import { selectRandom } from "@utils/data";
 import {
     GRID_COUNT,
     GRID_X,
@@ -158,6 +159,34 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
         }
         
         return this.#pathTable.detect();
+    }
+
+    /**
+     * Set ingredients as blocked at positions given in `game.maps`
+     */
+    blockIngredients() {
+        const { maps } = this.scene.game.cache.json.get('game');
+
+        const { positions } = selectRandom(maps.items) || [];
+
+        positions.forEach((array, row) => {
+            array.forEach((value, col) => {
+                if (value === 1) {
+                    this.#grid[row][col].setBlocked();
+                }
+            });
+        });
+    }
+
+    /**
+     * Set ingredients as idle at positions
+     */
+    unblockIngredients() {
+        this.#grid.forEach((array, row) => {
+            array.forEach((value, col) => {
+                this.#grid[row][col].setIdle();
+            });
+        });
     }
 
     get emptyPositions() {

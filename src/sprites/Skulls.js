@@ -15,9 +15,9 @@ export default class Skulls extends Phaser.GameObjects.Sprite
                 frames: this.anims.generateFrameNames('main', {
                     prefix: 'skulls',
                     start: 1,
-                    end: 7,
+                    end: 6,
                 }),
-                frameRate: 10,
+                frameRate: 6,
                 repeat: -1
             });
         }

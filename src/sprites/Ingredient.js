@@ -9,6 +9,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     #sparkles = null;
     #skulls = null;
     #collectable = true;
+    #pendingState = null;
+    #initializing = false;
 
     constructor(id = null, cell = [], config) {
         if (!id) {
@@ -65,6 +67,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         this.setScale(0,0);
         this.setAlpha(0.5);
         this.disableInteractive();
+        this.#initializing = true;
 
         this.scene.tweens.chain({
             targets: this,
@@ -78,24 +81,40 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             ],
             loop: 0,
             delay: 200,
-            onComplete: () => this.setIdle()
+            onComplete: () => {
+                this.#initializing = false;
+
+                switch(this.#pendingState) {
+                    case 'blocked':
+                        this.setBlocked();
+                        break;
+                    default:
+                        this.setIdle();
+                        break;
+                }
+
+                this.#pendingState = null;
+            }
         });
 
         this.setState('start');
     }
 
     setIdle() {
-        this.setState('idle');
-
-        this.setInteractive();
-
-        if (this.#sparkles) {
-            this.#sparkles.destroy();
-        }
-
-        if (this.#skulls) {
-            this.#skulls.destroy();
-        }
+        this.#setAsyncState(
+            'idle',
+            () => {
+                this.setInteractive();
+        
+                if (this.#sparkles) {
+                    this.#sparkles.destroy();
+                }
+        
+                if (this.#skulls) {
+                    this.#skulls.destroy();
+                }
+            },
+        );
     }
 
     setActive() {
@@ -146,16 +165,32 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     }
 
     setBlocked() {
-        const { x, y } = this.getBounds();
+        this.#setAsyncState(
+            'blocked',
+            () => {
+                const { x, y } = this.getBounds();
+                this.disableInteractive();
 
-        this.#sparkles = new Skulls({
-            scene: this.scene,
-            x,
-            y,
-        });
+                this.#sparkles = new Skulls({
+                    scene: this.scene,
+                    x,
+                    y,
+                });
+        
+                if (this.#cellBorder) {
+                    this.#cellBorder.destroy();
+                }
+            },
+        );
+    }
 
-        this.setState('blocked');
-        this.disableInteractive();
+    #setAsyncState(name, callback = Function.prototype) {
+        if (this.#initializing) {
+            this.#pendingState = name;
+        } else {
+            this.setState(name);
+            (callback.bind(this))();
+        }
     }
 
     #addCellBorder() {

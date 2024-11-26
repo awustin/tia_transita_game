@@ -109,7 +109,11 @@ export default class MainScene extends Phaser.Scene
                     voidIngredientsIds.push(...voided);
                 }
             } else {
-                this.applySpell();
+                const { name } = spell.pickEffect();
+        
+                if (name !== 'none') {
+                    notification.push('spell', { name });
+                }
             }
 
             // Replace extra ingredient
@@ -135,18 +139,37 @@ export default class MainScene extends Phaser.Scene
 
             grid.fillInWithNewIngredients();
 
-            // Checks there's a minimum path if spell is minMoves.
-            // If not Game over
-            if (spell.currentMinMoves()) {
-                const detected = grid.detectMinimumPath(true);
+            eventsCentre.emit('updateDialogs');
+            eventsCentre.emit('notificationsQueue');
+            eventsCentre.emit('applySpell');
+        });
+
+        // Apply spell
+        eventsCentre.on('applySpell', () => {
+            const {
+                spell,
+                grid,
+                notification,
+            } = this;
+    
+            if (spell.currentBlockCells()) {
+                // Block cells
+                grid.blockIngredients();
+            }
+
+            if (spell.previousBlockCells()) {
+                // Unblock cells
+                grid.unblockIngredients();
+            }
+    
+            // Temporarily, only detect minimum paths for minMoves or blockCells
+            if (spell.currentMinMoves() || spell.currentMinMoves()) {
+                const detected = grid.detectMinimumPath(spell.currentMinMoves());
                 
                 if (!detected) {
                     notification.push('noMoves');
                 }
             }
-
-            eventsCentre.emit('updateDialogs');
-            eventsCentre.emit('notificationsQueue');
         });
 
         // Shutdown scene
@@ -219,16 +242,6 @@ export default class MainScene extends Phaser.Scene
         }
 
         return voided;
-    }
-
-    applySpell() {
-        const { spell, notification } = this;
-        const { name } = spell.pickEffect();
-
-        if (name !== 'none') {
-            notification.push('spell', { name });
-        }
-
     }
 
     #createEnvironment () {
