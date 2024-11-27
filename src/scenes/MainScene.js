@@ -13,7 +13,6 @@ export default class MainScene extends Phaser.Scene
     supply = null;
     score = null;
     spell = null;
-    board = null;
     grid = null;
     tree = null;
     notification = null;
@@ -29,7 +28,6 @@ export default class MainScene extends Phaser.Scene
         this.supply = this.plugins.get('supply');
         this.score = this.plugins.get('score');
         this.spell = this.plugins.get('spell');
-        this.board = this.plugins.get('board');
         this.notification = this.plugins.get('notification');
         this.scene.launch('dialogs');
     }
@@ -49,7 +47,6 @@ export default class MainScene extends Phaser.Scene
 
         this.tree = new IngredientsTree(this);
         this.grid = new IngredientsGrid(this);
-        board.matrix = this.grid.array;
         
         // Ingredients selected
         this.input.on('pointerup', (value, [ ingredient ]) => {

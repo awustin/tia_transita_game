@@ -33,7 +33,6 @@ export default class MainScene extends Phaser.Scene
         this.plugins.start('supply');
         this.plugins.start('score');
         this.plugins.start('basket');
-        this.plugins.start('board');
         this.plugins.start('controls');
         this.plugins.start('speech');
         this.plugins.start('notification');

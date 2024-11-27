@@ -8,7 +8,6 @@ import BasketPlugin from "@plugins/BasketPlugin";
 import SupplyPlugin from "@plugins/SupplyPlugin";
 import ScorePlugin from "@plugins/ScorePlugin";
 import SpellPlugin from "@plugins/SpellPlugin";
-import BoardPlugin from "@plugins/BoardPlugin";
 import ControlsPlugin from "@plugins/ControlsPlugin";
 import SpeechBubblesPlugin from "@plugins/SpeechBubblesPlugin";
 import NotificationPlugin from "@plugins/NotificationPlugin";
@@ -32,7 +31,6 @@ new Phaser.Game({
             { key: 'supply', plugin: SupplyPlugin },
             { key: 'score', plugin: ScorePlugin },
             { key: 'spell', plugin: SpellPlugin },
-            { key: 'board', plugin: BoardPlugin },
             { key: 'controls', plugin: ControlsPlugin },
             { key: 'speech', plugin: SpeechBubblesPlugin },
             { key: 'notification', plugin: NotificationPlugin }

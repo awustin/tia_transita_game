@@ -14,7 +14,6 @@
   "author": "awustin",
   "license": "ISC",
   "dependencies": {
-    "matrix-js": "1.7.1",
     "phaser": "3.85.2"
   },
   "devDependencies": {

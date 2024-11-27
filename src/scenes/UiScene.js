@@ -126,7 +126,6 @@ export default class UIScene extends Phaser.Scene
                 this.plugins.stop('speech');
                 this.plugins.stop('basket');
                 this.plugins.stop('notification');
-                this.plugins.stop('board');
                 this.plugins.stop('spell');
                 this.plugins.stop('controls');
                 eventsCentre.removeAllListeners();
@@ -154,7 +153,6 @@ export default class UIScene extends Phaser.Scene
                 this.plugins.stop('speech');
                 this.plugins.stop('basket');
                 this.plugins.stop('notification');
-                this.plugins.stop('board');
                 this.plugins.stop('spell');
                 this.plugins.stop('controls');
                 eventsCentre.removeAllListeners();
