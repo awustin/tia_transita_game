@@ -164,15 +164,19 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     /**
      * Set ingredients as blocked at positions given in `game.maps`
      */
-    blockIngredients() {
-        const { maps } = this.scene.game.cache.json.get('game');
+    blockIngredients(map = []) {
+        const grid = this.#grid;
+        const path = this.#pathTable;
 
-        const { positions } = selectRandom(maps.items) || [];
-
-        positions.forEach((array, row) => {
+        map.forEach((array, row) => {
             array.forEach((value, col) => {
                 if (value === 1) {
-                    this.#grid[row][col].setBlocked();
+                    const ingredient = grid[row][col];
+
+                    ingredient.setBlocked();
+
+                    // Untrack position for path detection
+                    path.remove(ingredient.cell);
                 }
             });
         });
@@ -182,9 +186,19 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
      * Set ingredients as idle at positions
      */
     unblockIngredients() {
-        this.#grid.forEach((array, row) => {
+        const path = this.#pathTable;
+        const grid = this.#grid;
+
+        grid.forEach((array, row) => {
             array.forEach((value, col) => {
-                this.#grid[row][col].setIdle();
+                const ingredient = grid[row][col];
+
+                if (ingredient.isBlocked) {
+                    ingredient.setIdle();
+
+                    // Tracks position for path detection
+                    path.add(ingredient.id, ingredient.cell);
+                }
             });
         });
     }

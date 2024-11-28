@@ -151,7 +151,7 @@ export default class MainScene extends Phaser.Scene
     
             if (spell.currentBlockCells()) {
                 // Block cells
-                grid.blockIngredients();
+                grid.blockIngredients(spell.pickMap());
             }
 
             if (spell.previousBlockCells()) {
@@ -160,7 +160,7 @@ export default class MainScene extends Phaser.Scene
             }
     
             // Temporarily, only detect minimum paths for minMoves or blockCells
-            if (spell.currentMinMoves() || spell.currentMinMoves()) {
+            if (spell.currentMinMoves() || spell.currentBlockCells()) {
                 const detected = grid.detectMinimumPath(spell.currentMinMoves());
                 
                 if (!detected) {

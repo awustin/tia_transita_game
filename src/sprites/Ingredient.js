@@ -63,6 +63,10 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         return this.#collectable;
     }
 
+    get isBlocked() {
+        return this.state === 'blocked';
+    }
+
     setStart() {
         this.setScale(0,0);
         this.setAlpha(0.5);

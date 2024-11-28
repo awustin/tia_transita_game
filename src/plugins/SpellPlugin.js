@@ -1,4 +1,5 @@
 import { spell as spellMechanics } from "@utils/mechanics";
+import { selectRandom } from "@utils/data";
 
 /**
  * Enable / disable the effects in the game
@@ -85,6 +86,16 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         }
 
         return e;
+    }
+
+    /**
+     * Selects a random map from the game data
+     * @returns 2D array
+     */
+    pickMap() {
+        const { maps } = this.game.cache.json.get('game');
+
+        return (selectRandom(maps.items) || {}).positions || [];
     }
 
     /**

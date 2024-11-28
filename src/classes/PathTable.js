@@ -71,6 +71,17 @@ export default class PathTable
         this.#addAdjacentEntry(position, id, 'left');
     }
 
+    remove(position = []) {
+        if (position.length !== 2) {
+            return false;
+        }
+
+        this.#removeAdjacententry(position, 'top');
+        this.#removeAdjacententry(position, 'right');
+        this.#removeAdjacententry(position, 'bottom');
+        this.#removeAdjacententry(position, 'left');
+    }
+
     detect(min = 2) {
         let sequence;
 
@@ -129,6 +140,38 @@ export default class PathTable
             }
         } else {
             this.table[positionKey][direction] = false;
+        }
+    }
+
+    #removeAdjacententry(position = [], direction = 'top') {
+        const positionKey = keyToString(position);
+        let inverse;
+        let adjacentKey;
+
+        switch(direction) {
+            case 'top':
+                adjacentKey = topKey(position);
+                inverse = 'bottom';
+                break;
+            case 'right':
+                adjacentKey = rightKey(position)
+                inverse = 'left';
+                break;
+            case 'bottom':
+                adjacentKey = bottomKey(position);
+                inverse = 'top';
+                break;
+            case 'left':
+                adjacentKey = leftKey(position);
+                inverse = 'right';
+                break;
+            default:
+                break;
+        }
+
+        if (typeof this.table[positionKey][direction] === 'object') {
+            this.table[positionKey][direction] = false;
+            this.table[adjacentKey][inverse] = false;
         }
     }
 
