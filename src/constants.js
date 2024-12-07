@@ -10,6 +10,10 @@ export const BUTTON_SOUND_X = 1108;
 export const BUTTON_H = 34;
 export const BUTTON_W = 104;
 export const CELL_SIZE_PX = 52; // cell is 52x52 px
+export const DIALOG_PANEL_H = 156;
+export const DIALOG_PANEL_W = 780;
+export const DIALOG_PANEL_X = 250;
+export const DIALOG_PANEL_Y = 676;
 export const GRID_COUNT = 9; // 9 x 9 items
 export const GRID_X = 432;
 export const GRID_Y = 208;
@@ -48,7 +52,7 @@ export const STYLE_WHITE = {
     font: '20px munro',
 };
 export const STYLE_MODAL_TEXT = {
-    color: '#fff',
+    color: '#ddd',
     font: '20px munro',
 };
 export const TEXT_BLOCK_CELLS = 'LAIR OF UNFRIENDLY ARACHNIDS... You are blocked from going through the infested spots';

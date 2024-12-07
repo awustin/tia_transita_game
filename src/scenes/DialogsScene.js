@@ -1,6 +1,6 @@
 import eventsCentre from "@objects/EventsCentre";
 import Mercuria from "@sprites/Mercuria";
-import DialogSequencer from "@objects/DialogSequencer";
+import DialogController from "@objects/DialogController";
 
 export default class DialogsScene extends Phaser.Scene
 {
@@ -19,18 +19,18 @@ export default class DialogsScene extends Phaser.Scene
     create() {
         const { supply } = this;
         const mercuria = new Mercuria(this);
-        const sequencer = new DialogSequencer(this);
+        const controller = new DialogController(this);
 
         mercuria.setIdle();
-        sequencer.updateCurrentDialogs(supply.currentIngredients);
-
-        sequencer.setSpeakTimeline({
-            onSpeak: (message => mercuria.speak(message, 5)).bind(this),
-            secondsAt: 15,
+        controller.show();
+        controller.updateCurrentDialogs(supply.currentIngredients);
+        controller.setSpeakTimeline({
+            secondsAt: 20,
+            duration: 5,
         });
 
         eventsCentre.on('updateDialogs', () => {
-            sequencer.updateCurrentDialogs(supply.currentIngredients);
+            controller.updateCurrentDialogs(supply.currentIngredients);
         });
 
         this.events.once('shutdown', () => {

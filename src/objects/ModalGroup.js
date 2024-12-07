@@ -24,6 +24,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
         bodyGameObject = null,
         footerText = null,
         padTop = 0,
+        padLeft = 5,
     }) {
         const y = MODAL_Y - 10;
         const x = MODAL_X;
@@ -59,7 +60,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
         if (bodyText) {
             this.add(
                 this.scene.add.text(
-                    x + MODAL_W / 2,
+                    padLeft + x + MODAL_W / 2,
                     y + MODAL_H / 2,
                     bodyText,
                     STYLE_MODAL_TEXT

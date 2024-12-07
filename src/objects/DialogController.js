@@ -1,11 +1,11 @@
+import DialogPanelGroup from "@objects/DialogPanelGroup";
 import {
     select,
-    selectById,
     selectByIds,
     join,
 } from "@utils/data";
 
-export default class DialogSequencer
+export default class DialogController
 {
     #scene = null;
 
@@ -17,17 +17,19 @@ export default class DialogSequencer
 
     #timeline = null;
 
+    #panel = null;
+
     constructor(scene = null) {
         if (!scene) {
             throw {
-                message: 'DialogSequencer missing scene',
+                message: 'DialogController missing scene',
                 code: 'C16'
             };
         }
 
         if (!scene.cache.json.get('game')) {
             throw {
-                message: 'DialogSequencer missing a game config object. Check it\'s being loaded in Intro scene',
+                message: 'DialogController missing a game config object. Check it\'s being loaded in Intro scene',
                 code: 'C17'
             };
         }
@@ -36,10 +38,30 @@ export default class DialogSequencer
         this.#setGeneralDialogs();
     }
 
+    show() {
+        if (!this.#panel) {
+            this.#panel = new DialogPanelGroup(this.#scene);
+        } else {
+            this.#panel.show();
+        }
+    }
+
+    hide() {
+        if (this.#panel) {
+            this.#panel.hide();
+        }
+    }
+
+    destroy() {
+        this.#panel.destroy();
+    }
+
     setSpeakTimeline({
-        onSpeak = Function.prototype,
         secondsAt = 0,
+        duration = 2,
     }) {
+        const panel = this.#panel;
+
         if (this.#timeline) {
             this.#timeline.destroy();
             this.#timeline = null;
@@ -47,7 +69,10 @@ export default class DialogSequencer
 
         this.#timeline = this.#scene.add.timeline({
             at: secondsAt * 1000,
-            run: () => onSpeak(this.#getRandomMessage()),
+            run: () => panel.addText(
+                this.#getRandomMessage(),
+                duration,
+            )
         })
         .repeat()
         .play();
