@@ -1,4 +1,4 @@
-import DialogPanelGroup from "@objects/DialogPanelGroup";
+import DialogPanel from "@objects/DialogPanel";
 import {
     select,
     selectByIds,
@@ -40,7 +40,7 @@ export default class DialogController
 
     show() {
         if (!this.#panel) {
-            this.#panel = new DialogPanelGroup(this.#scene);
+            this.#panel = new DialogPanel(this.#scene);
         } else {
             this.#panel.show();
         }

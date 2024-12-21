@@ -23,10 +23,6 @@ export default class DialogPanel extends Phaser.GameObjects.Group
                 .setToTop()
                 .setName('panel')
         );
-
-        this.once('destroy', () => {
-            this.destroy(true);
-        });
     }
 
     show() {
