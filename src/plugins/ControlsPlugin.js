@@ -1,17 +1,13 @@
+import CollectButton from "@sprites/CollectButton";
 import {
     BUTTON_CLOSE_X,
     BUTTON_SOUND_X,
     BUTTON_CONTROLS_Y,
     BUTTON_ON_OFF_X,
-    BUTTON_COLLECT_X,
-    BUTTON_COLLECT_Y,
     TEXT_X,
     TEXT_OFF,
     TEXT_ON,
     TEXT_SOUND,
-    TEXT_COLLECT,
-    KEYBOARD_SPACE_Y,
-    KEYBOARD_SPACE_X,
     STYLE_WHITE,
     STYLE_GREEN,
     STYLE_RED,
@@ -22,7 +18,7 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
     #game = null;
     #buttonClose = null;
     #buttonCollect = null;
-    #buttonCollectIsVisible = false;
+    #buttonCollectOn = false;
     #toggleSound = null;
     #soundActive = true;
     #soundLabel = null;
@@ -39,36 +35,14 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
         this.#game = pluginManager.game;
     }
     
-    addCollectButton(callback = Function.prototype) {
+    addCollectButton() {
         const uiScene = this.#game.scene.getScene('ui');
-        const text = uiScene.add.text(
-            BUTTON_COLLECT_X,
-            BUTTON_COLLECT_Y,
-            TEXT_COLLECT,
-            STYLE_WHITE
-        );
-        const keySprite = uiScene.add.sprite(
-            KEYBOARD_SPACE_X,
-            KEYBOARD_SPACE_Y,
-            'main',
-            'keyboard_space'
-        );
-
-        text.setInteractive({ cursor: 'pointer' });
-        text.setOrigin(0,0);
-        text.on('pointerup', callback);
-        keySprite.setOrigin(0,0);
-
-        this.#buttonCollect = uiScene.add.group([ text, keySprite ]);
-        this.#buttonCollect.setName('collectButton');
-        this.#buttonCollect.setVisible(false);
-        this.#buttonCollectIsVisible = false;
+        this.#buttonCollect = new CollectButton(uiScene);
     }
 
-    showCollectButton(value) {
-        if (Boolean(value) != Boolean(this.#buttonCollectIsVisible)) {
-            this.#buttonCollect?.setVisible(value);
-            this.#buttonCollectIsVisible = value;
+    setStateCollectButton(value) {
+        if (this.#buttonCollect.enabled !== Boolean(value)) {
+            this.#buttonCollect.setEnabled(value);
         }
     };
 

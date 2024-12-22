@@ -26,6 +26,7 @@ export default class MainScene extends Phaser.Scene
         this.load.json('game', 'src/config/game.json');
         this.load.atlas('main', '../assets/atlas/main.png', '../assets/atlas/main.json');
         this.load.atlas('ingredients', '../assets/atlas/ingredients.png', '../assets/atlas/ingredients.json');
+        this.load.atlas('ui', '../assets/atlas/ui.png', '../assets/atlas/ui.json');
     }
 
     create() {
@@ -34,7 +35,6 @@ export default class MainScene extends Phaser.Scene
         this.plugins.start('score');
         this.plugins.start('basket');
         this.plugins.start('controls');
-        this.plugins.start('speech');
         this.plugins.start('notification');
 
         if (this.#isRestart) {

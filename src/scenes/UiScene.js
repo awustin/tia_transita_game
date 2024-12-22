@@ -29,13 +29,21 @@ export default class UIScene extends Phaser.Scene
         } = this;
 
         // Collect selected on button click
-        controls.addCollectButton(() => eventsCentre.emit('collectButtonClick'));
+        controls.addCollectButton();
+
+        // Score state
+        // controls.addScoreIcon();
+
+        // Effect state
+        // controls.addEffectIcon();
+
         // Restart game on close button click
         controls.addCloseButton(() => {
             if (!this.isNotificationShowing) {
                 this.showGameMenu();
             }
         });
+
         // Todo - toggle sound ON / OFF
         controls.addSoundToggle();
 
@@ -75,7 +83,7 @@ export default class UIScene extends Phaser.Scene
             basket,
         } = this;
 
-        controls.showCollectButton(basket.collectAvailable);
+        controls.setStateCollectButton(basket.collectAvailable);
     }
 
     showNextNotification() {
@@ -123,7 +131,6 @@ export default class UIScene extends Phaser.Scene
         
                 this.plugins.stop('score');
                 this.plugins.stop('supply');
-                this.plugins.stop('speech');
                 this.plugins.stop('basket');
                 this.plugins.stop('notification');
                 this.plugins.stop('spell');
@@ -149,7 +156,6 @@ export default class UIScene extends Phaser.Scene
     
             this.plugins.stop('score');
             this.plugins.stop('supply');
-            this.plugins.stop('speech');
             this.plugins.stop('basket');
             this.plugins.stop('notification');
             this.plugins.stop('spell');

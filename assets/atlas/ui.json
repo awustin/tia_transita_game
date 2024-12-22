@@ -1,0 +1,102 @@
+{
+    "frames": {
+        "panel": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 728,
+                "h": 156
+            }
+        },
+        "modal": {
+            "frame": {
+                "x": 0,
+                "y": 156,
+                "w": 364,
+                "h": 156
+            }
+        },
+        "collectButtonOff": {
+            "frame": {
+                "x": 728,
+                "y": 52,
+                "w": 104,
+                "h": 104
+            }
+        },
+        "collectButtonOn": {
+            "frame": {
+                "x": 832,
+                "y": 52,
+                "w": 104,
+                "h": 104
+            }
+        },
+        "button": {
+            "frame": {
+                "x": 936,
+                "y": 0,
+                "w": 104,
+                "h": 52
+            }
+        },
+        "buttonHover": {
+            "frame": {
+                "x": 936,
+                "y": 52,
+                "w": 104,
+                "h": 52
+            }
+        },
+        "iconNecromancy": {
+            "frame": {
+                "x": 728,
+                "y": 0,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "iconAstrology": {
+            "frame": {
+                "x": 780,
+                "y": 0,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "iconLabour": {
+            "frame": {
+                "x": 832,
+                "y": 0,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "iconMinMoves": {
+            "frame": {
+                "x": 884,
+                "y": 0,
+                "w": 52,
+                "h": 52
+            }
+        },
+        "iconNoEffect": {
+            "frame": {
+                "x": 364,
+                "y": 156,
+                "w": 52,
+                "h": 52
+            }
+        }
+    },
+    "meta": {
+        "app": "TiaTransitaGame",
+        "version": "v1.0",
+        "image": "ui.png",
+        "size": {
+            "w": 1040,
+            "h": 1040
+        },
+        "scale": 1
+    }
+}

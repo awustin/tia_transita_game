@@ -2,8 +2,6 @@ export const BASEMENT_X = 276;
 export const BLOOD_X = 588;
 export const BLOOD_Y = 364;
 export const BUTTON_CLOSE_X = 1212;
-export const BUTTON_COLLECT_X = 614;
-export const BUTTON_COLLECT_Y = 745;
 export const BUTTON_CONTROLS_Y = 26;
 export const BUTTON_ON_OFF_X = 1160;
 export const BUTTON_SOUND_X = 1108;
@@ -11,34 +9,20 @@ export const BUTTON_H = 34;
 export const BUTTON_W = 104;
 export const CELL_SIZE_PX = 52; // cell is 52x52 px
 export const DIALOG_PANEL_H = 156;
-export const DIALOG_PANEL_W = 780;
-export const DIALOG_PANEL_X = 250;
-export const DIALOG_PANEL_Y = 676;
+export const DIALOG_PANEL_W = 478;
+export const DIALOG_PANEL_X = 273;
+export const DIALOG_PANEL_Y = 624;
 export const GRID_COUNT = 9; // 9 x 9 items
 export const GRID_X = 432;
 export const GRID_Y = 208;
 export const HEIGHT = 832;
-export const KEYBOARD_SPACE_X = 613;
-export const KEYBOARD_SPACE_Y = 772;
-export const LARGE_DIALOG_H = 52;
-export const LARGE_DIALOG_W = 312;
-export const LARGE_DIALOG_Y = 52;
-export const LARGE_DIALOG_X = 640;
 export const MERCURIA_X = 900;
 export const MERCURIA_Y = 104;
 export const MODAL_H = 156;
 export const MODAL_W = 364;
 export const MODAL_Y = 338;
 export const MODAL_X = 457;
-export const SMALL_DIALOG_H = 52;
-export const SMALL_DIALOG_W = 156;
-export const SMALL_DIALOG_Y = 52;
-export const SMALL_DIALOG_X = 796;
 export const STAIRCASE_X = 224;
-export const STYLE_DIALOG = {
-    color: '#fff',
-    font: '15px munro',
-};
 export const STYLE_GREEN = {
     color: '#dfff68',
     font: '20px munro',
@@ -51,14 +35,17 @@ export const STYLE_WHITE = {
     color: '#e6e6e6',
     font: '20px munro',
 };
+export const STYLE_MODAL_CHARACTER = {
+    color: '#000',
+    font: '20px munro-small'
+};
 export const STYLE_MODAL_TEXT = {
-    color: '#ddd',
+    color: '#000',
     font: '20px munro',
 };
 export const TEXT_BLOCK_CELLS = 'LAIR OF UNFRIENDLY ARACHNIDS... You are blocked from going through the infested spots';
 export const TEXT_BUTTON_QUIT = 'Quit';
 export const TEXT_BUTTON_CANCEL = 'Cancel';
-export const TEXT_COLLECT = 'collect';
 export const TEXT_GAME_OVER = 'GAME OVER';
 export const TEXT_MIN_MOVES = 'MULTIPLYING TROUTS... You can\'t select under 5 ingredients';
 export const TEXT_NEW_INGREDIENT = 'You found a new ingredient !';

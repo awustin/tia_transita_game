@@ -1,15 +1,16 @@
 import {
-    DIALOG_PANEL_H,
     DIALOG_PANEL_W,
     DIALOG_PANEL_X,
     DIALOG_PANEL_Y,
     STYLE_MODAL_TEXT,
+    STYLE_MODAL_CHARACTER,
 } from "@constants";
 
 export default class DialogPanel extends Phaser.GameObjects.Group
 {
     #text = null;
     #timerEvent = null;
+    #character = null;
 
     constructor(scene) {
         super(scene);
@@ -18,7 +19,7 @@ export default class DialogPanel extends Phaser.GameObjects.Group
         this.scene.add.existing(this);
 
         this.add(
-            this.scene.add.sprite(DIALOG_PANEL_X, DIALOG_PANEL_Y, 'main', 'dialogBox')
+            this.scene.add.sprite(DIALOG_PANEL_X, DIALOG_PANEL_Y, 'ui', 'panel')
                 .setOrigin(0, 0)
                 .setToTop()
                 .setName('panel')
@@ -44,11 +45,17 @@ export default class DialogPanel extends Phaser.GameObjects.Group
             this.#text = null;
         }
 
+        if (this.#character) {
+            this.#character.destroy();
+            this.#character = null;
+        }
+
         const {
-            padTop = 15,
+            padTop = 52 + 10,
             padBottom = 0,
             padLeft = 15,
             padRight = 0,
+            character = 'MERCURIA',
         } = options;
 
         // Initialize text
@@ -57,6 +64,17 @@ export default class DialogPanel extends Phaser.GameObjects.Group
             DIALOG_PANEL_Y + padTop,
             '',
             STYLE_MODAL_TEXT
+        )
+        .setWordWrapWidth(DIALOG_PANEL_W - 5)
+        .setOrigin(0, 0)
+        .setToTop();
+
+        // Add character name
+        this.#character = this.scene.add.text(
+            DIALOG_PANEL_X + padLeft,
+            DIALOG_PANEL_Y + 26,
+            character,
+            STYLE_MODAL_CHARACTER
         )
         .setWordWrapWidth(DIALOG_PANEL_W - 5)
         .setOrigin(0, 0)
@@ -91,6 +109,11 @@ export default class DialogPanel extends Phaser.GameObjects.Group
         if (this.#text) {
             this.#text.destroy();
             this.#text = null;
+        }
+
+        if (this.#character) {
+            this.#character.destroy();
+            this.#character = null;
         }
     }
 }

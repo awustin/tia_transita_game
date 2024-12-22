@@ -9,7 +9,6 @@ import SupplyPlugin from "@plugins/SupplyPlugin";
 import ScorePlugin from "@plugins/ScorePlugin";
 import SpellPlugin from "@plugins/SpellPlugin";
 import ControlsPlugin from "@plugins/ControlsPlugin";
-import SpeechBubblesPlugin from "@plugins/SpeechBubblesPlugin";
 import NotificationPlugin from "@plugins/NotificationPlugin";
 import {
     WIDTH,
@@ -21,8 +20,8 @@ new Phaser.Game({
     scene: [
         IntroScene,
         MainScene,
-        UiScene,
         DialogsScene,
+        UiScene,
         EndScene,
     ],
     plugins: {
@@ -32,7 +31,6 @@ new Phaser.Game({
             { key: 'score', plugin: ScorePlugin },
             { key: 'spell', plugin: SpellPlugin },
             { key: 'controls', plugin: ControlsPlugin },
-            { key: 'speech', plugin: SpeechBubblesPlugin },
             { key: 'notification', plugin: NotificationPlugin }
         ],
     },

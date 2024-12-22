@@ -1,8 +1,5 @@
 import {
-    MODAL_H,
-    MODAL_W,
-    MODAL_Y,
-    MODAL_X,
+    STYLE_WHITE,
     STYLE_MODAL_TEXT,
     BUTTON_W,
     BUTTON_H,
@@ -23,8 +20,8 @@ export default class Button extends Phaser.GameObjects.Container
     ) {
         super(scene, x, y);
 
-        this.#button = scene.add.sprite(0, 0, 'main', 'button');
-        this.#label = scene.add.text(0, - this.#button.displayHeight / 2 + 5, label, STYLE_MODAL_TEXT)
+        this.#button = scene.add.sprite(0, 0, 'ui', 'button');
+        this.#label = scene.add.text(0, -2, label, STYLE_MODAL_TEXT)
             .setWordWrapWidth(this.#button.displayWidth - 5)
             .setOrigin(0.5, 0);
 
@@ -34,11 +31,13 @@ export default class Button extends Phaser.GameObjects.Container
             .setInteractive({ cursor: 'pointer' });
 
         this.on('pointerover', () => {
-            this.#button.setFrame('buttonHover:2');
+            this.#button.setFrame('buttonHover');
+            this.#label.setStyle(STYLE_WHITE);
         });
 
         this.on('pointerout', () => {
             this.#button.setFrame('button');
+            this.#label.setStyle(STYLE_MODAL_TEXT);
         });
 
         this.on('pointerup', onClick);

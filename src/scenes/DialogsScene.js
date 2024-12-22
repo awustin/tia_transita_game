@@ -4,7 +4,6 @@ import DialogController from "@objects/DialogController";
 
 export default class DialogsScene extends Phaser.Scene
 {
-    speech = null;
     supply = null;
 
     constructor() {
@@ -12,7 +11,6 @@ export default class DialogsScene extends Phaser.Scene
     }
 
     init() {
-        this.speech = this.plugins.get('speech');
         this.supply = this.plugins.get('supply');
     }
 
@@ -25,7 +23,7 @@ export default class DialogsScene extends Phaser.Scene
         controller.show();
         controller.updateCurrentDialogs(supply.currentIngredients);
         controller.setSpeakTimeline({
-            secondsAt: 20,
+            secondsAt: 15,
             duration: 5,
         });
 

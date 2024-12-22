@@ -53,7 +53,6 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
     onNewIngredient(ingredientId = null) {
         if (ingredientId) {
             const uiScene = this.#game.scene.getScene('ui');
-            const mainScene = this.#game.scene.getScene('main');
             const { ingredients } = this.#game.cache.json.get('game');
             const { label } = selectById(ingredients.items, ingredientId);
             const modalGroup = new ModalGroup(uiScene);

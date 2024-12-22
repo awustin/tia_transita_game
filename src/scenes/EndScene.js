@@ -61,7 +61,6 @@ export default class EndScene extends Phaser.Scene
 
         this.plugins.stop('score');
         this.plugins.stop('supply');
-        this.plugins.stop('speech');
         this.plugins.stop('basket');
         this.plugins.stop('notification');
         this.plugins.stop('spell');

@@ -30,7 +30,7 @@ export default class ModalGroup extends Phaser.GameObjects.Group
         const x = MODAL_X;
 
         this.add(
-            this.scene.add.sprite(x, y, 'main', 'modal_generic').setOrigin(0, 0).setToTop()
+            this.scene.add.sprite(x, y, 'ui', 'modal').setOrigin(0, 0).setToTop()
         );
 
         if (headerText) {
