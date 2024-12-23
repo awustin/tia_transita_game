@@ -28,14 +28,9 @@ export default class UIScene extends Phaser.Scene
             notification,
         } = this;
 
-        // Collect selected on button click
         controls.addCollectButton();
-
-        // Score state
-        // controls.addScoreIcon();
-
-        // Effect state
-        // controls.addEffectIcon();
+        controls.addScoreIcon();
+        controls.addEffectIcon();
 
         // Restart game on close button click
         controls.addCloseButton(() => {
@@ -46,6 +41,15 @@ export default class UIScene extends Phaser.Scene
 
         // Todo - toggle sound ON / OFF
         controls.addSoundToggle();
+
+        eventsCentre.on('updateUi', () => {
+            const {
+                controls,
+                score,
+            } = this;
+
+            controls.setScoreIcon(score.points);
+        });
 
         // Loop through notifications queue
         eventsCentre.on('notificationsQueue', () => {
@@ -83,7 +87,7 @@ export default class UIScene extends Phaser.Scene
             basket,
         } = this;
 
-        controls.setStateCollectButton(basket.collectAvailable);
+        controls.setCollectButton(basket.collectAvailable);
     }
 
     showNextNotification() {

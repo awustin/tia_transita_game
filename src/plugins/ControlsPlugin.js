@@ -1,4 +1,7 @@
 import CollectButton from "@sprites/CollectButton";
+import ScoreIcon from "@sprites/ScoreIcon";
+import EffectIcon from "@sprites/EffectIcon";
+import { selectByMaxValue } from "@utils/data";
 import {
     BUTTON_CLOSE_X,
     BUTTON_SOUND_X,
@@ -18,7 +21,8 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
     #game = null;
     #buttonClose = null;
     #buttonCollect = null;
-    #buttonCollectOn = false;
+    #iconScore = null;
+    #iconEffect = null;
     #toggleSound = null;
     #soundActive = true;
     #soundLabel = null;
@@ -40,11 +44,47 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
         this.#buttonCollect = new CollectButton(uiScene);
     }
 
-    setStateCollectButton(value) {
+    setCollectButton(value) {
         if (this.#buttonCollect.enabled !== Boolean(value)) {
             this.#buttonCollect.setEnabled(value);
         }
     };
+
+    addScoreIcon() {
+        const uiScene = this.#game.scene.getScene('ui');
+        this.#iconScore = new ScoreIcon(uiScene);
+    }
+
+    setScoreIcon(points = {}) {
+        const {
+            labour,
+            astrology,
+            necromancy,
+        } = points;
+        
+        const { id: result } = selectByMaxValue([
+            { id: 'labour', points: labour },
+            { id: 'astrology', points: astrology} ,
+            { id: 'necromancy', points: necromancy },
+        ], 'points');
+
+        if (result === 'labour') {
+            this.#iconScore.setLabour();
+        }
+
+        if (result === 'necromancy') {
+            this.#iconScore.setNecromancy();
+        }
+
+        if (result === 'astrology') {
+            this.#iconScore.setAstrology();
+        }
+    }
+
+    addEffectIcon() {
+        const uiScene = this.#game.scene.getScene('ui');
+        this.#iconEffect = new EffectIcon(uiScene);
+    }
 
     addCloseButton(callback = Function.prototype) {
         const uiScene = this.#game.scene.getScene('ui');
