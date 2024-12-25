@@ -20,12 +20,6 @@ export default class CollectButton extends Phaser.GameObjects.Sprite
 
         this.scene.add.existing(this);
         this.setOff();
-
-        this.on('pointerup', () => {
-            if (this.state === 'on') {
-                eventsCentre.emit('collectButtonClick');
-            }
-        });
     }
 
     setOn() {

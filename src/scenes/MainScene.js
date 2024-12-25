@@ -150,7 +150,6 @@ export default class MainScene extends Phaser.Scene
             eventsCentre.emit('updateDialogs');
             eventsCentre.emit('applySpell');
             eventsCentre.emit('updateUi');
-            eventsCentre.emit('notificationsQueue');
         });
 
         // Apply spell

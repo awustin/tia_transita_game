@@ -53,17 +53,14 @@ export default class UIScene extends Phaser.Scene
 
             controls.setScoreIcon(score.points);
             controls.setEffectIcon(spell.current);
-        });
 
-        // Loop through notifications queue
-        eventsCentre.on('notificationsQueue', () => {
             if (notification.queue.length) {
                 this.scene.pause('main');
                 this.showNextNotification();
             }
         });
 
-        this.input.on('pointerup', () => {
+        this.input.on('pointerup', (value, [ object ]) => {
             if (this.isNotificationShowing && notification.current.type !== 'leaveMenu') {
                 if (notification.current.type === 'pointsGameOver') {
                     this.showPointsReached();
@@ -80,6 +77,10 @@ export default class UIScene extends Phaser.Scene
                         this.isNotificationShowing = false;
                         this.scene.resume('main');
                     }
+                }
+            } else if (object?.name === 'collectButton') {
+                if (object.state === 'on') {
+                    eventsCentre.emit('collectButtonClick');
                 }
             }
         });
