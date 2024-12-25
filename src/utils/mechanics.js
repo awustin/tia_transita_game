@@ -8,10 +8,9 @@ const game = {
 const spell = {
     compute: {
         // On the limit points -> infinite, the sum of the four probabilities functions should not be over 1
-        blockCellsProbability: points => 3/10 - 3 / (points * 1/50 + 10),
-        minMovesProbability: points => 3/10 - 3 / (points * 1/50 + 10),
-        changeBoardProbability: points => 1/5 - 1 / (points * 1/50 + 5),
-        resetBoardProbability: points => 1/5 - 1 / (points * 1/50 + 5),
+        minMovesProbability: points => 7/15 - 7 / (points * 1/50 + 15),
+        blockCellsProbability: points => 4/15 - 4 / (points * 1/50 + 15),
+        resetBoardProbability: points => 4/15 - 4 / (points * 1/50 + 15),
     },
     constants: {
         MIN_MOVES: 5,
@@ -27,8 +26,8 @@ const score = {
 
 const tree = {
     constants: {
-        MOVES_CHECK: 15,
-        MOVES_LEVEL_UP_FAILED: 5,
+        MOVES_CHECK: 12,
+        MOVES_LEVEL_UP_FAILED: 4,
         MOVES_SWAP_EXTRA: 8,
     },
     compute: {

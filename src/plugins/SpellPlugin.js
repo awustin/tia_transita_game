@@ -9,7 +9,6 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
     #effects = {
         'blockCells': {id: 1, params: null},
         'minMoves': {id: 2, params: null},
-        'changeBoard': {id: 3, params: null},
         'resetBoard': {id: 4, params: null},
     };
     #previous = null;
@@ -37,7 +36,6 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         this.#effects = {
             'blockCells': { id: 1, params: null },
             'minMoves': { id: 2, params: null },
-            'changeBoard': { id: 3, params: null },
             'resetBoard': { id: 4, params: null },
         };
         this.#current = 'none';    
@@ -138,19 +136,16 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         const { compute: {
                 blockCellsProbability,
                 minMovesProbability,
-                changeBoardProbability,
                 resetBoardProbability,
             }
         } = spellMechanics;
 
         // On the limit to infinite, the sum of of probabilities should not be over 1
         switch(name) {
-            case 'blockCells':
-                return blockCellsProbability(labour);
             case 'minMoves':
                 return minMovesProbability(labour);
-            case 'changeBoard':
-                return changeBoardProbability(necromancy);
+            case 'blockCells':
+                return blockCellsProbability(necromancy);
             case 'resetBoard':
                 return resetBoardProbability(astrology);
             default:
