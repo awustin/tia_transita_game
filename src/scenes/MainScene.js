@@ -149,15 +149,15 @@ export default class MainScene extends Phaser.Scene
                 grid,
                 notification,
             } = this;
-    
-            if (spell.currentBlockCells()) {
-                // Block cells
-                grid.blockIngredients(spell.pickMap());
-            }
 
             if (spell.previousBlockCells()) {
                 // Unblock cells
                 grid.unblockIngredients();
+            }
+
+            if (spell.currentBlockCells()) {
+                // Block cells
+                grid.blockIngredients(spell.pickMap());
             }
     
             // Temporarily, only detect minimum paths for minMoves or blockCells
