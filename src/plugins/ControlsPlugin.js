@@ -68,22 +68,35 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
             { id: 'necromancy', points: necromancy },
         ], 'points');
 
-        if (result === 'labour') {
-            this.#iconScore.setLabour();
-        }
-
-        if (result === 'necromancy') {
-            this.#iconScore.setNecromancy();
-        }
-
-        if (result === 'astrology') {
-            this.#iconScore.setAstrology();
+        switch(result) {
+            case 'labour':
+                this.#iconScore.setLabour();
+                break;
+            case 'necromancy':
+                this.#iconScore.setNecromancy();
+                break;
+            case 'astrology':
+                this.#iconScore.setAstrology();
+                break;
+            default:
+                break;
         }
     }
 
     addEffectIcon() {
         const uiScene = this.#game.scene.getScene('ui');
         this.#iconEffect = new EffectIcon(uiScene);
+    }
+
+    setEffectIcon(spell = 'none') {
+        switch(spell) {
+            case 'minMoves':
+                this.#iconEffect.setMinMoves();
+                break;
+            default:
+                this.#iconEffect.setNone();
+                break;
+        }
     }
 
     addCloseButton(callback = Function.prototype) {

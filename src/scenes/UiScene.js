@@ -3,6 +3,7 @@ import eventsCentre from "@objects/EventsCentre";
 export default class UIScene extends Phaser.Scene
 {
     score = null;
+    spell = null;
     basket = null;
     controls = null;
     notification = null;
@@ -14,6 +15,7 @@ export default class UIScene extends Phaser.Scene
 
     init() {
         this.score = this.plugins.get('score');
+        this.spell = this.plugins.get('spell');
         this.basket = this.plugins.get('basket');
         this.controls = this.plugins.get('controls');
         this.notification = this.plugins.get('notification');
@@ -46,9 +48,11 @@ export default class UIScene extends Phaser.Scene
             const {
                 controls,
                 score,
+                spell,
             } = this;
 
             controls.setScoreIcon(score.points);
+            controls.setEffectIcon(spell.current);
         });
 
         // Loop through notifications queue
