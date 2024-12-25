@@ -51,18 +51,29 @@ export default class MainScene extends Phaser.Scene
         // Ingredients selected
         this.input.on('pointerup', (value, [ ingredient ]) => {
             if (ingredient?.collectable) {
-                if (ingredient.state !== 'idle' && ingredient.state !== 'active') {
-                    return;
-                }
+                if (ingredient.isIdle()) {
+                    // If idle, start or add to current selection
+                    const valid = basket.isValidMove(ingredient);
 
-                const index = basket.selectedIndex(ingredient);
-
-                if (index >= 0) {
-                    basket.untrackSelectedIngredients(index).forEach(ingredient => ingredient.setIdle());
-                } else {
-                    if (basket.trackIngredient(ingredient)) {
+                    if (valid) {
+                        basket.trackIngredient(ingredient);
                         ingredient.setActive();
-                    };
+                    } else {
+                        const untracked = basket.untrackAll();
+
+                        untracked.forEach(ingredient => ingredient.setIdle());
+                        basket.trackIngredient(ingredient);
+                        ingredient.setActive();
+                    }
+                } else if (ingredient.isActive()) {
+                    // If active, untrack and break current selection
+                    const index = basket.selectedIndex(ingredient);
+
+                    if (index >= 0) {
+                        const untracked = basket.untrackSelectedIngredients(index);
+
+                        untracked.forEach(ingredient => ingredient.setIdle());
+                    } 
                 }
 
                 if (basket.checkCollectEnabled(spell.currentMinMoves())) {

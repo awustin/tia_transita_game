@@ -188,6 +188,18 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
         );
     }
 
+    isIdle() {
+        return this.state === 'idle';
+    }
+
+    isActive() {
+        return this.state === 'active';
+    }
+
+    isBlocked() {
+        return this.state === 'blocked';
+    }
+
     #setAsyncState(name, callback = Function.prototype) {
         if (this.#initializing) {
             this.#pendingState = name;

@@ -41,19 +41,21 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
         const selected = this.#selected;
 
         if (!selected.length) {
-            selected.push(ingredient);
             this.#combinationTypeId = ingredient.id;
-
-            return true;
-        }
-
-        if (!this.#isCombinationType(ingredient) || !this.#isAdjacent(ingredient)) {
-            return false;
         }
 
         selected.push(ingredient);
 
         return true;        
+    }
+
+    /**
+     * Checks that is a valid move
+     * @param {Object} ingredient
+     * @returns Boolean with the result
+     */
+    isValidMove(ingredient = null) {
+        return !this.#selected.length || (this.#isCombinationType(ingredient) && this.#isAdjacent(ingredient));
     }
 
     /**
@@ -67,6 +69,14 @@ export default class BasketPlugin extends Phaser.Plugins.BasePlugin
         }
 
         return this.#selected.splice(index);
+    }
+
+    /**
+     * Untracks all the current ingredients
+     * @returns {Array} Array of removed items;
+     */
+    untrackAll() {
+        return this.#selected.splice(0);
     }
 
     /**
