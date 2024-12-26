@@ -91,9 +91,9 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
      * @returns 2D array
      */
     pickMap() {
-        const { maps } = this.game.cache.json.get('game');
+        const { mapsBlocked } = this.game.cache.json.get('game');
 
-        return (selectRandom(maps.items) || {}).positions || [];
+        return (selectRandom(mapsBlocked.items) || {}).positions || [];
     }
 
     /**

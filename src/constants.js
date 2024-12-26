@@ -43,11 +43,11 @@ export const STYLE_MODAL_TEXT = {
     color: '#000',
     font: '20px munro',
 };
-export const TEXT_BLOCK_CELLS = 'LAIR OF UNFRIENDLY ARACHNIDS... You are blocked from going through the infested spots';
+export const TEXT_BLOCK_CELLS = 'LAIR OF UNFRIENDLY ARACHNIDS... A menacing sight. Blocked cells halt your forward might';
 export const TEXT_BUTTON_QUIT = 'Quit';
 export const TEXT_BUTTON_CANCEL = 'Cancel';
 export const TEXT_GAME_OVER = 'GAME OVER';
-export const TEXT_MIN_MOVES = 'MULTIPLYING TROUTS... You can\'t select under 5 ingredients';
+export const TEXT_MIN_MOVES = 'MULTIPLYING TROUTS... A bountiful brew: at least five ingredients will see you through';
 export const TEXT_NEW_INGREDIENT = 'You found a new ingredient !';
 export const TEXT_NO_MOVES = 'There are no more moves available';
 export const TEXT_OFF = 'off';
@@ -55,6 +55,7 @@ export const TEXT_ON = 'on';
 export const TEXT_PAUSED = 'PAUSED';
 export const TEXT_POINTS_REACHED = 'You reached... 10.000 points! This should be enough for the summoning spell...';
 export const TEXT_PRESS_SPACE_TO_START = 'Press SPACE to start...';
+export const TEXT_RESET_BOARD = 'METAMORPHOSIS HAPPENED... Items transformed in graceful flight, leaving a new board where magic resides';
 export const TEXT_SOUND = 'sound';
 export const TEXT_X = 'x';
 export const TITLE_X = 640;

@@ -162,7 +162,7 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     }
 
     /**
-     * Set ingredients as blocked at positions given in `game.maps`
+     * Set ingredients as blocked at positions given in `game.mapsBlocked`
      */
     blockIngredients(map = []) {
         const grid = this.#grid;

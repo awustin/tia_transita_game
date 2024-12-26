@@ -9,6 +9,7 @@ import {
     TEXT_NO_MOVES,
     TEXT_POINTS_REACHED,
     TEXT_BLOCK_CELLS,
+    TEXT_RESET_BOARD,
 } from "@constants";
 
 /**
@@ -111,35 +112,31 @@ export default class NotificationPlugin extends Phaser.Plugins.BasePlugin
     }
 
     onSpell(name) {
-        if (name === 'minMoves') {
-            const uiScene = this.#game.scene.getScene('ui');
-            const modalGroup = new ModalGroup(uiScene);
+        const uiScene = this.#game.scene.getScene('ui');
+        const modalGroup = new ModalGroup(uiScene);
+        let bodyText = '';
 
-            modalGroup.show({
-                bodyText: TEXT_MIN_MOVES,
-            });
-            modalGroup.animate();
-
-            this.#current = {
-                type: 'spell/minMoves',
-                cancelCallback: () => modalGroup.destroy(true),
-            };
+        switch(name) {
+            case 'minMoves':
+                bodyText = TEXT_MIN_MOVES;
+                break;
+            case 'blockCells':
+                bodyText = TEXT_BLOCK_CELLS;
+                break;
+            case 'resetBoard':
+                bodyText = TEXT_RESET_BOARD;
+                break;
+            default:
+                break;
         }
 
-        if (name === 'blockCells') {
-            const uiScene = this.#game.scene.getScene('ui');
-            const modalGroup = new ModalGroup(uiScene);
+        modalGroup.show({ bodyText });
+        modalGroup.animate();
 
-            modalGroup.show({
-                bodyText: TEXT_BLOCK_CELLS,
-            });
-            modalGroup.animate();
-
-            this.#current = {
-                type: 'spell/blockCells',
-                cancelCallback: () => modalGroup.destroy(true),
-            };
-        }
+        this.#current = {
+            type: `spell/${name}`,
+            cancelCallback: () => modalGroup.destroy(true),
+        };
     }
 
     onNoMoves({ onConfirm = Function.prototype }) {
