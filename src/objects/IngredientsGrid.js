@@ -1,7 +1,6 @@
 import Ingredient from '@sprites/Ingredient';
 import PathTable from "@classes/PathTable";
 import { spell as spellMechanics } from "@utils/mechanics";
-import { selectRandom } from "@utils/data";
 import {
     GRID_COUNT,
     GRID_X,
@@ -47,7 +46,7 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
             this.#grid[row] = [];
 
             for (let col = 0; col < size; col++) {
-                const ingredient = this.#newIngredientAtPosition(row, col);
+                const ingredient = this.#newIngredientRandom(row, col);
                 this.#grid[row].push(ingredient);
 
                 // Add entry to track moves
@@ -116,17 +115,59 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
     }
 
     /**
+     * Empties the entire board
+     * @return void
+     */
+    voidAllIngredients() {
+        const grid = this.#grid;
+
+        grid.forEach(row => {
+            row.forEach(ingredient => {
+                if (ingredient !== 'empty') {
+                    const [row, col] = ingredient.cell;
+    
+                    ingredient.setCollected();
+                    this.#grid[row][col] = 'empty';
+                    this.#emptyPositions.push([row, col]);
+                }
+            })
+        })
+    }
+
+    /**
      * Places a new ingredient in the empty positions, and untracks the empty cell
      */
-    fillInWithNewIngredients() {
+    fillWithRandom() {
         if (this.#emptyPositions.length) {
             this.#emptyPositions.forEach(([row, col]) => {
-                const ingredient = this.#newIngredientAtPosition(row, col);
+                const ingredient = this.#newIngredientRandom(row, col);
                 this.#grid[row][col] = ingredient;
 
                 // Add entry to track moves
                 this.#pathTable.add(ingredient.id, [row, col]);
             });
+        }
+
+        this.#emptyPositions = [];
+    }
+
+    /**
+     * Add new ingredients based on a map
+     */
+    fillWithMap(map = [], slots = {}) {
+        const grid = this.#grid;
+        const path = this.#pathTable;
+
+        if (Object.keys(slots).length && map.length) {
+            map.forEach((array, row) => {
+                array.forEach((value, col) => {
+                    const ingredient = this.#newIngredient(row, col, slots[Number(value)]);
+                    grid[row][col] = ingredient;
+
+                    // Add entry to track moves
+                    path.add(ingredient.id, [row, col]);
+                })
+            })
         }
 
         this.#emptyPositions = [];
@@ -213,11 +254,26 @@ export default class IngredientsGrid extends Phaser.GameObjects.Group
 
     // Private
 
-    #newIngredientAtPosition(row, col) {
+    #newIngredientRandom(row, col) {
         const supply = this.scene.plugins.get('supply');
 
         const ingredient = new Ingredient(
             supply.getNextIngredients()[0].id,
+            [row, col],
+            {
+                scene: this.scene,
+                x: GRID_X + CELL_SIZE_PX * col,
+                y: GRID_Y + CELL_SIZE_PX * row,
+            }
+        );
+        this.#group.add(ingredient);
+
+        return ingredient;
+    }
+
+    #newIngredient(row, col, id) {
+        const ingredient = new Ingredient(
+            id,
             [row, col],
             {
                 scene: this.scene,

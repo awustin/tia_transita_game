@@ -55,9 +55,9 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
         const probabilities = initIngredients.map(({ id, relativeProbability }) => ({ id, probability: relativeProbability / max }));
 
         this.#slots.extra = initIngredientsIds[0];
-        this.#slots[AMULET] = initIngredientsIds[1];
-        this.#slots[WITCHCRAFT] = initIngredientsIds[2];
-        this.#slots[NATURAL] = initIngredientsIds[3];
+        this.#slots[NATURAL] = initIngredientsIds[1];
+        this.#slots[AMULET] = initIngredientsIds[2];
+        this.#slots[WITCHCRAFT] = initIngredientsIds[3];
         this.#discard.push(initIngredientsIds[0]);
 
         this.#updatePool(probabilities);
@@ -179,6 +179,21 @@ export default class SupplyPlugin extends Phaser.Plugins.BasePlugin
                 ...ingredient,
                 probability: inversedAmounts[ingredient.id] / totalInversed,
             })));
+        }
+    }
+
+    /**
+     * Returns an object with the current slots value.
+     * Mapped as 1: NATURAL, 2: AMULET, 3: WITCHRAFT, 4: extra
+     */
+    getSlotsForMap() {
+        const slots = this.#slots;
+
+        return {
+            1: slots[NATURAL],
+            2: slots[AMULET],
+            3: slots[WITCHCRAFT],
+            4: slots['extra'],
         }
     }
 

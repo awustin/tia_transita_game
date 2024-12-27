@@ -90,10 +90,20 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
      * Selects a random map from the game data
      * @returns 2D array
      */
-    pickMap() {
+    pickMapBlockedCells() {
         const { mapsBlocked } = this.game.cache.json.get('game');
 
         return (selectRandom(mapsBlocked.items) || {}).positions || [];
+    }
+
+    /**
+     * Selects a random map from game data, and maps its positions to the current slots
+     * @returns 2D array
+     */
+    pickMapResetBoard() {
+        const { maps } = this.game.cache.json.get('game');
+
+        return (selectRandom(maps.items) || {}).positions || [];
     }
 
     /**
@@ -116,6 +126,10 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
 
     previousBlockCells() {
         return this.#previous === 'blockCells';
+    }
+
+    currentResetBoard() {
+        return this.#current === 'resetBoard';
     }
 
     get current() {

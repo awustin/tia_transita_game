@@ -109,7 +109,7 @@ export default class MainScene extends Phaser.Scene
             this.moves++;
             spell.clearEffect();
 
-            // Grab new ingredient or apply spell
+            // Grab new ingredient or pick a spell
             if (tree.isBranchLevelUp(this.moves)) {
                 const voided = this.levelUpNewIngredient();
 
@@ -145,7 +145,9 @@ export default class MainScene extends Phaser.Scene
                 );
             }
 
-            grid.fillInWithNewIngredients();
+            if (!spell.currentResetBoard()) {
+                grid.fillWithRandom();
+            }
 
             eventsCentre.emit('updateDialogs');
             eventsCentre.emit('applySpell');
@@ -158,18 +160,26 @@ export default class MainScene extends Phaser.Scene
                 spell,
                 grid,
                 notification,
+                supply,
             } = this;
 
             if (spell.previousBlockCells()) {
-                // Unblock cells
                 grid.unblockIngredients();
             }
 
             if (spell.currentBlockCells()) {
-                // Block cells
-                grid.blockIngredients(spell.pickMap());
+                grid.blockIngredients(spell.pickMapBlockedCells());
             }
-    
+
+            if (spell.currentResetBoard()) {
+                grid.voidAllIngredients();
+
+                grid.fillWithMap(
+                    spell.pickMapResetBoard(),
+                    supply.getSlotsForMap()
+                );
+            }
+
             // Temporarily, only detect minimum paths for minMoves or blockCells
             if (spell.currentMinMoves() || spell.currentBlockCells()) {
                 const detected = grid.detectMinimumPath(spell.currentMinMoves());
