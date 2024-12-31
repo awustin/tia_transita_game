@@ -8,9 +8,9 @@ const game = {
 const spell = {
     compute: {
         // On the limit points -> infinite, the sum of the four probabilities functions should not be over 1
-        minMovesProbability: points => 7/15 - 7 / (points * 1/50 + 15),
-        blockCellsProbability: points => 4/15 - 4 / (points * 1/50 + 15),
-        resetBoardProbability: points => 4/15 - 4 / (points * 1/50 + 15),
+        minMovesProbability: points => 9/18 - 9 / (points * 1/50 + 18),
+        blockCellsProbability: points => 6/18 - 6 / (points * 1/50 + 18),
+        resetBoardProbability: points => 1/18 - 1 / (points * 1/50 + 18),
     },
     constants: {
         MIN_MOVES: 5,

@@ -157,9 +157,9 @@ export default class SpellPlugin extends Phaser.Plugins.BasePlugin
         // On the limit to infinite, the sum of of probabilities should not be over 1
         switch(name) {
             case 'minMoves':
-                return minMovesProbability(labour);
+                return minMovesProbability(2*labour + necromancy + astrology);
             case 'blockCells':
-                return blockCellsProbability(necromancy);
+                return blockCellsProbability(labour + 2*necromancy + astrology);
             case 'resetBoard':
                 return resetBoardProbability(astrology);
             default:
