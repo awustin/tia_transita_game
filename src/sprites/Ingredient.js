@@ -1,5 +1,5 @@
 import Sparkles from "@sprites/Sparkles";
-import Skulls from "@sprites/Skulls";
+import Blocked from "@sprites/Blocked";
 
 export default class Ingredient extends Phaser.GameObjects.Sprite
 {
@@ -7,7 +7,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
     #cell = [];
     #cellBorder = null;
     #sparkles = null;
-    #skulls = null;
+    #blocked = null;
     #collectable = true;
     #pendingState = null;
     #initializing = false;
@@ -114,8 +114,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
                     this.#sparkles.destroy();
                 }
         
-                if (this.#skulls) {
-                    this.#skulls.destroy();
+                if (this.#blocked) {
+                    this.#blocked.destroy();
                 }
             },
         );
@@ -163,8 +163,8 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
             this.#sparkles.destroy();
         }
 
-        if (this.#skulls) {
-            this.#skulls.destroy();
+        if (this.#blocked) {
+            this.#blocked.destroy();
         }
     }
 
@@ -175,7 +175,7 @@ export default class Ingredient extends Phaser.GameObjects.Sprite
                 const { x, y } = this.getBounds();
                 this.disableInteractive();
 
-                this.#sparkles = new Skulls({
+                this.#blocked = new Blocked({
                     scene: this.scene,
                     x,
                     y,
