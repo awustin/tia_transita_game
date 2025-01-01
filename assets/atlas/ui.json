@@ -87,6 +87,62 @@
                 "w": 52,
                 "h": 52
             }
+        },
+        "movesIndicator0": {
+            "frame": {
+                "x": 416,
+                "y": 156,
+                "w": 156,
+                "h": 52
+            }
+        },
+        "movesIndicator1": {
+            "frame": {
+                "x": 416,
+                "y": 208,
+                "w": 156,
+                "h": 52
+            }
+        },
+        "movesIndicator2": {
+            "frame": {
+                "x": 416,
+                "y": 260,
+                "w": 156,
+                "h": 52
+            }
+        },
+        "movesIndicator3": {
+            "frame": {
+                "x": 572,
+                "y": 156,
+                "w": 156,
+                "h": 52
+            }
+        },
+        "movesIndicator4": {
+            "frame": {
+                "x": 572,
+                "y": 208,
+                "w": 156,
+                "h": 52
+            }
+        },
+        "movesIndicator5": {
+            "frame": {
+                "x": 572,
+                "y": 260,
+                "w": 156,
+                "h": 52
+            }
+        },
+        "movesIndicator6": {
+            "frame": {
+                "x": 728,
+                "y": 156,
+                "w": 156,
+                "h": 52
+            }
         }
     },
     "meta": {

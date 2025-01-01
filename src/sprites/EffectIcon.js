@@ -9,11 +9,11 @@ export default class EffectIcon extends Phaser.GameObjects.Sprite
         super(
             scene,
             DIALOG_PANEL_X + 487,
-            DIALOG_PANEL_Y + 82,
+            DIALOG_PANEL_Y + 63,
             'ui',
             'iconNoEffect'
         ).setOrigin(0, 0)
-        .setName('scoreIcon');
+        .setName('effectIcon');
 
         this.scene.add.existing(this);
         this.setNone();

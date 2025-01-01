@@ -151,7 +151,7 @@ export default class MainScene extends Phaser.Scene
 
             eventsCentre.emit('updateDialogs');
             eventsCentre.emit('applySpell');
-            eventsCentre.emit('updateUi');
+            eventsCentre.emit('updateUi', { moves: this.moves });
         });
 
         // Apply spell
@@ -269,7 +269,7 @@ export default class MainScene extends Phaser.Scene
         basement.setOrigin(0, 0);
         staircase.setOrigin(0, 0);
         
-        this.registry.debugText = this.add.text(0, 0, 'Debug Info...');
+        this.registry.debugText = this.add.text(0, 0, '');
     }
 
     #debugInfoOnScreen() {

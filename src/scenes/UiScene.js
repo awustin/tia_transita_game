@@ -33,6 +33,7 @@ export default class UIScene extends Phaser.Scene
         controls.addCollectButton();
         controls.addScoreIcon();
         controls.addEffectIcon();
+        controls.addMovesIndicator();
 
         // Restart game on close button click
         controls.addCloseButton(() => {
@@ -44,7 +45,8 @@ export default class UIScene extends Phaser.Scene
         // Todo - toggle sound ON / OFF
         controls.addSoundToggle();
 
-        eventsCentre.on('updateUi', () => {
+        eventsCentre.on('updateUi', params => {
+            const { moves } = params;
             const {
                 controls,
                 score,
@@ -53,6 +55,7 @@ export default class UIScene extends Phaser.Scene
 
             controls.setScoreIcon(score.points);
             controls.setEffectIcon(spell.current);
+            controls.setMovesIndicator(moves);
 
             if (notification.queue.length) {
                 this.scene.pause('main');

@@ -1,6 +1,7 @@
 import CollectButton from "@sprites/CollectButton";
 import ScoreIcon from "@sprites/ScoreIcon";
 import EffectIcon from "@sprites/EffectIcon";
+import MovesIndicator from "@sprites/MovesIndicator";
 import { selectByMaxValue } from "@utils/data";
 import {
     BUTTON_CLOSE_X,
@@ -23,6 +24,7 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
     #buttonCollect = null;
     #iconScore = null;
     #iconEffect = null;
+    #movesIndicator = null;
     #toggleSound = null;
     #soundActive = true;
     #soundLabel = null;
@@ -97,6 +99,15 @@ export default class ControlsPlugin extends Phaser.Plugins.BasePlugin
                 this.#iconEffect.setNone();
                 break;
         }
+    }
+
+    addMovesIndicator() {
+        const uiScene = this.#game.scene.getScene('ui');
+        this.#movesIndicator = new MovesIndicator(uiScene);
+    }
+
+    setMovesIndicator(moves = 0) {
+        this.#movesIndicator.setMoves(moves);
     }
 
     addCloseButton(callback = Function.prototype) {

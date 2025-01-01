@@ -9,7 +9,7 @@ export default class ScoreIcon extends Phaser.GameObjects.Sprite
         super(
             scene,
             DIALOG_PANEL_X + 557,
-            DIALOG_PANEL_Y + 82,
+            DIALOG_PANEL_Y + 63,
             'ui',
             'iconLabour'
         ).setOrigin(0, 0)
