@@ -198,7 +198,7 @@ export default class MainScene extends Phaser.Scene
     }
 
     update () {
-        this.#debugInfoOnScreen();
+        // this.#debugInfoOnScreen();
     }
 
     collectSelected () {
