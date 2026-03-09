@@ -1,8 +1,8 @@
 # tia_transita_game
 A game with Phaser JS.
 
-Tia Tránsita is a puzzle match 3 game in which the player has to collect ingredients for Tía Tránsita, a mysterious witch who commanded her oldest niece to prepare a potion for her return.
-The proportions of collected ingredients vary, producing different effects. There are three branches of magic that will develop based on the predominant ingredient type. They are astrology, necromancy and labour, each of which has a special effect on the game board.
+Tia Tránsita is a puzzle **match 3** game in which the player has to collect ingredients for Tía Tránsita, a mysterious witch who commanded her oldest niece to prepare a potion for her return.
+The proportions of collected **ingredients** vary, producing different effects. There are three branches of magic that will develop based on the predominant ingredient type, **astrology**, **necromancy** and **labour**, each of which has a special effect on the game board.
 Will the player be able to prepare the correct potion for when Tía Tránsita returns?
 
 ![alt text](image.png)
