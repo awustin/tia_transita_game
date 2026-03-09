@@ -1,7 +1,7 @@
 # tia_transita_game
 A game with Phaser JS
 
-### Development
+![alt text](image.png)
 
 #### Setup
 For first time setup, run `npm install`.
